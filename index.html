@@ -1,1 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>frontline — Design & Music Agency</title>
+  <meta name="description" content="frontline — design and music agency. Artists, producers, creative work and store.">
+  <style>
+    :root{
+      --bg:#0f0f12;
+      --card:#111217;
+      --muted:#9aa0a6;
+      --accent:#ff4d6d;
+      --glass: rgba(255,255,255,0.03);
+      --gap:16px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color-scheme: dark;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#08080a 0%, #111217 60%);color:#e8eef6}
+    a{color:inherit;text-decoration:none}
 
+    /* NAV */
+    .nav{
+      position:sticky;top:0;z-index:40;background:linear-gradient(180deg, rgba(10,10,12,0.6), rgba(10,10,12,0.35));backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.03);
+    }
+    .container{max-width:1150px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .logo{font-weight:700;font-size:20px;letter-spacing:0.6px;color:var(--accent);text-transform:lowercase}
+
+    nav ul{Display:flex;gap:20px;align-items:center;list-style:none;margin:0;padding:0}
+    nav a{padding:8px 10px;border-radius:8px;color:var(--muted);font-weight:600;transition:all .18s}
+    nav a:hover{color:#fff;background:rgba(255,255,255,0.03);transform:translateY(-2px)}
+
+    .cta{background:linear-gradient(90deg,var(--accent),#ff7a59);padding:8px 14px;border-radius:10px;color:white;font-weight:700}
+
+    /* Mobile */
+    .menu-toggle{display:none;background:transparent;border:0;color:var(--muted);font-weight:700}
+    @media (max-width:880px){
+      nav ul{display:none;position:absolute;right:20px;top:64px;background:var(--card);padding:12px;border-radius:10px;box-shadow:0 6px 20px rgba(2,2,5,0.6);flex-direction:column;min-width:160px}
+      nav ul.show{display:flex}
+      .menu-toggle{display:inline-block}
+    }
+
+    /* HERO */
+    .hero{padding:84px 20px 64px}
+    .hero-inner{max-width:1150px;margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:40px;align-items:center}
+    .eyebrow{color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-size:12px;margin-bottom:12px}
+    h1{font-size:48px;margin:0;line-height:1.02}
+    p.lead{color:var(--muted);font-size:18px;margin-top:16px;max-width:60ch}
+    .actions{margin-top:22px;display:flex;gap:12px}
+
+    /* SIDE CARD */
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .stat{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .stat strong{font-size:22px}
+    .muted{color:var(--muted);font-size:13px}
+
+    /* SECTIONS */
+    section{max-width:1150px;margin:40px auto;padding:24px 20px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .block{background:var(--card);padding:18px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+
+    @media (max-width:980px){.hero-inner{grid-template-columns:1fr} .grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:600px){.grid{grid-template-columns:1fr}}
+
+    footer{padding:28px 20px;color:var(--muted);text-align:center;border-top:1px solid rgba(255,255,255,0.02)}
+  </style>
+</head>
+<body>
+  <header class="nav" role="banner">
+    <div class="container">
+      <div style="display:flex;align-items:center;gap:16px">
+        <div class="logo">frontline</div>
+        <div class="muted" style="font-size:13px">design • music</div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" id="menuToggle">menu</button>
+        <nav id="main-nav" role="navigation">
+          <ul>
+            <li><a href="#artists">Artists</a></li>
+            <li><a href="#producers">Producers</a></li>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#store">Store</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a class="cta" href="#store">Visit Store</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Intro">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">agency</div>
+          <h1>We build identities, records, and experiences for forward-thinking artists.</h1>
+          <p class="lead">frontline is a design and music agency pairing creative direction, production, and brand design. We craft visual systems, release strategies and merchandise for artists and producers.</p>
+          <div class="actions">
+            <a class="cta" href="#work">Our Work</a>
+            <a href="#contact" style="padding:8px 12px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);">Get in touch</a>
+          </div>
+        </div>
+
+        <aside class="card" aria-labelledby="statsLabel">
+          <div id="statsLabel" style="margin-bottom:8px;font-weight:700">Quick glance</div>
+          <div class="stat"><span class="muted">Active artists</span><strong>12</strong></div>
+          <div class="stat"><span class="muted">Producers & collaborators</span><strong>8</strong></div>
+          <div class="stat" style="margin-bottom:0"><span class="muted">Releases this year</span><strong>5</strong></div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="artists">
+      <h2>Artists</h2>
+      <p class="muted">A curated roster of performers and creators we represent. Click through to view profiles and releases.</p>
+      <div class="grid" style="margin-top:18px">
+        <div class="block">Artist 1 — brief bio or release highlight</div>
+        <div class="block">Artist 2 — brief bio or release highlight</div>
+        <div class="block">Artist 3 — brief bio or release highlight</div>
+      </div>
+    </section>
+
+    <section id="producers">
+      <h2>Producers</h2>
+      <p class="muted">Production and collaboration partners — in-house and frequent collaborators.</p>
+      <div class="grid" style="margin-top:18px">
+        <div class="block">Producer A — style or credits</div>
+        <div class="block">Producer B — style or credits</div>
+        <div class="block">Producer C — style or credits</div>
+      </div>
+    </section>
+
+    <section id="work">
+      <h2>Work</h2>
+      <p class="muted">Selected projects in branding, campaigns, and releases.</p>
+      <div class="grid" style="margin-top:18px">
+        <div class="block">Project — cover art / campaign</div>
+        <div class="block">Project — visuals / case study</div>
+        <div class="block">Project — merch / drops</div>
+      </div>
+    </section>
+
+    <section id="store">
+      <h2>Store</h2>
+      <p class="muted">Merch, limited drops and physical releases.</p>
+      <div class="grid" style="margin-top:18px">
+        <div class="block">Item 1 — tee / limited</div>
+        <div class="block">Item 2 — vinyl / release</div>
+        <div class="block">Item 3 — poster / print</div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p class="muted">For bookings, collaborations or general inquiries, reach out.</p>
+      <div style="margin-top:18px;display:flex;gap:18px;flex-wrap:wrap">
+        <div class="block" style="flex:1;min-width:280px">
+          <strong>Email</strong>
+          <p class="muted">hello@frontline.example</p>
+        </div>
+        <div class="block" style="flex:1;min-width:280px">
+          <strong>Studio</strong>
+          <p class="muted">City, Country — by appointment</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div style="max-width:1150px;margin:0 auto;padding:6px 20px">© frontline — design & music. — follow us on social</div>
+  </footer>
+
+  <script>
+    (function(){
+      const btn = document.getElementById('menuToggle');
+      const navList = document.querySelector('#main-nav ul');
+      if(!btn || !navList) return;
+      btn.addEventListener('click', ()=>{
+        const shown = navList.classList.toggle('show');
+        btn.setAttribute('aria-expanded', String(shown));
+      });
+    })();
+  </script>
+</body>
+</html>
