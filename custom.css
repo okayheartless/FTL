@@ -1,1 +1,27 @@
+/* Custom Cursor Configuration */
 
+/* Default cursor - applied to the entire document */
+* {
+  cursor: url('FTL_ASSETS/FTL_BULLET_CURSOR.cur'), auto;
+}
+
+/* Pointer/clickable cursor - applied to interactive elements */
+a,
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+input[type="file"]::file-selector-button,
+label[for],
+select,
+textarea,
+[role="button"],
+[onclick] {
+  cursor: url('FTL_ASSETS/FTL_IMPACT_CURSOR.cur'), pointer;
+}
+
+/* Additional interactive element cursor adjustments */
+input:not([type="text"]):not([type="search"]):not([type="email"]):not([type="password"]):not([type="number"]):not([type="date"]):not([type="time"]):not([type="datetime-local"]):not([type="month"]):not([type="week"]):not([type="color"]),
+summary {
+  cursor: url('FTL_ASSETS/FTL_IMPACT_CURSOR.cur'), pointer;
+}
