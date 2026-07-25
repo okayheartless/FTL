@@ -1,186 +1,228 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>frontline — Design & Music Agency</title>
-  <meta name="description" content="frontline — design and music agency. Artists, producers, creative work and store.">
-  <style>
-    :root{
-      --bg:#0f0f12;
-      --card:#111217;
-      --muted:#9aa0a6;
-      --accent:#ff4d6d;
-      --glass: rgba(255,255,255,0.03);
-      --gap:16px;
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      color-scheme: dark;
-    }
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,#08080a 0%, #111217 60%);color:#e8eef6}
-    a{color:inherit;text-decoration:none}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRONTLINE UNDERGROUND</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* NAV */
-    .nav{
-      position:sticky;top:0;z-index:40;background:linear-gradient(180deg, rgba(10,10,12,0.6), rgba(10,10,12,0.35));backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.03);
-    }
-    .container{max-width:1150px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .logo{font-weight:700;font-size:20px;letter-spacing:0.6px;color:var(--accent);text-transform:lowercase}
+        body {
+            background-color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    nav ul{Display:flex;gap:20px;align-items:center;list-style:none;margin:0;padding:0}
-    nav a{padding:8px 10px;border-radius:8px;color:var(--muted);font-weight:600;transition:all .18s}
-    nav a:hover{color:#fff;background:rgba(255,255,255,0.03);transform:translateY(-2px)}
+        /* Social Icons Section */
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            padding: 30px 20px;
+            background-color: white;
+        }
 
-    .cta{background:linear-gradient(90deg,var(--accent),#ff7a59);padding:8px 14px;border-radius:10px;color:white;font-weight:700}
+        .social-icons a {
+            text-decoration: none;
+            color: black;
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
 
-    /* Mobile */
-    .menu-toggle{display:none;background:transparent;border:0;color:var(--muted);font-weight:700}
-    @media (max-width:880px){
-      nav ul{display:none;position:absolute;right:20px;top:64px;background:var(--card);padding:12px;border-radius:10px;box-shadow:0 6px 20px rgba(2,2,5,0.6);flex-direction:column;min-width:160px}
-      nav ul.show{display:flex}
-      .menu-toggle{display:inline-block}
-    }
+        .social-icons a:hover {
+            opacity: 0.7;
+            transform: scale(1.05);
+        }
 
-    /* HERO */
-    .hero{padding:84px 20px 64px}
-    .hero-inner{max-width:1150px;margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:40px;align-items:center}
-    .eyebrow{color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-size:12px;margin-bottom:12px}
-    h1{font-size:48px;margin:0;line-height:1.02}
-    p.lead{color:var(--muted);font-size:18px;margin-top:16px;max-width:60ch}
-    .actions{margin-top:22px;display:flex;gap:12px}
+        /* Navigation Buttons Container */
+        .navigation-buttons-container {
+            display: flex;
+            justify-content: center;
+            padding: 30px 150px;
+            background-color: white;
+            width: 100%;
+        }
 
-    /* SIDE CARD */
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
-    .stat{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-    .stat strong{font-size:22px}
-    .muted{color:var(--muted);font-size:13px}
+        /* Main Navigation Buttons */
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 10px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
 
-    /* SECTIONS */
-    section{max-width:1150px;margin:40px auto;padding:24px 20px}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .block{background:var(--card);padding:18px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+        .nav-button {
+            display: inline-flex;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            flex: 1;
+            min-width: 80px;
+            justify-content: center;
+            align-items: flex-end;
+        }
 
-    @media (max-width:980px){.hero-inner{grid-template-columns:1fr} .grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:600px){.grid{grid-template-columns:1fr}}
+        .nav-button img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            width: 100%;
+        }
 
-    footer{padding:28px 20px;color:var(--muted);text-align:center;border-top:1px solid rgba(255,255,255,0.02)}
-  </style>
+        .nav-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Asymmetrical positioning for 2nd and 4th buttons */
+        .nav-button:nth-child(2),
+        .nav-button:nth-child(4) {
+            transform: translateY(-20px);
+        }
+
+        .nav-button:nth-child(2):hover,
+        .nav-button:nth-child(4):hover {
+            transform: translateY(-20px) scale(1.05);
+        }
+
+        /* Logo Banner Section */
+        .logo-banner {
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            background-color: white;
+            width: 100%;
+        }
+
+        .logo-banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Featured Content Area */
+        .featured-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            background-color: white;
+            min-height: 300px;
+        }
+
+        .featured-content-placeholder {
+            text-align: center;
+            color: #999;
+            font-size: 18px;
+        }
+
+        .featured-content img,
+        .featured-content video {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            background-color: white;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        footer img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .social-icons {
+                gap: 30px;
+                padding: 20px 10px;
+            }
+
+            .social-icons a {
+                font-size: 12px;
+            }
+
+            .navigation-buttons-container {
+                padding: 30px 40px;
+            }
+
+            .nav-button:nth-child(2),
+            .nav-button:nth-child(4) {
+                transform: translateY(-10px);
+            }
+
+            .nav-button:nth-child(2):hover,
+            .nav-button:nth-child(4):hover {
+                transform: translateY(-10px) scale(1.05);
+            }
+        }
+    </style>
 </head>
 <body>
-  <header class="nav" role="banner">
-    <div class="container">
-      <div style="display:flex;align-items:center;gap:16px">
-        <div class="logo">frontline</div>
-        <div class="muted" style="font-size:13px">design • music</div>
-      </div>
-
-      <div style="display:flex;align-items:center;gap:12px">
-        <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" id="menuToggle">menu</button>
-        <nav id="main-nav" role="navigation">
-          <ul>
-            <li><a href="#artists">Artists</a></li>
-            <li><a href="#producers">Producers</a></li>
-            <li><a href="#work">Work</a></li>
-            <li><a href="#store">Store</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a class="cta" href="#store">Visit Store</a></li>
-          </ul>
-        </nav>
-      </div>
+    <!-- Social Media Links -->
+    <div class="social-icons">
+        <a href="https://instagram.com" target="_blank" title="Instagram">INSTAGRAM</a>
+        <a href="https://youtube.com" target="_blank" title="YouTube">YOUTUBE</a>
+        <a href="https://soundcloud.com" target="_blank" title="SoundCloud">SOUNDCLOUD</a>
+        <a href="https://discord.com" target="_blank" title="Discord">DISCORD</a>
     </div>
-  </header>
 
-  <main>
-    <section class="hero" aria-label="Intro">
-      <div class="hero-inner">
-        <div>
-          <div class="eyebrow">agency</div>
-          <h1>We build identities, records, and experiences for forward-thinking artists.</h1>
-          <p class="lead">frontline is a design and music agency pairing creative direction, production, and brand design. We craft visual systems, release strategies and merchandise for artists and producers.</p>
-          <div class="actions">
-            <a class="cta" href="#work">Our Work</a>
-            <a href="#contact" style="padding:8px 12px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);">Get in touch</a>
-          </div>
+    <!-- Main Navigation Buttons Container -->
+    <div class="navigation-buttons-container">
+        <div class="navigation-buttons">
+            <a href="#" class="nav-button" title="Assets">
+                <img src="FTL_ASSETS/FTL_ARTIST_IMAGE.png" alt="Artist">
+            </a>
+            <a href="#" class="nav-button" title="Producer">
+                <img src="FTL_ASSETS/FTL_PRODUCER_IMAGE.png" alt="Producer">
+            </a>
+            <a href="#" class="nav-button" title="Work">
+                <img src="FTL_ASSETS/FTL_WORK_IMAGE.png" alt="Work">
+            </a>
+            <a href="#" class="nav-button" title="Contact">
+                <img src="FTL_ASSETS/FTL_CONTACT_IMAGE.png" alt="Contact">
+            </a>
+            <a href="#" class="nav-button" title="Store">
+                <img src="FTL_ASSETS/FTL_STORE_IMAGE.png" alt="Store">
+            </a>
         </div>
+    </div>
 
-        <aside class="card" aria-labelledby="statsLabel">
-          <div id="statsLabel" style="margin-bottom:8px;font-weight:700">Quick glance</div>
-          <div class="stat"><span class="muted">Active artists</span><strong>12</strong></div>
-          <div class="stat"><span class="muted">Producers & collaborators</span><strong>8</strong></div>
-          <div class="stat" style="margin-bottom:0"><span class="muted">Releases this year</span><strong>5</strong></div>
-        </aside>
-      </div>
-    </section>
+    <!-- Logo Banner -->
+    <div class="logo-banner">
+        <img src="FTL_ASSETS/FTL_LOGO_BANNER.png" alt="FTL Logo Banner">
+    </div>
 
-    <section id="artists">
-      <h2>Artists</h2>
-      <p class="muted">A curated roster of performers and creators we represent. Click through to view profiles and releases.</p>
-      <div class="grid" style="margin-top:18px">
-        <div class="block">Artist 1 — brief bio or release highlight</div>
-        <div class="block">Artist 2 — brief bio or release highlight</div>
-        <div class="block">Artist 3 — brief bio or release highlight</div>
-      </div>
-    </section>
-
-    <section id="producers">
-      <h2>Producers</h2>
-      <p class="muted">Production and collaboration partners — in-house and frequent collaborators.</p>
-      <div class="grid" style="margin-top:18px">
-        <div class="block">Producer A — style or credits</div>
-        <div class="block">Producer B — style or credits</div>
-        <div class="block">Producer C — style or credits</div>
-      </div>
-    </section>
-
-    <section id="work">
-      <h2>Work</h2>
-      <p class="muted">Selected projects in branding, campaigns, and releases.</p>
-      <div class="grid" style="margin-top:18px">
-        <div class="block">Project — cover art / campaign</div>
-        <div class="block">Project — visuals / case study</div>
-        <div class="block">Project — merch / drops</div>
-      </div>
-    </section>
-
-    <section id="store">
-      <h2>Store</h2>
-      <p class="muted">Merch, limited drops and physical releases.</p>
-      <div class="grid" style="margin-top:18px">
-        <div class="block">Item 1 — tee / limited</div>
-        <div class="block">Item 2 — vinyl / release</div>
-        <div class="block">Item 3 — poster / print</div>
-      </div>
-    </section>
-
-    <section id="contact">
-      <h2>Contact</h2>
-      <p class="muted">For bookings, collaborations or general inquiries, reach out.</p>
-      <div style="margin-top:18px;display:flex;gap:18px;flex-wrap:wrap">
-        <div class="block" style="flex:1;min-width:280px">
-          <strong>Email</strong>
-          <p class="muted">hello@frontline.example</p>
+    <!-- Featured Content Area (for images/videos) -->
+    <div class="featured-content">
+        <div class="featured-content-placeholder">
+            Add your image or video here
         </div>
-        <div class="block" style="flex:1;min-width:280px">
-          <strong>Studio</strong>
-          <p class="muted">City, Country — by appointment</p>
-        </div>
-      </div>
-    </section>
-  </main>
+    </div>
 
-  <footer>
-    <div style="max-width:1150px;margin:0 auto;padding:6px 20px">© frontline — design & music. — follow us on social</div>
-  </footer>
-
-  <script>
-    (function(){
-      const btn = document.getElementById('menuToggle');
-      const navList = document.querySelector('#main-nav ul');
-      if(!btn || !navList) return;
-      btn.addEventListener('click', ()=>{
-        const shown = navList.classList.toggle('show');
-        btn.setAttribute('aria-expanded', String(shown));
-      });
-    })();
-  </script>
+    <!-- Footer -->
+    <footer>
+        <img src="FTL_ASSETS/FTL_FOOTER.png" alt="FTL Footer">
+    </footer>
 </body>
 </html>
