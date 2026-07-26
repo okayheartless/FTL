@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="The work of Frontlime Underground">
+    <meta name="description" content="The visuals of Frontlime Underground">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Work</title>
+    <title>Visual</title>
     
     <link rel="icon" href="/FTL_ASSETS/FTL_FAVICON_96.png">
     <link rel="stylesheet" href="/custom.css">
@@ -15,114 +15,143 @@
             box-sizing: border-box;
         }
 
-        body {
-            background-image: url('/FTL_ASSETS/FTL_WORK_CAMO.jpg');
-            background-attachment: fixed;
-            background-size: cover;
-            background-repeat: no-repeat;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            font-family: 'Arial', Arial, sans-serif;
-        }
+body {
+     background-image: url('/FTL_ASSETS/FTL_VISUAL_CAMO.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Arial', Arial, sans-serif;
+}
 
-        /* Logo Section */
-        .logo-section {
-            padding: 30px 0;
-            text-align: center;
-            margin-bottom: 30px;
-        }
+/* LOGO */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  padding: 30px 16px; /* reduced side padding for small screens */
+}
 
-        .logo-section a {
-            cursor: pointer;
-            display: inline-block;
-            transition: transform 0.3s ease;
-        }
+.logo-img {
+  width: 100%;        /* make responsive */
+  max-width: 600px;   /* keep original max on desktop */
+  height: auto;       /* preserve aspect ratio */
+  cursor: pointer;
+  transition: 0.25s;
+  display: block;
+}
+.logo-img:hover {
+  transform: scale(1.05);
+}
+  
+/* GRID */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+  padding: 0 20px 40px; /* smaller side padding to avoid horizontal cutoff on mobile */
+}
 
-        .logo-section a:hover {
-            transform: scale(1.05);
-        }
+/* ITEM */
+.item {
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.6s ease forwards;
+  transition: transform 0.2s ease;
+}
 
-        .logo-section img {
-            max-width: 700px;
-            height: auto;
-        }
+.item:hover {
+  transform: translateY(-4px);
+}
 
-        /* Artists Container */
-        .artists-container {
-            flex: 1;
-            padding: 0 40px 40px 40px;
-            max-width: 1400px;
-            margin: 0 auto;
-            width: 100%;
-        }
+/* IMAGE */
+.thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  cursor: pointer; /* use pointer since thumbs open links */
+}
 
-        .artists-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 40px;
-            justify-items: center;
-        }
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
-        /* Artist Card */
-        .artist-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: transform 0.15s ease;
-        }
+/* NO SCALING */
+.thumb:hover img {
+  filter: brightness(70%);
+}
 
-        .artist-card:hover {
-            transform: translateY(0px);
-        }
+/* CLICK FEEDBACK */
+.thumb:active {
+  transform: scale(0.98);
+}
 
-        .artist-image {
-            width: 220px;
-            height: 220px;
-            border-radius: 8px;
-            object-fit: cover;
-            margin-bottom: 15px;
-            box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
-        }
+/* OVERLAY */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.8em;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
 
-        .artist-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 220px;
-            gap: 15px;
-        }
+.thumb:hover .overlay {
+  opacity: 1;
+}
 
-        .artist-name {
-            font-family: 'Arial', Arial, sans-serif;
-            font-size: 20px;
-            font-weight: 600;
-            color: #000000;
-            flex: 1;
-            text-align: left;
-        }
+/* META ROW */
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  font-size: 1.4em;
+  gap: 8px;
+}
 
-        .soundcloud-link {
-            display: inline-block;
-            cursor: pointer;
-            transition: transform 0.15s ease;
-        }
+/* TITLE */
+.title {
+  font-family: 'Arial';
+  font-size: 1.2em; /* increased for balance */
+}
 
-        .soundcloud-link:hover {
-            transform: scale(1.15);
-        }
+/* TEXT ALIGNMENT */
+.title { text-align: left; }
+.date { text-align: center; }
+.type { text-align: right; }
 
-        .soundcloud-icon {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-        }
+/* TITLE */
+.title span {
+  display: inline-block;
+  transform-origin: left;
+  white-space: nowrap;
+}
 
-        /* Footer */
+/* DATE */
+.date span,
+.type span {
+  display: inline-block;
+  transform-origin: center;
+  white-space: nowrap;
+}
+
+       /* Footer */
         .footer-section {
             padding: 20px 0 0 0;
             text-align: center;
-            margin-top: auto;
+            margin-top: auto; /* push footer to the bottom when body is a flex column */
         }
 
         .footer-section img {
@@ -132,134 +161,125 @@
             display: block;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .artists-container {
-                padding: 0 20px 30px 20px;
-            }
-
-            .artists-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-                gap: 30px;
-            }
-
-            .artist-image {
-                width: 180px;
-                height: 180px;
-            }
-
-            .artist-info {
-                width: 180px;
-            }
-
-            .artist-name {
-                font-size: 14px;
-            }
-
-            .logo-section img {
-                max-width: 150px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .artists-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 20px;
-            }
-
-            .artist-image {
-                width: 150px;
-                height: 150px;
-            }
-
-            .artist-info {
-                width: 150px;
-            }
-
-            .artist-name {
-                font-size: 12px;
-            }
-
-            .soundcloud-icon {
-                width: 28px;
-                height: 28px;
-            }
-        }
-        /* ANIMATION */
+/* ANIMATION */
 @keyframes fadeUp {
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
+/* Small tweaks for very small screens */
+@media (max-width: 420px) {
+  .logo-container { padding: 20px 12px; }
+  .gallery { gap: 18px; }
+  .title { font-size: 1.05em; }
+}
+
     </style>
 </head>
+
 <body>
-    <!-- Logo Section -->
-    <div class="logo-section">
-        <a href="https://frontlineug.com/" title="Back to Home">
-            <img src="/FTL_ASSETS/FTL_LOGO.png" alt="FTL Logo">
-        </a>
-    </div>
 
-    <!-- Artists Container -->
-    <div class="artists-container">
-        <div class="artists-grid" id="artistsGrid">
-            <!-- Artists will be populated here by JavaScript -->
-        </div>
-    </div>
+<div class="logo-container">
+  <a href="https://frontlineug.com/">
+    <img src="/FTL_ASSETS/FTL_LOGO.png" class="logo-img" alt="Frontline UG Logo">
+  </a>
+</div>
 
-    <!-- Footer Section -->
-    <div class="footer-section">
-        <img src="/FTL_ASSETS/FTL_FOOTER.png" alt="FTL Footer">
-    </div>
+<div class="gallery">
+  <!-- Items are generated by JavaScript from the 'artists' array below -->
+</div>
 
-    <script>
-        // Artist data array - easily add or remove artists here
-        const artists = [
-            {
-                name: "Example Visual",
-                image: "https://i.ytimg.com/vi/5Ff97Hz-ybc/hqdefault.jpg?sqp=-oaymwFBCNACELwBSFryq4qpAzMIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB8AEB-AH-CYAC0AWKAgwIABABGGUgZShlMA8=&rs=AOn4CLAwUzQIHeCjmnH24iEty0kEbylNIA",
-                soundcloud: "https://www.youtube.com/@FrontlineUnderground"
-            },
-            {
-                name: "Savedbydari",
-                image: "/FTL_ASSETS/artist2.jpg",
-                soundcloud: "https://soundcloud.com/artist2"
-            },
-            {
-                name: "Baby maison",
-                image: "/FTL_ASSETS/artist3.jpg",
-                soundcloud: "https://soundcloud.com/artist3"
-            }
-            // Add more artists here following the same format
-        ];
+<!-- FOOTER IMAGE -->
+<div class="footer-section page-footer">
+  <img src="/FTL_ASSETS/FTL_FOOTER.png" alt="Footer">
+</div>
 
-        // Function to render artists
-        function renderArtists() {
-            const artistsGrid = document.getElementById('artistsGrid');
-            artistsGrid.innerHTML = ''; // Clear existing content
+<script>
+/*
+  Fill this array with artist objects. If 'link' is set the thumbnail will open that link in a new tab;
+  We removed the lightbox: thumbnails without a link will not be clickable.
+  Example:
+    { name: 'Artist Name', image: '/path/to/image.jpg', type: 'cover art', link: 'https://soundcloud.com/artist' }
+*/
+const artists = [
+  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
+  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
+  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
+  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
+  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
 
-            artists.forEach(artist => {
-                const artistCard = document.createElement('div');
-                artistCard.className = 'artist-card';
-                
-                artistCard.innerHTML = `
-                    <img src="${artist.image}" alt="${artist.name}" class="artist-image">
-                    <div class="artist-info">
-                        <span class="artist-name">${artist.name}</span>
-                        <a href="${artist.soundcloud}" target="_blank" class="soundcloud-link" title="Listen on SoundCloud">
-                            <img src="/FTL_ASSETS/ICON_YOUTUBE.webp" alt="Youtube" class="soundcloud-icon">
-                        </a>
-                    </div>
-                `;
-                
-                artistsGrid.appendChild(artistCard);
-            });
-        }
+  // Add more entries here...
+];
 
-        // Render artists on page load
-        document.addEventListener('DOMContentLoaded', renderArtists);
-    </script>
+function openLink(url) {
+  window.open(url, '_blank');
+}
+
+/* Generate gallery items from the artists array */
+(function renderGallery() {
+  const gallery = document.querySelector('.gallery');
+  gallery.innerHTML = ''; // clear any existing content
+
+  artists.forEach((a) => {
+    const item = document.createElement('div');
+    item.className = 'item';
+
+    const thumb = document.createElement('div');
+    thumb.className = 'thumb';
+
+    const img = document.createElement('img');
+    img.src = a.image;
+    img.alt = a.name;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+    overlay.textContent = a.link ? 'VIEW' : '';
+
+    thumb.appendChild(img);
+    thumb.appendChild(overlay);
+
+    // click behavior: only add click if link is present
+    if (a.link) {
+      thumb.addEventListener('click', (ev) => {
+        openLink(a.link);
+      });
+      thumb.style.cursor = 'pointer';
+    } else {
+      thumb.style.cursor = 'default';
+    }
+
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+
+    const title = document.createElement('div');
+    title.className = 'title';
+    const titleSpan = document.createElement('span');
+    titleSpan.textContent = a.name;
+    title.appendChild(titleSpan);
+
+    const type = document.createElement('div');
+    type.className = 'type';
+    const typeSpan = document.createElement('span');
+    typeSpan.textContent = a.type || '';
+    type.appendChild(typeSpan);
+
+    meta.appendChild(title);
+    meta.appendChild(type);
+
+    item.appendChild(thumb);
+    item.appendChild(meta);
+
+    gallery.appendChild(item);
+  });
+
+  // stagger animations
+  document.querySelectorAll('.item').forEach((el, i) => {
+    el.style.animationDelay = (i * 0.05) + 's';
+  });
+})();
+</script>
+
 </body>
 </html>
