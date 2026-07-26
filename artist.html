@@ -30,13 +30,16 @@ body {
 .logo-container {
   display: flex;
   justify-content: center;
-  padding: 30px 0;
+  padding: 30px 16px; /* reduced side padding for small screens */
 }
 
 .logo-img {
-  max-width: 600px;
+  width: 100%;        /* make responsive */
+  max-width: 600px;   /* keep original max on desktop */
+  height: auto;       /* preserve aspect ratio */
   cursor: pointer;
   transition: 0.25s;
+  display: block;
 }
 .logo-img:hover {
   transform: scale(1.05);
@@ -47,7 +50,7 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 28px;
-  padding: 0 40px 40px;
+  padding: 0 20px 40px; /* smaller side padding to avoid horizontal cutoff on mobile */
 }
 
 /* ITEM */
@@ -121,7 +124,7 @@ body {
 /* TITLE */
 .title {
   font-family: 'Arial';
-  font-size: 1.2em; /* increased for balance */
+  font-size: 2em; /* increased for balance */
 }
 
 /* TEXT ALIGNMENT */
@@ -148,7 +151,7 @@ body {
         .footer-section {
             padding: 20px 0 0 0;
             text-align: center;
-            margin-top: auto;
+            margin-top: auto; /* push footer to the bottom when body is a flex column */
         }
 
         .footer-section img {
@@ -165,14 +168,22 @@ body {
     transform: translateY(0);
   }
 }
-</style>
+
+/* Small tweaks for very small screens */
+@media (max-width: 420px) {
+  .logo-container { padding: 20px 12px; }
+  .gallery { gap: 18px; }
+  .title { font-size: 1.05em; }
+}
+
+    </style>
 </head>
 
 <body>
 
 <div class="logo-container">
   <a href="https://frontlineug.com/">
-    <img src="/FTL_ASSETS/FTL_LOGO.png" class="logo-img">
+    <img src="/FTL_ASSETS/FTL_LOGO.png" class="logo-img" alt="Frontline UG Logo">
   </a>
 </div>
 
@@ -181,7 +192,7 @@ body {
 </div>
 
 <!-- FOOTER IMAGE -->
-<div class="page-footer">
+<div class="footer-section page-footer">
   <img src="/FTL_ASSETS/FTL_FOOTER.png" alt="Footer">
 </div>
 
