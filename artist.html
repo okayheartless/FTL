@@ -3,7 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="The artists of Frontlime Underground">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artist</title>
     
     <link rel="icon" href="/FTL_ASSETS/FTL_FAVICON_96.png">
     <link rel="stylesheet" href="/custom.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url('/FTL_ASSETS/FTL_ARTIST_CAMO.jpg');
+            background-attachment: fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Arial Black', Arial, sans-serif;
+        }
+
+        /* Logo Section */
+        .logo-section {
+            padding: 30px 0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-section a {
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-section a:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-section img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        /* Artists Container */
+        .artists-container {
+            flex: 1;
+            padding: 0 40px 40px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .artists-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 40px;
+            justify-items: center;
+        }
+
+        /* Artist Card */
+        .artist-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .artist-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .artist-image {
+            width: 220px;
+            height: 220px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .artist-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 220px;
+            gap: 15px;
+        }
+
+        .artist-name {
+            font-family: 'Arial Black', Arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            flex: 1;
+            text-align: left;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .soundcloud-link {
+            display: inline-block;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .soundcloud-link:hover {
+            transform: scale(1.15);
+        }
+
+        .soundcloud-icon {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        /* Footer */
+        .footer-section {
+            padding: 20px 0 0 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-section img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .artists-container {
+                padding: 0 20px 30px 20px;
+            }
+
+            .artists-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 30px;
+            }
+
+            .artist-image {
+                width: 180px;
+                height: 180px;
+            }
+
+            .artist-info {
+                width: 180px;
+            }
+
+            .artist-name {
+                font-size: 14px;
+            }
+
+            .logo-section img {
+                max-width: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .artists-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 20px;
+            }
+
+            .artist-image {
+                width: 150px;
+                height: 150px;
+            }
+
+            .artist-info {
+                width: 150px;
+            }
+
+            .artist-name {
+                font-size: 12px;
+            }
+
+            .soundcloud-icon {
+                width: 28px;
+                height: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo Section -->
+    <div class="logo-section">
+        <a href="https://frontlineug.com/" title="Back to Home">
+            <img src="/FTL_ASSETS/FTL_LOGO.png" alt="FTL Logo">
+        </a>
+    </div>
+
+    <!-- Artists Container -->
+    <div class="artists-container">
+        <div class="artists-grid" id="artistsGrid">
+            <!-- Artists will be populated here by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer-section">
+        <img src="/FTL_ASSETS/FTL_FOOTER.png" alt="FTL Footer">
+    </div>
+
+    <script>
+        // Artist data array - easily add or remove artists here
+        const artists = [
+            {
+                name: "Artist Name 1",
+                image: "/FTL_ASSETS/artist1.jpg",
+                soundcloud: "https://soundcloud.com/artist1"
+            },
+            {
+                name: "Artist Name 2",
+                image: "/FTL_ASSETS/artist2.jpg",
+                soundcloud: "https://soundcloud.com/artist2"
+            },
+            {
+                name: "Artist Name 3",
+                image: "/FTL_ASSETS/artist3.jpg",
+                soundcloud: "https://soundcloud.com/artist3"
+            }
+            // Add more artists here following the same format
+        ];
+
+        // Function to render artists
+        function renderArtists() {
+            const artistsGrid = document.getElementById('artistsGrid');
+            artistsGrid.innerHTML = ''; // Clear existing content
+
+            artists.forEach(artist => {
+                const artistCard = document.createElement('div');
+                artistCard.className = 'artist-card';
+                
+                artistCard.innerHTML = `
+                    <img src="${artist.image}" alt="${artist.name}" class="artist-image">
+                    <div class="artist-info">
+                        <span class="artist-name">${artist.name}</span>
+                        <a href="${artist.soundcloud}" target="_blank" class="soundcloud-link" title="Listen on SoundCloud">
+                            <svg class="soundcloud-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#ffffff" d="M2.5 11c-.8 0-1.5.7-1.5 1.5v7c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5v-7c0-.8-.7-1.5-1.5-1.5zm3 2c-.8 0-1.5.7-1.5 1.5v5c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5v-5c0-.8-.7-1.5-1.5-1.5zm3-4c-.8 0-1.5.7-1.5 1.5v9c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5v-9c0-.8-.7-1.5-1.5-1.5zm3 1c-.8 0-1.5.7-1.5 1.5v7c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5v-7c0-.8-.7-1.5-1.5-1.5zm3-2c-.8 0-1.5.7-1.5 1.5v9c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5v-9c0-.8-.7-1.5-1.5-1.5zm3 3c-.8 0-1.5.7-1.5 1.5v5c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5v-5c0-.8-.7-1.5-1.5-1.5zm3-1c-.8 0-1.5.7-1.5 1.5v7c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5v-7c0-.8-.7-1.5-1.5-1.5z"/>
+                            </svg>
+                        </a>
+                    </div>
+                `;
+                
+                artistsGrid.appendChild(artistCard);
+            });
+        }
+
+        // Render artists on page load
+        document.addEventListener('DOMContentLoaded', renderArtists);
+    </script>
+</body>
+</html>
