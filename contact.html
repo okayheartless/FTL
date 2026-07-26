@@ -2,8 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Get in touch with Frontlime Underground">
+    <meta name="description" content="Contact Frontlime Underground">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
     
     <link rel="icon" href="/FTL_ASSETS/FTL_FAVICON_96.png">
     <link rel="stylesheet" href="/custom.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url('/FTL_ASSETS/FTL_CONTACT_CAMO.jpg');
+            background-attachment: fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Arial', Arial, sans-serif;
+        }
+
+        /* Logo Section */
+        .logo-section {
+            padding: 30px 0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-section a {
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        .logo-section a:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-section img {
+            max-width: 700px;
+            height: auto;
+        }
+
+        /* Footer */
+        .footer-section {
+            padding: 20px 0 0 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-section img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .logo-section img {
+                max-width: 150px;
+            }
+        }
+    </style>
+</head>
+
+</html>
