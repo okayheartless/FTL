@@ -56,11 +56,21 @@
             font-weight: 600;
             letter-spacing: 1px;
             transition: opacity 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+            width: 48px; /* make anchors square for icons */
+            height: 48px;
+        }
+
+        .social-icons a img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
         }
 
         .social-icons a:hover {
-            opacity: 0.7;
-            transform: scale(1.05);
+            opacity: 0.85;
+            transform: scale(1.1);
         }
 
         /* Navigation Buttons Container */
@@ -209,6 +219,8 @@
 
             .social-icons a {
                 font-size: 12px;
+                width: 40px;
+                height: 40px;
             }
 
             .navigation-buttons-container {
@@ -230,10 +242,18 @@
 <body>
     <!-- Social Media Links -->
     <div class="social-icons">
-        <a href="https://www.instagram.com/frontline.ug/" target="_blank" title="Instagram">INSTAGRAM</a>
-        <a href="https://www.youtube.com/@FrontlineUnderground" target="_blank" title="YouTube">YOUTUBE</a>
-        <a href="https://soundcloud.com/frontlineunderground" target="_blank" title="SoundCloud">SOUNDCLOUD</a>
-        <a href="https://discord.com/invite/Exs5Kc3Mf6" target="_blank" title="Discord">DISCORD</a>
+        <a href="https://www.instagram.com/frontline.ug/" target="_blank" title="Instagram" aria-label="Instagram">
+            <img src="FTL_ASSETS/FTL_INSTAGRAM_DOGTAG.png" alt="Instagram">
+        </a>
+        <a href="https://www.youtube.com/@FrontlineUnderground" target="_blank" title="YouTube" aria-label="YouTube">
+            <img src="FTL_ASSETS/FTL_YOUTUBE_DOGTAG.png" alt="YouTube">
+        </a>
+        <a href="https://soundcloud.com/frontlineunderground" target="_blank" title="SoundCloud" aria-label="SoundCloud">
+            <img src="FTL_ASSETS/FTL_SOUNDCLOUD_DOGTAG.png" alt="SoundCloud">
+        </a>
+        <a href="https://discord.com/invite/Exs5Kc3Mf6" target="_blank" title="Discord" aria-label="Discord">
+            <img src="FTL_ASSETS/FTL_DISCORD_DOGTAG.png" alt="Discord">
+        </a>
     </div>
 
     <!-- Main Navigation Buttons Container -->
