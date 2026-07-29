@@ -92,7 +92,7 @@ body {
 /* the actual profile picture is placed inside the top portion of the rectangular frame */
 .thumb img {
   position: absolute;
-  top: 22%; /* keep the profile picture lower inside the taller frame */
+  top: 18%; /* moved slightly higher so image sits higher in the frame */
   left: 50%;
   transform: translateX(-50%);
   width: 72%; /* set width and let height auto to avoid stretching */
@@ -102,7 +102,7 @@ body {
   display: block;
   border-radius: 4px; /* subtle rounding if desired */
   z-index: 0; /* behind meta */
-  box-shadow: none; /* ensure no drop shadow */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.22); /* subtle drop shadow */
 }
 
 /* Remove darkening on hover and instead scale the thumb slightly */
@@ -136,54 +136,54 @@ body {
 }
 
 /* place meta in the bottom part of the rectangular frame (dog tag) */
-/* moved higher on the frame and increased typography so it reads better */
+/* stacked, centered layout: artist name above the type */
 .meta {
   position: absolute;
-  /* move the dog tag higher (closer to top) by increasing bottom */
-  bottom: 18%;
+  /* move the dog tag higher (closer to top) by increasing bottom slightly */
+  bottom: 22%;
   left: 50%;
   transform: translateX(-50%);
   width: 86%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column; /* stack title and type vertically */
+  justify-content: center;
+  align-items: center; /* center text horizontally */
+  gap: 6px; /* small vertical gap between title and type */
   font-size: 1.12em; /* slightly larger font */
   background: transparent; /* made fully transparent per request */
   color: #000; /* make font black */
-  padding: 12px 16px; /* comfortable padding */
+  padding: 6px 12px; /* comfortable padding */
   border-radius: 12px;
   z-index: 2; /* appear above image and overlay */
   box-shadow: none; /* remove drop shadow */
   text-shadow: none; /* remove any text shadow */
-  min-height: 76px; /* ensure comfortable tappable area and avoid vertical squishing */
-  line-height: 1;
+  min-height: 0; /* not forcing a large tappable area so it sits closer to image */
+  line-height: 1.1;
   box-sizing: border-box;
 }
 
-/* make text a bit bolder/clearer and larger */
+/* make text centered and stacked */
 .title {
   font-family: 'Arial';
   font-size: 1.18em; /* larger title */
   font-weight: 600;
   color: #000; /* black font */
-  text-align: left;
+  text-align: center; /* centered below picture */
   text-shadow: none; /* ensure no shadow */
-  flex: 1 1 auto;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  padding-right: 8px;
+  overflow: visible;
+  white-space: normal; /* allow wrapping if needed */
+  padding-right: 0;
+  padding-left: 0;
 }
 
-/* TYPE stays fixed width and won't be stretched */
+/* TYPE stacked under title and centered */
 .type {
   font-weight: 700; /* make the 'type' font bold as requested */
   color: #000; /* black font */
-  text-align: right;
+  text-align: center;
   text-shadow: none;
   flex: 0 0 auto;
-  margin-left: 8px;
+  margin-left: 0;
   white-space: nowrap;
   font-size: 1.02em; /* match overall meta font sizing */
 }
@@ -232,8 +232,8 @@ body {
   .gallery { gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
   .title { font-size: 1.02em; }
   /* reduce profile pic size on very small screens so frame still shows */
-  .thumb img { top: 20%; width: 66%; max-width: 88%; }
-  .meta { width: 92%; font-size: 1.02em; bottom: 14%; padding: 10px 12px; min-height: 62px; gap: 10px; }
+  .thumb img { top: 16%; width: 66%; max-width: 88%; } /* moved slightly higher on tiny screens too */
+  .meta { width: 92%; font-size: 1.02em; bottom: 18%; padding: 8px 12px; min-height: 0; gap: 6px; }
 }
 
     </style>
