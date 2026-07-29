@@ -134,11 +134,12 @@
 
         /* Inner wrapper that exactly matches the banner image dimensions when scaled */
         .banner-inner {
+            /* shrink-wrap to the banner image's rendered width so the overlay shares the same box */
+            display: inline-block;
             position: relative; /* positioning context for the overlay */
-            width: 100%;
+            width: auto;        /* let the inner wrapper match the image's rendered width */
             max-width: 2304px; /* native banner width */
-            display: block;
-            margin: 0 auto; /* center the wrapper so overlay aligns with the visible image */
+            margin: 0 auto;    /* center the wrapper so overlay aligns with the visible image */
         }
 
         /* The banner image defines the visual size. It remains responsive. */
