@@ -71,7 +71,8 @@ body {
 .thumb {
   position: relative; /* positioning context for overlay/meta */
   width: 100%;
-  aspect-ratio: 1 / 1;
+  /* Use the actual frame aspect ratio (844 x 962) so frames are rectangular, not square */
+  aspect-ratio: 844 / 962;
   overflow: visible; /* allow the frame graphic to show if it extends slightly */
   cursor: pointer; /* use pointer since thumbs open links */
   display: flex;
@@ -79,19 +80,21 @@ body {
   justify-content: center;
   /* frame background behind the profile image */
   background-image: url('/FTL_ASSETS/FTL_PICTURE_FRAME.png');
-  background-position: center;
+  background-position: top center;
   background-repeat: no-repeat;
-  background-size: 94%; /* slightly bigger frame */
+  /* make the full rectangular frame visible */
+  background-size: 94% 100%;
 }
 
-/* the actual profile picture is smaller and placed near the top-center to fit inside the frame opening */
+/* the actual profile picture is placed inside the top portion of the rectangular frame */
 .thumb img {
   position: absolute;
-  top: 5%; /* nudge down so it sits inside the frame's opening */
+  top: 6%; /* nudge down so it sits inside the frame's opening */
   left: 50%;
   transform: translateX(-50%);
-  width: 82%; /* increased image size */
-  height: auto;
+  width: auto;
+  height: 62%; /* limit height so the image occupies the top area only */
+  max-width: 86%;
   object-fit: cover;
   display: block;
   border-radius: 4px; /* subtle rounding if desired */
@@ -127,10 +130,11 @@ body {
   opacity: 1;
 }
 
-/* place meta over the frame */
+/* place meta in the bottom part of the rectangular frame */
 .meta {
   position: absolute;
-  bottom: 10px;
+  /* position within the frame: leave some space from bottom edge */
+  bottom: 6%;
   left: 50%;
   transform: translateX(-50%);
   width: 86%;
@@ -208,7 +212,7 @@ body {
   .gallery { gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
   .title { font-size: 1.0em; }
   /* reduce profile pic size on very small screens so frame still shows */
-  .thumb img { top: 6%; width: 86%; }
+  .thumb img { top: 6%; height: 58%; max-width: 90%; }
   .meta { width: 90%; font-size: 0.95em; bottom: 8px; }
 }
 
