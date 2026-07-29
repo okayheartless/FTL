@@ -122,32 +122,35 @@
         }
 
         /* Logo Banner Section */
+        /* Use block layout (not flex) so absolute children align to the banner image box */
         .logo-banner {
-            position: relative; /* make button fixed relative to this banner */
-            display: flex;
-            justify-content: center;
+            position: relative;
+            display: block; /* changed from flex to block to ensure predictable positioning */
             padding: 0;
             background-color: transparent; /* allow camo to show through */
             width: 100%;
         }
 
-        /* Inner banner wrapper so positioned elements use the same reference size */
+        /* Inner wrapper that exactly matches the banner image dimensions when scaled */
         .banner-inner {
-            position: relative;
+            position: relative; /* positioning context for the overlay */
             width: 100%;
             display: block;
+            margin: 0 auto;
         }
 
-        .banner-inner .banner-img {
+        /* The banner image defines the visual size. It remains responsive. */
+        .banner-img {
             width: 100%;
             height: auto;
             display: block;
         }
 
-        /* Contact button as an image tied to the banner dimensions
-           - using percentage widths ties the contact image size directly to the banner width
-           - positioning with right/bottom percentages keeps it in the lower-right/lower-third
-           - no max-width/min-width constraints so it always scales proportionally with the banner
+        /* Contact overlay image tied directly to banner dimensions.
+           Key points:
+           - absolute positioning relative to .banner-inner
+           - width is a percentage of the banner width so it scales identically
+           - no max-width/min-width clamping to avoid snapping behavior
         */
         .banner-contact-link {
             position: absolute;
@@ -157,23 +160,18 @@
             transform-origin: center;
             z-index: 5;
             display: block;
-            line-height: 0; /* remove descender gaps */
+            line-height: 0;
         }
 
         .banner-contact-img {
             display: block;
-            width: 12%; /* exact proportion of banner width */
+            width: 12%; /* exact proportion of banner width; adjust as needed */
             height: auto;
-            max-width: none;
+            max-width: none; /* important: prevents fallback clamping */
         }
 
-        /* Ensure the contact image never gets smaller than a usable size on very small screens if desired.
-           If you want strict proportional behavior without any snapping, remove the min-width rule below. */
-        @media (max-width: 420px) {
-            .banner-contact-img {
-                width: 14%; /* slightly larger proportion on very small screens for usability */
-            }
-        }
+        /* Remove any breakpoint that forces different absolute sizes. Keeping this strict
+           proportional scaling requires not overriding .banner-contact-img width elsewhere. */
 
         /* Featured Content Area */
         .featured-content {
