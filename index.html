@@ -28,8 +28,14 @@
             background-size: cover;
             background-repeat: no-repeat;
             z-index: -1;
-            transform: translate3d(0,0,0);
+            transform: translate3d(0,0,0) scale(1.05);
             will-change: transform;
+            pointer-events: none;
+        }
+
+        /* Reduce motion for users who prefer it */
+        @media (prefers-reduced-motion: reduce) {
+            .parallax-bg { transform: none !important; }
         }
 
         * {
@@ -209,6 +215,9 @@
             .navigation-buttons .nav-button:nth-child(4):hover {
                 transform: translateY(-20px) scale(1.05);
             }
+
+            /* Disable parallax on small screens for stability */
+            .parallax-bg { display: none; }
         }
     </style>
 </head>
@@ -264,14 +273,19 @@
     </footer>
 
     <script>
-        // Parallax scroll: move the .parallax-bg at a slower rate than the page scroll
+        // Subtle parallax: background moves in the same direction as scroll but much slower
         (function() {
             const bg = document.querySelector('.parallax-bg');
             if (!bg) return;
 
             let latestKnownScrollY = 0;
             let ticking = false;
-            const speed = 0.5; // 0.5 = background moves at half the speed of the page
+            const speed = 0.18; // smaller = more subtle
+
+            function getMaxTranslate() {
+                // Allow up to 15% of the viewport height to move for the subtle depth effect
+                return Math.round(window.innerHeight * 0.15);
+            }
 
             function onScroll() {
                 latestKnownScrollY = window.pageYOffset || document.documentElement.scrollTop;
@@ -279,20 +293,25 @@
             }
 
             function requestTick() {
-                if (!ticking) {
-                    requestAnimationFrame(update);
-                }
+                if (!ticking) requestAnimationFrame(update);
                 ticking = true;
             }
 
             function update() {
-                const translateY = Math.round(latestKnownScrollY * speed);
-                // translate the background vertically. Using translate3d for smoother GPU-accelerated transforms.
-                bg.style.transform = 'translate3d(0,' + translateY + 'px,0)';
+                const max = getMaxTranslate();
+                // Move background upward (negative) as page scrolls down, but at a reduced rate
+                let translateY = -Math.round(latestKnownScrollY * speed);
+                // Clamp so the background never moves so far that edges show
+                if (translateY < -max) translateY = -max;
+                if (translateY > 0) translateY = 0;
+
+                // Keep a small scale buffer so the image always covers the viewport while moving
+                bg.style.transform = 'translate3d(0,' + translateY + 'px,0) scale(1.06)';
                 ticking = false;
             }
 
             window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', function() { requestAnimationFrame(update); });
 
             // Initialize position on load
             update();
