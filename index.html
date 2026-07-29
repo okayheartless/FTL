@@ -9,7 +9,11 @@
     <link rel="stylesheet" href="/custom.css">
 
     <style>
-        * {
+        /* Box sizing reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         /* Ensure the background covers the entire viewport and beyond */
         html, body {
             height: 100%;
@@ -17,27 +21,21 @@
             padding: 0;
         }
 
+        /* Background image on html (use relative path to work on GitHub Pages or subpaths) */
         html {
-            /* shorthand sets position, repeat, and sizing to guarantee full coverage */
-            background: url('/FTL_ASSETS/FTL_HOME_BG_DARK.jpg') center center / cover no-repeat fixed;
-        }
-
-        * {
-            box-sizing: border-box;
+            background: url('FTL_ASSETS/FTL_HOME_BG_DARK.jpg') center center / cover no-repeat fixed;
         }
 
         body {
-            background-image: url('/FTL_ASSETS/FTL_HOME_BG_DARK.jpg');
-            background-attachment: fixed;
-            background-size: cover;
-            background-repeat: no-repeat;
-            /* remove body-level background image (handled on html) and keep layout styles */
+            /* layout styles */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             font-family: 'Arial', Arial, sans-serif;
             color: #000; /* default text color */
-            background: transparent; /* ensure no white background hides the camo */
+            background: transparent; /* ensure html background shows through */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         /* Social Icons Section */
@@ -47,7 +45,6 @@
             align-items: center;
             gap: 50px;
             padding: 30px 20px;
-            background-color: white;
             background-color: transparent; /* allow camo to show through */
         }
 
@@ -71,7 +68,6 @@
             display: flex;
             justify-content: center;
             padding: 30px 150px;
-            background-color: white;
             background-color: transparent; /* allow camo to show through */
             width: 100%;
         }
@@ -124,7 +120,6 @@
             display: flex;
             justify-content: center;
             padding: 0;
-            background-color: white;
             background-color: transparent; /* allow camo to show through */
             width: 100%;
             position: relative; /* make this the positioning context for the contact button */
@@ -138,7 +133,6 @@
         }
 
         /* Contact button attached to logo banner */
-        /* Updated: remove hard min/max and media-query overrides so sizing remains a smooth percentage of the banner */
         .logo-banner .contact-button {
             position: absolute;
             /* place on the right side and lower third */
@@ -172,7 +166,6 @@
             justify-content: center;
             align-items: center;
             padding: 40px 20px;
-            background-color: white;
             background-color: transparent; /* allow camo to show through */
             min-height: 300px;
         }
@@ -196,7 +189,6 @@
             display: flex;
             justify-content: center;
             padding: 0;
-            background-color: white;
             background-color: transparent; /* allow camo to show through */
             width: 100%;
             margin-top: auto;
@@ -208,7 +200,7 @@
             display: block;
         }
 
-        /* Responsive Design - removed contact-button overrides to keep smooth scaling */
+        /* Responsive Design - contact-button scales smoothly */
         @media (max-width: 768px) {
             .social-icons {
                 gap: 30px;
