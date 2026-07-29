@@ -98,7 +98,7 @@
             transition: transform 0.3s ease;
             text-decoration: none;
             flex: 1;
-            min-width: 90px; /* slightly bigger */
+            min-width: 76px;
             justify-content: center;
             align-items: flex-end;
         }
@@ -129,35 +129,33 @@
         .logo-banner {
             display: flex;
             justify-content: center;
-            padding: 10px 0; /* less vertical padding so image can be bigger */
+            padding: 0;
             background-color: transparent; /* allow camo to show through */
             width: 100%;
             position: relative; /* make this the positioning context for the contact button */
             overflow: visible;
         }
 
-        /* Make the banner image and its frame a little bigger */
         .logo-banner img {
-            width: 110%; /* make image a little larger than container */
-            max-width: none;
+            width: 100%;
             height: auto;
             display: block;
-            margin-left: -5%; /* center the enlarged image */
         }
 
         /* Contact button attached to logo banner */
         .logo-banner .contact-button {
             position: absolute;
             /* place on the right side and lower third */
-            right: 9%;
-            bottom: 12%;
-            width: 18%; /* slightly larger */
+            right: 10%;
+            bottom: 13.5%;
+            width: 13%; /* scales smoothly with the banner width */
+            width: 14.5%; /* scales smoothly with the banner width */
             height: auto;
             transform: rotate(3deg);
             transform-origin: center bottom;
             transition: transform 0.25s ease, opacity 0.25s ease, width 0.25s linear;
             display: inline-block;
-            z-index: 4; /* ensure it sits above the banner image and text */
+            z-index: 2; /* ensure it sits above the banner image */
             will-change: transform, width;
         }
 
@@ -170,34 +168,6 @@
         .logo-banner .contact-button:hover {
             transform: rotate(3deg) scale(1.03);
             opacity: 0.95;
-        }
-
-        /* Banner text overlayed on top of the frame */
-        .logo-banner .banner-text {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -10%); /* slightly above center */
-            text-align: center;
-            color: #fff;
-            z-index: 3; /* above image but under contact button */
-            width: 70%;
-            pointer-events: none; /* allow clicks on the contact button beneath */
-        }
-
-        .logo-banner .banner-text h1 {
-            margin: 0;
-            font-size: 48px;
-            letter-spacing: 2px;
-            font-weight: 700;
-            text-shadow: 0 6px 18px rgba(0,0,0,0.65);
-        }
-
-        .logo-banner .banner-text p {
-            margin: 8px 0 0 0;
-            font-size: 18px;
-            color: rgba(255,255,255,0.9);
-            text-shadow: 0 4px 12px rgba(0,0,0,0.6);
         }
 
         /* Featured Content Area */
@@ -242,12 +212,6 @@
         }
 
         /* Responsive Design - contact-button scales smoothly */
-        @media (max-width: 1024px) {
-            .logo-banner .banner-text h1 { font-size: 40px; }
-            .logo-banner .banner-text p { font-size: 16px; }
-            .logo-banner .contact-button { width: 22%; right: 6%; bottom: 10%; }
-        }
-
         @media (max-width: 768px) {
             .social-icons {
                 gap: 30px;
@@ -273,12 +237,6 @@
             .nav-button:nth-child(4):hover {
                 transform: translateY(-20px) scale(1.05);
             }
-
-            .logo-banner img { width: 120%; margin-left: -10%; }
-            .logo-banner .banner-text { width: 85%; top: 55%; transform: translate(-50%, -5%); }
-            .logo-banner .banner-text h1 { font-size: 28px; }
-            .logo-banner .banner-text p { font-size: 14px; }
-            .logo-banner .contact-button { width: 26%; right: 5%; bottom: 8%; }
         }
     </style>
 </head>
@@ -323,13 +281,6 @@
     <!-- Logo Banner -->
     <div class="logo-banner">
         <img src="FTL_ASSETS/FTL_LOGO_BANNER.png" alt="FTL Logo Banner">
-
-        <!-- Text elements placed over the frame -->
-        <div class="banner-text" aria-hidden="true">
-            <h1>Frontline Underground</h1>
-            <p>Welcome to Frontlime Underground</p>
-        </div>
-
         <!-- Contact button attached to the banner. It scales with the banner width and is tilted 3deg. -->
         <a href="https://frontlineug.com/contact" class="contact-button" title="Contact Frontline">
             <img src="FTL_ASSETS/FTL_CONTACT_DOGTAG.png" alt="Contact Button">
