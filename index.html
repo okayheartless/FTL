@@ -128,12 +128,41 @@
             background-color: white;
             background-color: transparent; /* allow camo to show through */
             width: 100%;
+            position: relative; /* make this the positioning context for the contact button */
+            overflow: visible;
         }
 
         .logo-banner img {
             width: 100%;
             height: auto;
             display: block;
+        }
+
+        /* Contact button attached to logo banner */
+        .logo-banner .contact-button {
+            position: absolute;
+            /* place on the right side and lower third */
+            right: 5%;
+            bottom: 14%;
+            width: 10%; /* scales with banner width */
+            max-width: 180px; /* prevents it from being excessively large on very wide screens */
+            min-width: 64px; /* keeps it usable on very small screens */
+            transform: rotate(3deg);
+            transform-origin: center bottom;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+            display: inline-block;
+            z-index: 2; /* ensure it sits above the banner image */
+        }
+
+        .logo-banner .contact-button img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .logo-banner .contact-button:hover {
+            transform: rotate(3deg) scale(1.03);
+            opacity: 0.95;
         }
 
         /* Featured Content Area */
@@ -180,6 +209,15 @@
         }
 
         /* Responsive Design */
+        @media (max-width: 1024px) {
+            .logo-banner .contact-button {
+                width: 12%;
+                right: 6%;
+                bottom: 12%;
+                max-width: 160px;
+            }
+        }
+
         @media (max-width: 768px) {
             .social-icons {
                 gap: 30px;
@@ -202,6 +240,15 @@
             .nav-button:nth-child(2):hover,
             .nav-button:nth-child(4):hover {
                 transform: translateY(-20px) scale(1.05);
+            }
+
+            /* Contact button scales down on small screens */
+            .logo-banner .contact-button {
+                width: 18%;
+                right: 6%;
+                bottom: 8%;
+                min-width: 56px;
+                max-width: 140px;
             }
         }
     </style>
@@ -239,6 +286,10 @@
     <!-- Logo Banner -->
     <div class="logo-banner">
         <img src="FTL_ASSETS/FTL_LOGO_BANNER.png" alt="FTL Logo Banner">
+        <!-- Contact button attached to the banner. It scales with the banner width and is tilted 3deg. -->
+        <a href="https://frontlineug.com/contact" class="contact-button" title="Contact Frontline">
+            <img src="FTL_ASSETS/FTL_CONTACT_IMAGE.png" alt="Contact Button">
+        </a>
     </div>
 
     <!-- Featured Content Area (for images/videos) -->
