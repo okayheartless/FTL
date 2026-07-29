@@ -129,14 +129,16 @@
             padding: 0;
             background-color: transparent; /* allow camo to show through */
             width: 100%;
+            text-align: center; /* center the inner wrapper */
         }
 
         /* Inner wrapper that exactly matches the banner image dimensions when scaled */
         .banner-inner {
             position: relative; /* positioning context for the overlay */
             width: 100%;
+            max-width: 2304px; /* native banner width */
             display: block;
-            margin: 0 auto;
+            margin: 0 auto; /* center the wrapper so overlay aligns with the visible image */
         }
 
         /* The banner image defines the visual size. It remains responsive. */
