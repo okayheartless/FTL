@@ -129,6 +129,7 @@
             padding: 0;
             background-color: transparent; /* allow camo to show through */
             width: 100%;
+            /* Ensure we can size children relative to banner - use the banner as reference */
         }
 
         .logo-banner img {
@@ -138,6 +139,13 @@
         }
 
         /* Contact button on the banner */
+        /*
+            To ensure the button scales together with the banner image, sizes are expressed
+            using percentages relative to the banner container and viewport-based calculations.
+            - position in percentages keeps it anchored relative to the banner
+            - width/max-width and padding in % tie the button dimensions to the banner width
+            - font-size uses a small viewport-based calc so text scales smoothly as the banner scales
+        */
         .banner-contact-button {
             position: absolute;
             right: 5%; /* right side of banner */
@@ -147,21 +155,45 @@
             z-index: 5; /* above the banner image */
 
             display: inline-block;
-            padding: 12px 20px;
+            /* size relative to banner width so it scales together */
+            max-width: 18%;
+            padding: 1.8% 3.2%; /* percentage of banner's width */
             background: rgba(255, 204, 0, 0.95); /* high contrast, tweak as needed */
             color: #000;
             font-weight: 700;
             text-decoration: none;
-            border-radius: 6px;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+            border-radius: 1.2%;
+            box-shadow: 0 0.8% 2.2% rgba(0,0,0,0.35);
             letter-spacing: 1px;
             white-space: nowrap;
             transition: transform 0.18s ease, opacity 0.18s ease;
+
+            /* scale text relative to the viewport so the label scales with the banner */
+            font-size: calc(0.6vw + 0.6vh);
+            line-height: 1;
+            text-align: center;
         }
 
         .banner-contact-button:hover {
             opacity: 0.95;
             transform: rotate(3deg) scale(1.04); /* keep tilt while scaling */
+        }
+
+        /* Ensure the button never becomes too large on very wide screens */
+        @media (min-width: 1600px) {
+            .banner-contact-button { max-width: 12%; font-size: calc(0.5vw + 0.4vh); }
+        }
+
+        /* Small viewports - keep button proportional to banner but more usable */
+        @media (max-width: 768px) {
+            .banner-contact-button {
+                right: 4%;
+                bottom: 10%;
+                padding: 2.6% 4.6%;
+                font-size: calc(1.6vw + 0.8vh);
+                max-width: 34%;
+                border-radius: 2.2%;
+            }
         }
 
         /* Featured Content Area */
@@ -237,14 +269,6 @@
 
             /* For small devices zoom the background image to keep it filling the screen */
             html { background-size: 140%; background-position: center top; }
-
-            /* Adjust banner button for smaller viewports */
-            .banner-contact-button {
-                right: 4%;
-                bottom: 10%;
-                padding: 10px 14px;
-                font-size: 13px;
-            }
         }
     </style>
 </head>
