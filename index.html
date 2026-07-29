@@ -4,36 +4,42 @@
     <meta charset="UTF-8">
     <meta name="description" content="Welcome to Frontlime Underground">
     <title>Frontline</title>
-    
+
     <link rel="icon" href="/FTL_ASSETS/FTL_FAVICON_96.png">
     <link rel="stylesheet" href="/custom.css">
-    
+
     <style>
+        * {
         /* Ensure the background covers the entire viewport and beyond */
-html, body {
-    height: 100%;
-    margin: 0;
-    overflow-x: hidden;
-}
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
 
-body {
-    position: relative;
-    min-height: 100vh;
-}
-.parallax-bg {
-    position: fixed;
-    top: -10%;
-    left: 0;
-    width: 100%;
-    height: 120%;
+        html {
+            /* shorthand sets position, repeat, and sizing to guarantee full coverage */
+            background: url('/FTL_ASSETS/FTL_HOME_CAMO.jpg') center center / cover no-repeat fixed;
+        }
 
-    background: url('/FTL_ASSETS/FTL_HOME_BG_DARK.jpg') center center/cover no-repeat;
+        * {
+            box-sizing: border-box;
+        }
 
-    z-index: -1;
+        body {
+            background-image: url('/FTL_ASSETS/FTL_HOME_CAMO.jpg');
+            background-attachment: fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
+            /* remove body-level background image (handled on html) and keep layout styles */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Arial', Arial, sans-serif;
+            color: #000; /* default text color */
+            background: transparent; /* ensure no white background hides the camo */
+        }
 
-    will-change: transform;
-    transform: translateY(0);
-}
         /* Social Icons Section */
         .social-icons {
             display: flex;
@@ -41,6 +47,7 @@ body {
             align-items: center;
             gap: 50px;
             padding: 30px 20px;
+            background-color: white;
             background-color: transparent; /* allow camo to show through */
         }
 
@@ -64,6 +71,7 @@ body {
             display: flex;
             justify-content: center;
             padding: 30px 150px;
+            background-color: white;
             background-color: transparent; /* allow camo to show through */
             width: 100%;
         }
@@ -116,6 +124,7 @@ body {
             display: flex;
             justify-content: center;
             padding: 0;
+            background-color: white;
             background-color: transparent; /* allow camo to show through */
             width: 100%;
         }
@@ -133,6 +142,7 @@ body {
             justify-content: center;
             align-items: center;
             padding: 40px 20px;
+            background-color: white;
             background-color: transparent; /* allow camo to show through */
             min-height: 300px;
         }
@@ -156,6 +166,7 @@ body {
             display: flex;
             justify-content: center;
             padding: 0;
+            background-color: white;
             background-color: transparent; /* allow camo to show through */
             width: 100%;
             margin-top: auto;
@@ -194,18 +205,7 @@ body {
         }
     </style>
 </head>
-<script>
-const bg = document.querySelector('.parallax-bg');
-
-window.addEventListener('scroll', () => {
-    const scroll = window.pageYOffset;
-
-    // Lower number = slower movement
-    bg.style.transform = `translateY(${scroll * 0.35}px)`;
-});
-</script>
 <body>
-    <div class="parallax-bg"></div>
     <!-- Social Media Links -->
     <div class="social-icons">
         <a href="https://www.instagram.com/frontline.ug/" target="_blank" title="Instagram">INSTAGRAM</a>
@@ -229,8 +229,8 @@ window.addEventListener('scroll', () => {
             <a href="https://frontlineug.com/contact" class="nav-button" title="Contact">
                 <img src="FTL_ASSETS/FTL_CONTACT_IMAGE.png" alt="Contact">
             </a>
-            <a href="https://frontlineug.com/events" class="nav-button" title="Events">
-                <img src="FTL_ASSETS/FTL_EVENTS_IMAGE.png" alt="Events">
+            <a href="https://frontlineug.com/store" class="nav-button" title="Store">
+                <img src="FTL_ASSETS/FTL_STORE_IMAGE.png" alt="Store">
             </a>
         </div>
     </div>
