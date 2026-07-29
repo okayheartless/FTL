@@ -71,8 +71,8 @@ body {
 .thumb {
   position: relative; /* positioning context for overlay/meta */
   width: 100%;
-  /* Use the actual frame aspect ratio (844 x 962) so frames are rectangular, not square */
-  aspect-ratio: 844 / 962;
+  /* Use the new frame aspect ratio (846 x 1440) so frames are rectangular */
+  aspect-ratio: 846 / 1440;
   overflow: visible; /* allow the frame graphic to show if it extends slightly */
   cursor: pointer; /* use pointer since thumbs open links */
   display: flex;
@@ -83,7 +83,7 @@ body {
   background-position: top center;
   background-repeat: no-repeat;
   /* make the full rectangular frame visible */
-  background-size: 94% 100%;
+  background-size: 92% 100%;
   /* enable smooth scaling on hover */
   transition: transform 0.18s ease;
   transform-origin: center;
@@ -92,12 +92,12 @@ body {
 /* the actual profile picture is placed inside the top portion of the rectangular frame */
 .thumb img {
   position: absolute;
-  top: 6%; /* nudge down so it sits inside the frame's opening */
+  top: 22%; /* moved lower so the profile picture sits further down inside the taller frame */
   left: 50%;
   transform: translateX(-50%);
   width: auto;
-  height: 62%; /* limit height so the image occupies the top area only */
-  max-width: 86%;
+  height: 44%; /* limited height so the image occupies the top/mid area appropriately for taller frame */
+  max-width: 78%;
   object-fit: cover;
   display: block;
   border-radius: 4px; /* subtle rounding if desired */
@@ -135,29 +135,34 @@ body {
   opacity: 1;
 }
 
-/* place meta in the bottom part of the rectangular frame */
+/* place meta in the bottom part of the rectangular frame (dog tag) */
+/* increased min-height/spacing and flex behavior to avoid a "squished" look */
 .meta {
   position: absolute;
-  /* position within the frame: leave some space from bottom edge */
-  bottom: 6%;
+  /* move the dog tag slightly higher so it sits on a wider part of the tall frame */
+  bottom: 12%;
   left: 50%;
   transform: translateX(-50%);
-  width: 86%;
+  width: 90%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
-  font-size: 1em;
+  gap: 12px;
+  font-size: 1.02em;
   background: transparent; /* made fully transparent per request */
   color: #000; /* make font black */
-  padding: 8px 12px;
-  border-radius: 10px;
+  padding: 14px 18px; /* larger padding so the dog tag reads better on taller frame */
+  border-radius: 14px;
   z-index: 2; /* appear above image and overlay */
   box-shadow: none; /* remove drop shadow */
   text-shadow: none; /* remove any text shadow */
+  min-height: 72px; /* ensure comfortable tappable area and avoid vertical squishing */
+  line-height: 1; /* keep text compact vertically */
+  box-sizing: border-box;
 }
 
 /* make text a bit bolder/clearer */
+/* title takes remaining space, will truncate if too long */
 .title {
   font-family: 'Arial';
   font-size: 1.05em; /* balanced size */
@@ -165,14 +170,22 @@ body {
   color: #000; /* black font */
   text-align: left;
   text-shadow: none; /* ensure no shadow */
+  flex: 1 1 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 8px;
 }
 
-/* TYPE */
+/* TYPE stays fixed width and won't be stretched */
 .type {
   font-weight: 700; /* make the 'type' font bold as requested */
   color: #000; /* black font */
   text-align: right;
   text-shadow: none;
+  flex: 0 0 auto;
+  margin-left: 8px;
+  white-space: nowrap;
 }
 
 /* DATE (not used but keep) */
@@ -182,7 +195,6 @@ body {
 .title span {
   display: inline-block;
   transform-origin: left;
-  white-space: nowrap;
 }
 
 /* DATE span */
@@ -190,22 +202,21 @@ body {
 .type span {
   display: inline-block;
   transform-origin: center;
-  white-space: nowrap;
 }
 
-       /* Footer */
-        .footer-section {
-            padding: 20px 0 0 0;
-            text-align: center;
-            margin-top: auto; /* push footer to the bottom when body is a flex column */
-        }
+/* Footer */
+.footer-section {
+    padding: 20px 0 0 0;
+    text-align: center;
+    margin-top: auto; /* push footer to the bottom when body is a flex column */
+}
 
-        .footer-section img {
-            width: 100%;
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
+.footer-section img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
 
 /* ANIMATION */
 @keyframes fadeUp {
@@ -221,10 +232,9 @@ body {
   .gallery { gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
   .title { font-size: 1.0em; }
   /* reduce profile pic size on very small screens so frame still shows */
-  .thumb img { top: 6%; height: 58%; max-width: 90%; }
-  .meta { width: 90%; font-size: 0.95em; bottom: 8px; }
+  .thumb img { top: 20%; height: 42%; max-width: 86%; }
+  .meta { width: 92%; font-size: 0.95em; bottom: 10px; padding: 10px 12px; min-height: 56px; gap: 10px; }
 }
-
     </style>
 </head>
 
