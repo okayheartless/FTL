@@ -84,6 +84,9 @@ body {
   background-repeat: no-repeat;
   /* make the full rectangular frame visible */
   background-size: 94% 100%;
+  /* enable smooth scaling on hover */
+  transition: transform 0.18s ease;
+  transform-origin: center;
 }
 
 /* the actual profile picture is placed inside the top portion of the rectangular frame */
@@ -102,9 +105,9 @@ body {
   box-shadow: none; /* ensure no drop shadow */
 }
 
-/* NO SCALING */
-.thumb:hover img {
-  filter: brightness(70%);
+/* Remove darkening on hover and instead scale the thumb slightly */
+.thumb:hover {
+  transform: scale(1.03);
 }
 
 /* CLICK FEEDBACK */
@@ -112,11 +115,11 @@ body {
   transform: scale(0.98);
 }
 
-/* ensure overlay still covers full thumb area */
+/* ensure overlay still covers full thumb area but don't darken */
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.35);
+  background: transparent; /* no dark overlay on hover */
   display: flex;
   align-items: center;
   justify-content: center;
