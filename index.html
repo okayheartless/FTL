@@ -10,31 +10,30 @@
     
     <style>
         /* Ensure the background covers the entire viewport and beyond */
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow-x: hidden;
+}
 
-        html {
-            /* shorthand sets position, repeat, and sizing to guarantee full coverage */
-            background: url('/FTL_ASSETS/FTL_HOME_BG_DARK.jpg') center center / cover no-repeat fixed;
-        }
+body {
+    position: relative;
+    min-height: 100vh;
+}
+.parallax-bg {
+    position: fixed;
+    top: -10%;
+    left: 0;
+    width: 100%;
+    height: 120%;
 
-        * {
-            box-sizing: border-box;
-        }
+    background: url('/FTL_ASSETS/FTL_HOME_BG_DARK.jpg') center center/cover no-repeat;
 
-        body {
-            /* remove body-level background image (handled on html) and keep layout styles */
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            font-family: 'Arial', Arial, sans-serif;
-            color: #000; /* default text color */
-            background: transparent; /* ensure no white background hides the camo */
-        }
+    z-index: -1;
 
+    will-change: transform;
+    transform: translateY(0);
+}
         /* Social Icons Section */
         .social-icons {
             display: flex;
@@ -195,7 +194,18 @@
         }
     </style>
 </head>
+<script>
+const bg = document.querySelector('.parallax-bg');
+
+window.addEventListener('scroll', () => {
+    const scroll = window.pageYOffset;
+
+    // Lower number = slower movement
+    bg.style.transform = `translateY(${scroll * 0.35}px)`;
+});
+</script>
 <body>
+    <div class="parallax-bg"></div>
     <!-- Social Media Links -->
     <div class="social-icons">
         <a href="https://www.instagram.com/frontline.ug/" target="_blank" title="Instagram">INSTAGRAM</a>
