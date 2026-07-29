@@ -24,11 +24,12 @@
             right: 0;
             bottom: 0;
             background-image: url('/FTL_ASSETS/FTL_HOME_BG_DARK.jpg');
-            background-position: center center;
+            background-position: center top;
             background-size: cover;
             background-repeat: no-repeat;
             z-index: -1;
-            transform: translate3d(0,0,0) scale(1.05);
+            transform: translate3d(0,0,0) scale(1.08);
+            transform-origin: center top;
             will-change: transform;
             pointer-events: none;
         }
@@ -280,11 +281,12 @@
 
             let latestKnownScrollY = 0;
             let ticking = false;
-            const speed = 0.18; // smaller = more subtle
+            const speed = 0.12; // subtle speed
+            const MAX_RATIO = 0.06; // max 6% of viewport height
+            const SCALE = 1.08; // keep same scale buffer as CSS
 
             function getMaxTranslate() {
-                // Allow up to 15% of the viewport height to move for the subtle depth effect
-                return Math.round(window.innerHeight * 0.15);
+                return window.innerHeight * MAX_RATIO;
             }
 
             function onScroll() {
@@ -299,14 +301,15 @@
 
             function update() {
                 const max = getMaxTranslate();
-                // Move background upward (negative) as page scrolls down, but at a reduced rate
-                let translateY = -Math.round(latestKnownScrollY * speed);
+                // Use fractional translation (no rounding) so even small scrolls produce movement
+                let translateY = -latestKnownScrollY * speed;
+
                 // Clamp so the background never moves so far that edges show
                 if (translateY < -max) translateY = -max;
                 if (translateY > 0) translateY = 0;
 
-                // Keep a small scale buffer so the image always covers the viewport while moving
-                bg.style.transform = 'translate3d(0,' + translateY + 'px,0) scale(1.06)';
+                // Apply transform with fractional px
+                bg.style.transform = 'translate3d(0,' + translateY + 'px,0) scale(' + SCALE + ')';
                 ticking = false;
             }
 
