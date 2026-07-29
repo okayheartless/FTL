@@ -99,6 +99,7 @@ body {
   display: block;
   border-radius: 4px; /* subtle rounding if desired */
   z-index: 0; /* behind meta */
+  box-shadow: none; /* ensure no drop shadow */
 }
 
 /* NO SCALING */
@@ -124,6 +125,7 @@ body {
   opacity: 0;
   transition: opacity 0.25s ease;
   z-index: 1;
+  text-shadow: none; /* remove any text shadow */
 }
 
 .thumb:hover .overlay {
@@ -143,11 +145,13 @@ body {
   align-items: center;
   gap: 8px;
   font-size: 1em;
-  background: rgba(0,0,0,0.62);
-  color: #fff;
+  background: rgba(255,255,255,0.85); /* lighter background so black text is readable */
+  color: #000; /* make font black */
   padding: 8px 12px;
   border-radius: 10px;
   z-index: 2; /* appear above image and overlay */
+  box-shadow: none; /* remove drop shadow */
+  text-shadow: none; /* remove any text shadow */
 }
 
 /* make text a bit bolder/clearer */
@@ -155,15 +159,17 @@ body {
   font-family: 'Arial';
   font-size: 1.05em; /* balanced size */
   font-weight: 600;
-  color: #fff;
+  color: #000; /* black font */
   text-align: left;
+  text-shadow: none; /* ensure no shadow */
 }
 
 /* TYPE */
 .type {
   font-weight: 700; /* make the 'type' font bold as requested */
-  color: #fff;
+  color: #000; /* black font */
   text-align: right;
+  text-shadow: none;
 }
 
 /* DATE (not used but keep) */
