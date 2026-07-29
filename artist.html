@@ -78,8 +78,9 @@ body {
   display: flex;
   align-items: flex-start; /* ensure the inner image sits near the top of the frame */
   justify-content: center;
-  /* frame background behind the profile image */
-  background-image: url('/FTL_ASSETS/FTL_PICTURE_FRAME.png');
+  /* frame background behind the profile image
+     NOTE: the actual frame image is set per-thumb in JavaScript so each thumb can have a random frame.
+     If JS is unavailable, there is no frame fallback here. */
   background-position: top center;
   background-repeat: no-repeat;
   /* make the full rectangular frame visible but preserve the frame's own ratio */
@@ -303,12 +304,24 @@ function openLink(url) {
   const gallery = document.querySelector('.gallery');
   gallery.innerHTML = ''; // clear any existing content
 
+  // list of available frame images
+  const frames = [
+    '/FTL_ASSETS/FTL_PICTURE_FRAME1.png',
+    '/FTL_ASSETS/FTL_PICTURE_FRAME2.png',
+    '/FTL_ASSETS/FTL_PICTURE_FRAME3.png'
+  ];
+
   artists.forEach((a) => {
     const item = document.createElement('div');
     item.className = 'item';
 
     const thumb = document.createElement('div');
     thumb.className = 'thumb';
+
+    // pick a random frame for this thumb
+    const frame = frames[Math.floor(Math.random() * frames.length)];
+    // set inline background-image so each thumb gets its own random frame
+    thumb.style.backgroundImage = `url('${frame}')`;
 
     const img = document.createElement('img');
     img.src = a.image;
