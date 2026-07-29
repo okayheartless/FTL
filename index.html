@@ -139,19 +139,20 @@
         }
 
         /* Contact button attached to logo banner */
+        /* Updated: remove hard min/max and media-query overrides so sizing remains a smooth percentage of the banner */
         .logo-banner .contact-button {
             position: absolute;
             /* place on the right side and lower third */
             right: 5%;
             bottom: 14%;
-            width: 10%; /* scales with banner width */
-            max-width: 180px; /* prevents it from being excessively large on very wide screens */
-            min-width: 64px; /* keeps it usable on very small screens */
+            width: 10%; /* scales smoothly with the banner width */
+            height: auto;
             transform: rotate(3deg);
             transform-origin: center bottom;
-            transition: transform 0.25s ease, opacity 0.25s ease;
+            transition: transform 0.25s ease, opacity 0.25s ease, width 0.25s linear;
             display: inline-block;
             z-index: 2; /* ensure it sits above the banner image */
+            will-change: transform, width;
         }
 
         .logo-banner .contact-button img {
@@ -208,16 +209,7 @@
             display: block;
         }
 
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .logo-banner .contact-button {
-                width: 12%;
-                right: 6%;
-                bottom: 12%;
-                max-width: 160px;
-            }
-        }
-
+        /* Responsive Design - removed contact-button overrides to keep smooth scaling */
         @media (max-width: 768px) {
             .social-icons {
                 gap: 30px;
@@ -240,15 +232,6 @@
             .nav-button:nth-child(2):hover,
             .nav-button:nth-child(4):hover {
                 transform: translateY(-20px) scale(1.05);
-            }
-
-            /* Contact button scales down on small screens */
-            .logo-banner .contact-button {
-                width: 18%;
-                right: 6%;
-                bottom: 8%;
-                min-width: 56px;
-                max-width: 140px;
             }
         }
     </style>
