@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/custom.css">
 
     <style>
-        * {
         /* Ensure the background covers the entire viewport and beyond */
         html, body {
             height: 100%;
@@ -17,9 +16,20 @@
             padding: 0;
         }
 
-        html {
-            /* shorthand sets position, repeat, and sizing to guarantee full coverage */
-            background: url('/FTL_ASSETS/FTL_HOME_BG_DARK.jpg') center center / cover no-repeat fixed;
+        /* Parallax background layer (moved via JS on scroll) */
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('/FTL_ASSETS/FTL_HOME_BG_DARK.jpg');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: -1;
+            transform: translate3d(0,0,0);
+            will-change: transform;
         }
 
         * {
@@ -27,17 +37,19 @@
         }
 
         body {
+            /* keep a camo overlay on top of the parallax background */
             background-image: url('/FTL_ASSETS/FTL_HOME_CAMO.jpg');
-            background-attachment: fixed;
+            background-attachment: scroll;
             background-size: cover;
             background-repeat: no-repeat;
-            /* remove body-level background image (handled on html) and keep layout styles */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             font-family: 'Arial', Arial, sans-serif;
             color: #000; /* default text color */
             background: transparent; /* ensure no white background hides the camo */
+            position: relative;
+            z-index: 0;
         }
 
         /* Social Icons Section */
@@ -47,7 +59,6 @@
             align-items: center;
             gap: 50px;
             padding: 30px 20px;
-            background-color: white;
             background-color: transparent; /* allow camo to show through */
         }
 
@@ -71,7 +82,6 @@
             display: flex;
             justify-content: center;
             padding: 30px 150px;
-            background-color: white;
             background-color: transparent; /* allow camo to show through */
             width: 100%;
         }
@@ -109,13 +119,13 @@
         }
 
         /* Asymmetrical positioning for 2nd and 4th buttons */
-        .nav-button:nth-child(2),
-        .nav-button:nth-child(4) {
+        .navigation-buttons .nav-button:nth-child(2),
+        .navigation-buttons .nav-button:nth-child(4) {
             transform: translateY(-35px);
         }
 
-        .nav-button:nth-child(2):hover,
-        .nav-button:nth-child(4):hover {
+        .navigation-buttons .nav-button:nth-child(2):hover,
+        .navigation-buttons .nav-button:nth-child(4):hover {
             transform: translateY(-35px) scale(1.05);
         }
 
@@ -124,7 +134,6 @@
             display: flex;
             justify-content: center;
             padding: 0;
-            background-color: white;
             background-color: transparent; /* allow camo to show through */
             width: 100%;
         }
@@ -142,7 +151,6 @@
             justify-content: center;
             align-items: center;
             padding: 40px 20px;
-            background-color: white;
             background-color: transparent; /* allow camo to show through */
             min-height: 300px;
         }
@@ -166,7 +174,6 @@
             display: flex;
             justify-content: center;
             padding: 0;
-            background-color: white;
             background-color: transparent; /* allow camo to show through */
             width: 100%;
             margin-top: auto;
@@ -193,19 +200,22 @@
                 padding: 30px 40px;
             }
 
-            .nav-button:nth-child(2),
-            .nav-button:nth-child(4) {
+            .navigation-buttons .nav-button:nth-child(2),
+            .navigation-buttons .nav-button:nth-child(4) {
                 transform: translateY(-20px);
             }
 
-            .nav-button:nth-child(2):hover,
-            .nav-button:nth-child(4):hover {
+            .navigation-buttons .nav-button:nth-child(2):hover,
+            .navigation-buttons .nav-button:nth-child(4):hover {
                 transform: translateY(-20px) scale(1.05);
             }
         }
     </style>
 </head>
 <body>
+    <!-- Parallax background layer -->
+    <div class="parallax-bg" aria-hidden="true"></div>
+
     <!-- Social Media Links -->
     <div class="social-icons">
         <a href="https://www.instagram.com/frontline.ug/" target="_blank" title="Instagram">INSTAGRAM</a>
@@ -229,8 +239,9 @@
             <a href="https://frontlineug.com/contact" class="nav-button" title="Contact">
                 <img src="FTL_ASSETS/FTL_CONTACT_IMAGE.png" alt="Contact">
             </a>
-            <a href="https://frontlineug.com/store" class="nav-button" title="Store">
-                <img src="FTL_ASSETS/FTL_STORE_IMAGE.png" alt="Store">
+            <!-- Replaced Store with Events -->
+            <a href="https://frontlineug.com/events" class="nav-button" title="Events">
+                <img src="FTL_ASSETS/FTL_EVENTS_IMAGE.png" alt="Events">
             </a>
         </div>
     </div>
@@ -251,5 +262,41 @@
     <footer>
         <img src="FTL_ASSETS/FTL_FOOTER.png" alt="FTL Footer">
     </footer>
+
+    <script>
+        // Parallax scroll: move the .parallax-bg at a slower rate than the page scroll
+        (function() {
+            const bg = document.querySelector('.parallax-bg');
+            if (!bg) return;
+
+            let latestKnownScrollY = 0;
+            let ticking = false;
+            const speed = 0.5; // 0.5 = background moves at half the speed of the page
+
+            function onScroll() {
+                latestKnownScrollY = window.pageYOffset || document.documentElement.scrollTop;
+                requestTick();
+            }
+
+            function requestTick() {
+                if (!ticking) {
+                    requestAnimationFrame(update);
+                }
+                ticking = true;
+            }
+
+            function update() {
+                const translateY = Math.round(latestKnownScrollY * speed);
+                // translate the background vertically. Using translate3d for smoother GPU-accelerated transforms.
+                bg.style.transform = 'translate3d(0,' + translateY + 'px,0)';
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+
+            // Initialize position on load
+            update();
+        })();
+    </script>
 </body>
 </html>
