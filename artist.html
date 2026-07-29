@@ -67,20 +67,34 @@ body {
   transform: translateY(-4px);
 }
 
-/* IMAGE */
+/* IMAGE + FRAME */
 .thumb {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  overflow: hidden;
+  overflow: visible; /* allow the frame graphic to show if it extends slightly */
   cursor: pointer; /* use pointer since thumbs open links */
+  display: flex;
+  align-items: flex-start; /* ensure the inner image sits near the top of the frame */
+  justify-content: center;
+  /* frame background behind the profile image */
+  background-image: url('/FTL_ASSETS/FTL_PICTURE_FRAME.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
+/* the actual profile picture is smaller and placed near the top-center to fit inside the frame opening */
 .thumb img {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 8%; /* nudge down so it sits inside the frame's opening */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 74%; /* smaller than full to leave visible frame edges */
+  height: auto;
   object-fit: cover;
   display: block;
+  border-radius: 4px; /* subtle rounding if desired */
 }
 
 /* NO SCALING */
@@ -93,7 +107,7 @@ body {
   transform: scale(0.98);
 }
 
-/* OVERLAY */
+/* ensure overlay still covers full thumb area */
 .overlay {
   position: absolute;
   inset: 0;
@@ -125,6 +139,12 @@ body {
 .title {
   font-family: 'Arial';
   font-size: 1.2em; /* increased for balance */
+  font-weight: 400; /* keep name regular */
+}
+
+/* TYPE */
+.type {
+  font-weight: 700; /* make the 'type' font bold as requested */
 }
 
 /* TEXT ALIGNMENT */
@@ -174,6 +194,8 @@ body {
   .logo-container { padding: 20px 12px; }
   .gallery { gap: 18px; }
   .title { font-size: 1.05em; }
+  /* reduce profile pic size on very small screens so frame still shows */
+  .thumb img { top: 6%; width: 78%; }
 }
 
     </style>
