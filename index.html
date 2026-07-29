@@ -16,27 +16,12 @@
             padding: 0;
         }
 
-        /* Parallax background layer (moved via JS on scroll) */
-        .parallax-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+        /* Page background (kept, no parallax) */
+        html {
             background-image: url('/FTL_ASSETS/FTL_HOME_BG_DARK.jpg');
-            background-position: center top;
-            background-size: cover;
+            background-position: center top; /* anchor to top so key detail stays visible */
+            background-size: cover; /* ensure it fills the viewport */
             background-repeat: no-repeat;
-            z-index: -1;
-            transform: translate3d(0,0,0) scale(1.08);
-            transform-origin: center top;
-            will-change: transform;
-            pointer-events: none;
-        }
-
-        /* Reduce motion for users who prefer it */
-        @media (prefers-reduced-motion: reduce) {
-            .parallax-bg { transform: none !important; }
         }
 
         * {
@@ -44,7 +29,7 @@
         }
 
         body {
-            /* keep a camo overlay on top of the parallax background */
+            /* keep a camo overlay on top of the background image */
             background-image: url('/FTL_ASSETS/FTL_HOME_CAMO.jpg');
             background-attachment: scroll;
             background-size: cover;
@@ -193,6 +178,11 @@
         }
 
         /* Responsive Design */
+        @media (max-width: 1024px) {
+            /* On medium and small screens, slightly increase background-size to keep coverage */
+            html { background-size: 120%; background-position: center top; }
+        }
+
         @media (max-width: 768px) {
             .social-icons {
                 gap: 30px;
@@ -217,15 +207,12 @@
                 transform: translateY(-20px) scale(1.05);
             }
 
-            /* Disable parallax on small screens for stability */
-            .parallax-bg { display: none; }
+            /* For small devices zoom the background image to keep it filling the screen */
+            html { background-size: 140%; background-position: center top; }
         }
     </style>
 </head>
 <body>
-    <!-- Parallax background layer -->
-    <div class="parallax-bg" aria-hidden="true"></div>
-
     <!-- Social Media Links -->
     <div class="social-icons">
         <a href="https://www.instagram.com/frontline.ug/" target="_blank" title="Instagram">INSTAGRAM</a>
@@ -272,53 +259,5 @@
     <footer>
         <img src="FTL_ASSETS/FTL_FOOTER.png" alt="FTL Footer">
     </footer>
-
-    <script>
-        // Subtle parallax: background moves in the same direction as scroll but much slower
-        (function() {
-            const bg = document.querySelector('.parallax-bg');
-            if (!bg) return;
-
-            let latestKnownScrollY = 0;
-            let ticking = false;
-            const speed = 0.12; // subtle speed
-            const MAX_RATIO = 0.06; // max 6% of viewport height
-            const SCALE = 1.08; // keep same scale buffer as CSS
-
-            function getMaxTranslate() {
-                return window.innerHeight * MAX_RATIO;
-            }
-
-            function onScroll() {
-                latestKnownScrollY = window.pageYOffset || document.documentElement.scrollTop;
-                requestTick();
-            }
-
-            function requestTick() {
-                if (!ticking) requestAnimationFrame(update);
-                ticking = true;
-            }
-
-            function update() {
-                const max = getMaxTranslate();
-                // Use fractional translation (no rounding) so even small scrolls produce movement
-                let translateY = -latestKnownScrollY * speed;
-
-                // Clamp so the background never moves so far that edges show
-                if (translateY < -max) translateY = -max;
-                if (translateY > 0) translateY = 0;
-
-                // Apply transform with fractional px
-                bg.style.transform = 'translate3d(0,' + translateY + 'px,0) scale(' + SCALE + ')';
-                ticking = false;
-            }
-
-            window.addEventListener('scroll', onScroll, { passive: true });
-            window.addEventListener('resize', function() { requestAnimationFrame(update); });
-
-            // Initialize position on load
-            update();
-        })();
-    </script>
 </body>
 </html>
