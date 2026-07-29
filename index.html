@@ -123,6 +123,7 @@
 
         /* Logo Banner Section */
         .logo-banner {
+            position: relative; /* make button fixed relative to this banner */
             display: flex;
             justify-content: center;
             padding: 0;
@@ -134,6 +135,33 @@
             width: 100%;
             height: auto;
             display: block;
+        }
+
+        /* Contact button on the banner */
+        .banner-contact-button {
+            position: absolute;
+            right: 5%; /* right side of banner */
+            bottom: 18%; /* place in the lower third of the banner */
+            transform: rotate(3deg);
+            transform-origin: center;
+            z-index: 5; /* above the banner image */
+
+            display: inline-block;
+            padding: 12px 20px;
+            background: rgba(255, 204, 0, 0.95); /* high contrast, tweak as needed */
+            color: #000;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 6px;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+            letter-spacing: 1px;
+            white-space: nowrap;
+            transition: transform 0.18s ease, opacity 0.18s ease;
+        }
+
+        .banner-contact-button:hover {
+            opacity: 0.95;
+            transform: rotate(3deg) scale(1.04); /* keep tilt while scaling */
         }
 
         /* Featured Content Area */
@@ -209,6 +237,14 @@
 
             /* For small devices zoom the background image to keep it filling the screen */
             html { background-size: 140%; background-position: center top; }
+
+            /* Adjust banner button for smaller viewports */
+            .banner-contact-button {
+                right: 4%;
+                bottom: 10%;
+                padding: 10px 14px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
@@ -246,6 +282,8 @@
     <!-- Logo Banner -->
     <div class="logo-banner">
         <img src="FTL_ASSETS/FTL_LOGO_BANNER.png" alt="FTL Logo Banner">
+        <!-- Contact button fixed relative to the banner -->
+        <a href="https://frontlineug.com/contact" class="banner-contact-button" title="Contact" target="_blank" rel="noopener">CONTACT</a>
     </div>
 
     <!-- Featured Content Area (for images/videos) -->
