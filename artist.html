@@ -48,7 +48,7 @@ body {
 /* GRID */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* slightly larger thumbs */
   gap: 28px;
   padding: 0 20px 40px; /* smaller side padding to avoid horizontal cutoff on mobile */
 }
@@ -69,7 +69,7 @@ body {
 
 /* IMAGE + FRAME */
 .thumb {
-  position: relative;
+  position: relative; /* positioning context for overlay/meta */
   width: 100%;
   aspect-ratio: 1 / 1;
   overflow: visible; /* allow the frame graphic to show if it extends slightly */
@@ -81,20 +81,21 @@ body {
   background-image: url('/FTL_ASSETS/FTL_PICTURE_FRAME.png');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 94%; /* slightly bigger frame */
 }
 
 /* the actual profile picture is smaller and placed near the top-center to fit inside the frame opening */
 .thumb img {
   position: absolute;
-  top: 8%; /* nudge down so it sits inside the frame's opening */
+  top: 5%; /* nudge down so it sits inside the frame's opening */
   left: 50%;
   transform: translateX(-50%);
-  width: 74%; /* smaller than full to leave visible frame edges */
+  width: 82%; /* increased image size */
   height: auto;
   object-fit: cover;
   display: block;
   border-radius: 4px; /* subtle rounding if desired */
+  z-index: 0; /* behind meta */
 }
 
 /* NO SCALING */
@@ -116,50 +117,62 @@ body {
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 0.8em;
+  font-size: 0.9em;
   opacity: 0;
   transition: opacity 0.25s ease;
+  z-index: 1;
 }
 
 .thumb:hover .overlay {
   opacity: 1;
 }
 
-/* META ROW */
+/* place meta over the frame */
 .meta {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 86%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 6px;
-  font-size: 1.4em;
   gap: 8px;
+  font-size: 1em;
+  background: rgba(0,0,0,0.62);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  z-index: 2; /* appear above image and overlay */
 }
 
-/* TITLE */
+/* make text a bit bolder/clearer */
 .title {
   font-family: 'Arial';
-  font-size: 1.2em; /* increased for balance */
-  font-weight: 400; /* keep name regular */
+  font-size: 1.05em; /* balanced size */
+  font-weight: 600;
+  color: #fff;
+  text-align: left;
 }
 
 /* TYPE */
 .type {
   font-weight: 700; /* make the 'type' font bold as requested */
+  color: #fff;
+  text-align: right;
 }
 
-/* TEXT ALIGNMENT */
-.title { text-align: left; }
+/* DATE (not used but keep) */
 .date { text-align: center; }
-.type { text-align: right; }
 
-/* TITLE */
+/* TITLE span behavior */
 .title span {
   display: inline-block;
   transform-origin: left;
   white-space: nowrap;
 }
 
-/* DATE */
+/* DATE span */
 .date span,
 .type span {
   display: inline-block;
@@ -192,10 +205,11 @@ body {
 /* Small tweaks for very small screens */
 @media (max-width: 420px) {
   .logo-container { padding: 20px 12px; }
-  .gallery { gap: 18px; }
-  .title { font-size: 1.05em; }
+  .gallery { gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .title { font-size: 1.0em; }
   /* reduce profile pic size on very small screens so frame still shows */
-  .thumb img { top: 6%; width: 78%; }
+  .thumb img { top: 6%; width: 86%; }
+  .meta { width: 90%; font-size: 0.95em; bottom: 8px; }
 }
 
     </style>
@@ -280,19 +294,7 @@ function openLink(url) {
     overlay.className = 'overlay';
     overlay.textContent = a.link ? 'VIEW' : '';
 
-    thumb.appendChild(img);
-    thumb.appendChild(overlay);
-
-    // click behavior: only add click if link is present
-    if (a.link) {
-      thumb.addEventListener('click', (ev) => {
-        openLink(a.link);
-      });
-      thumb.style.cursor = 'pointer';
-    } else {
-      thumb.style.cursor = 'default';
-    }
-
+    // meta will be placed over the frame inside the thumb
     const meta = document.createElement('div');
     meta.className = 'meta';
 
@@ -311,8 +313,21 @@ function openLink(url) {
     meta.appendChild(title);
     meta.appendChild(type);
 
+    thumb.appendChild(img);
+    thumb.appendChild(overlay);
+    thumb.appendChild(meta); // place meta inside thumb so it sits over the frame
+
+    // click behavior: only add click if link is present
+    if (a.link) {
+      thumb.addEventListener('click', (ev) => {
+        openLink(a.link);
+      });
+      thumb.style.cursor = 'pointer';
+    } else {
+      thumb.style.cursor = 'default';
+    }
+
     item.appendChild(thumb);
-    item.appendChild(meta);
 
     gallery.appendChild(item);
   });
