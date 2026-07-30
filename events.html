@@ -91,7 +91,7 @@ body {
 /* META: overlay on top of poster and frame; name left, type right */
 .poster-wrapper .meta-row {
   position: absolute;
-  bottom: 6%;
+  bottom: -6%; /* moved lower so meta sits beneath poster edge (still overlapping) */
   left: 6%;
   right: 6%;
   display: flex;
@@ -118,11 +118,12 @@ body {
 @media (max-width: 1100px) {
   .gallery { grid-template-columns: repeat(2, minmax(220px, 1fr)); max-width: calc(2 * 520px + 1 * 32px); }
   :root { --frame-scale: 1.06; }
+  .poster-wrapper .meta-row { bottom: -4%; }
 }
 @media (max-width: 600px) {
   .gallery { grid-template-columns: 1fr; max-width: 520px; padding: 0 10px 28px; }
   :root { --frame-scale: 1.04; }
-  .poster-wrapper .meta-row { bottom: 4%; left: 6%; right: 6%; font-size: 0.98rem; }
+  .poster-wrapper .meta-row { bottom: -2%; left: 6%; right: 6%; font-size: 0.98rem; }
 }
 
     </style>
