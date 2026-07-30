@@ -30,12 +30,12 @@ body {
 .logo-container {
   display: flex;
   justify-content: center;
-  padding: 30px 16px; /* reduced side padding for small screens */
+  padding: 40px 16px; /* slightly more padding for larger header */
 }
 
 .logo-img {
   width: 100%;        /* make responsive */
-  max-width: 600px;   /* keep original max on desktop */
+  max-width: 760px;   /* increase logo max on desktop */
   height: auto;       /* preserve aspect ratio */
   cursor: pointer;
   transition: 0.25s;
@@ -46,11 +46,12 @@ body {
 }
   
 /* GRID */
+/* Increased the min tile size so there are fewer items per row. */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* slightly larger thumbs */
-  gap: 28px;
-  padding: 0 20px 40px; /* smaller side padding to avoid horizontal cutoff on mobile */
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); /* larger thumbs => fewer per row */
+  gap: 32px; /* slightly larger gap for bigger tiles */
+  padding: 0 28px 48px; /* more side padding to balance larger tiles */
 }
 
 /* ITEM */
@@ -64,51 +65,46 @@ body {
 }
 
 .item:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
 }
 
 /* IMAGE + FRAME */
 .thumb {
   position: relative; /* positioning context for overlay/meta */
   width: 100%;
-  /* Use the new frame aspect ratio (846 x 1440) so frames are rectangular */
+  /* Keep frame rectangular, same aspect ratio */
   aspect-ratio: 846 / 1440;
   overflow: visible; /* allow the frame graphic to show if it extends slightly */
   cursor: pointer; /* use pointer since thumbs open links */
   display: flex;
   align-items: flex-start; /* ensure the inner image sits near the top of the frame */
   justify-content: center;
-  /* frame background behind the profile image
-     NOTE: the actual frame image is set per-thumb in JavaScript so each thumb can have a random frame.
-     If JS is unavailable, there is no frame fallback here. */
   background-position: top center;
   background-repeat: no-repeat;
-  /* make the full rectangular frame visible but preserve the frame's own ratio */
   background-size: 92% auto;
-  /* enable smooth scaling on hover */
   transition: transform 0.18s ease;
   transform-origin: center;
 }
 
-/* the actual profile picture is placed inside the top portion of the rectangular frame */
+/* scale the profile picture up along with the frame */
 .thumb img {
   position: absolute;
-  top: 18%; /* moved slightly higher so image sits higher in the frame */
+  top: 18%; /* keep image slightly higher in the frame */
   left: 50%;
   transform: translateX(-50%);
-  width: 72%; /* set width and let height auto to avoid stretching */
+  width: 82%; /* increased from 72% to scale up image */
   height: auto;
-  max-width: 86%;
+  max-width: 92%;
   object-fit: cover;
   display: block;
-  border-radius: 5px; /* subtle rounding if desired */
+  border-radius: 6px; /* slight rounding */
   z-index: 0; /* behind meta */
-  box-shadow: 0 6px 18px rgba(0,0,0,0.3); /* subtle drop shadow */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35); /* slightly larger shadow for scale */
 }
 
 /* Remove darkening on hover and instead scale the thumb slightly */
 .thumb:hover {
-  transform: scale(1.03);
+  transform: scale(1.035);
 }
 
 /* CLICK FEEDBACK */
@@ -125,7 +121,7 @@ body {
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 1em;
+  font-size: 1.1em;
   opacity: 0;
   transition: opacity 0.25s ease;
   z-index: 1;
@@ -140,7 +136,6 @@ body {
 /* stacked, centered layout: artist name above the type */
 .meta {
   position: absolute;
-  /* move the dog tag higher (closer to top) by increasing bottom slightly */
   bottom: 22%;
   left: 50%;
   transform: translateX(-50%);
@@ -149,28 +144,28 @@ body {
   flex-direction: column; /* stack title and type vertically */
   justify-content: center;
   align-items: center; /* center text horizontally */
-  gap: 6px; /* small vertical gap between title and type */
-  font-size: 1.12em; /* slightly larger font */
-  background: transparent; /* made fully transparent per request */
-  color: #000; /* make font black */
-  padding: 6px 12px; /* comfortable padding */
+  gap: 8px; /* slightly larger gap for bigger text */
+  font-size: 1.25em; /* increased base font size for meta */
+  background: transparent; /* fully transparent */
+  color: #000; /* black font */
+  padding: 8px 14px; /* increased padding to match larger layout */
   border-radius: 12px;
   z-index: 2; /* appear above image and overlay */
   box-shadow: none; /* remove drop shadow */
   text-shadow: none; /* remove any text shadow */
-  min-height: 0; /* not forcing a large tappable area so it sits closer to image */
-  line-height: 1.1;
+  min-height: 0;
+  line-height: 1.12;
   box-sizing: border-box;
 }
 
 /* make text centered and stacked */
 .title {
   font-family: 'Arial';
-  font-size: 1.3em; /* larger title */
-  font-weight: 600;
+  font-size: 1.6em; /* larger title for readability */
+  font-weight: 700;
   color: #000; /* black font */
-  text-align: center; /* centered below picture */
-  text-shadow: none; /* ensure no shadow */
+  text-align: center;
+  text-shadow: none;
   overflow: visible;
   white-space: normal; /* allow wrapping if needed */
   padding-right: 0;
@@ -179,14 +174,14 @@ body {
 
 /* TYPE stacked under title and centered */
 .type {
-  font-weight: 900; /* make the 'type' font bold as requested */
+  font-weight: 900; /* bold type label */
   color: #000; /* black font */
   text-align: center;
   text-shadow: none;
   flex: 0 0 auto;
   margin-left: 0;
   white-space: nowrap;
-  font-size: 1.02em; /* match overall meta font sizing */
+  font-size: 1.18em; /* larger type label */
 }
 
 /* DATE (not used but keep) */
@@ -207,7 +202,7 @@ body {
 
        /* Footer */
         .footer-section {
-            padding: 20px 0 0 0;
+            padding: 24px 0 0 0;
             text-align: center;
             margin-top: auto; /* push footer to the bottom when body is a flex column */
         }
@@ -227,13 +222,26 @@ body {
   }
 }
 
+/* Add a mid breakpoint for medium screens (tablets/laptops) */
+@media (max-width: 1024px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); /* moderate tile size on tablets/laptops */
+    gap: 26px;
+    padding: 0 22px 44px;
+  }
+  .thumb img { width: 78%; } /* slightly smaller on medium screens */
+  .meta { font-size: 1.18em; bottom: 20%; padding: 7px 12px; gap: 7px; }
+  .title { font-size: 1.38em; }
+  .type { font-size: 1.08em; }
+}
+
 /* Small tweaks for very small screens */
 @media (max-width: 420px) {
   .logo-container { padding: 20px 12px; }
-  .gallery { gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .gallery { gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding: 0 14px 28px; }
   .title { font-size: 1.02em; }
   /* reduce profile pic size on very small screens so frame still shows */
-  .thumb img { top: 16%; width: 66%; max-width: 88%; } /* moved slightly higher on tiny screens too */
+  .thumb img { top: 16%; width: 66%; max-width: 88%; }
   .meta { width: 92%; font-size: 1.02em; bottom: 18%; padding: 8px 12px; min-height: 0; gap: 6px; }
 }
 
