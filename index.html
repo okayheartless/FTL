@@ -342,21 +342,16 @@
         }
 
         /* Footer - ensure it stays at the bottom by being outside .site-content; keep it natural flow */
-        footer {
-            display: block;
-            width: 100%;
-            padding: 0;
-            background-color: transparent;
-            box-sizing: border-box;
-            margin-top: 0;
-            clear: both;
-            position: relative;
-            z-index: 1;
-            flex-shrink: 0;
+       /* Footer */
+        .footer-section {
+            padding: 20px 0 0 0;
+            text-align: center;
+            margin-top: auto; /* push footer to the bottom when body is a flex column */
         }
 
-        footer img {
+        .footer-section img {
             width: 100%;
+            max-width: 100%;
             height: auto;
             display: block;
         }
@@ -449,8 +444,9 @@
     </div>
 
     <!-- Footer -->
-    <footer>
-        <img src="FTL_ASSETS/FTL_FOOTER.png" alt="FTL Footer">
-    </footer>
+<div class="footer-section page-footer">
+  <img src="/FTL_ASSETS/FTL_FOOTER.png" alt="Footer">
+</div>
+    
 </body>
 </html>
