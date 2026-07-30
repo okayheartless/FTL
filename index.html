@@ -173,7 +173,7 @@
             display: block; /* let height be determined by content so footer sits below */
             justify-content: center;
             align-items: center;
-            padding: 12px 18px 28px; /* reduce top padding so posters sit closer under the banner */
+            padding: 8px 0 12px; /* tightened padding so posters sit closer under the banner */
             background-color: transparent; /* allow camo to show through */
             min-height: 0;
             box-sizing: border-box;
@@ -193,115 +193,108 @@
             display: block;
         }
 
-        /* Event posters area (each poster gets its own framed section) */
+        /* Full-bleed events area: stretch to viewport edges so posters nearly touch screen edges */
         .event-area {
-            width: 100%;
-            display: flex;
-            justify-content: center;
+            width: 100vw; /* full viewport width */
+            margin-left: calc(50% - 50vw); /* center full-bleed inside page */
             box-sizing: border-box;
-            padding: 4px 8px 0; /* small padding so the posters sit snugly under the banner */
-            max-width: 1600px;
-            margin: 0 auto;
+            padding: 0; /* remove padding so posters reach edges */
+            overflow: visible;
+            background: transparent;
         }
 
+        /* poster frame container stretches across viewport with small gaps */
         .poster-frame {
             display: flex;
-            gap: 18px; /* small gap between posters */
+            gap: 8px; /* very small gap between posters */
             width: 100%;
-            padding: 6px 6px 24px;
+            padding: 0 6px 16px; /* tiny horizontal padding so edges aren't flush-into-device chrome */
             box-sizing: border-box;
             align-items: flex-start;
             justify-content: space-between;
+            max-width: none;
         }
 
-        /* Each poster-item expands to fill nearly the whole horizontal space */
+        /* each poster fills roughly a third of viewport width minus gaps */
         .poster-item {
             position: relative;
-            flex: 1 1 0%; /* let items grow equally and fill width */
-            max-width: none; /* remove earlier max width to allow expansion */
-            min-width: 240px;
+            flex: 1 1 0%;
+            min-width: 220px;
             display: block;
             box-sizing: border-box;
-            padding: 8px; /* breathing room between frames */
+            padding: 0; /* remove inner padding so image touches frame */
             transition: transform 0.28s cubic-bezier(.2,.9,.2,1), box-shadow 0.28s ease;
             transform-origin: center top;
         }
 
-        /* frame image placed absolutely inside each poster-item so it doesn't affect document flow */
+        /* frame image positioned absolutely so it scales with the poster; kept inside flow because poster-item has no fixed height */
         .poster-item .poster-border {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: contain; /* keep the frame proportions */
+            object-fit: contain;
             z-index: 1;
             pointer-events: none;
         }
 
-        /* the clickable poster sits above the border/frame in normal document flow */
         .poster-link {
             position: relative;
             z-index: 2;
             display: block;
             width: 100%;
-            height: 100%;
             text-decoration: none;
             overflow: hidden;
-            border-radius: 4px;
+            border-radius: 2px;
         }
 
-        /* posters should be tall and fill the available width — use aspect-ratio to control height */
+        /* make poster images take the available width and be tall — aspect-ratio controls height */
         .poster-link img {
             display: block;
             width: 100%;
-            height: 100%;
-            aspect-ratio: 2 / 3; /* tall poster shape */
-            object-fit: cover; /* fill the frame area */
-            box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+            height: auto;
+            aspect-ratio: 2 / 3; /* tall poster */
+            object-fit: cover;
+            box-shadow: 0 20px 48px rgba(0,0,0,0.45);
             transition: transform 0.28s cubic-bezier(.2,.9,.2,1), filter 0.28s ease;
         }
 
-        /* Scale poster and its frame together when hovering the poster-item */
+        /* scale both frame and image together on hover */
         .poster-item:hover {
-            transform: scale(1.04);
-            z-index: 10; /* bring hovered poster above its neighbors */
-        }
-
-        /* subtle image lift within the container on hover */
-        .poster-item:hover .poster-link img {
-            transform: translateY(-8px) scale(1.02);
-            filter: brightness(1.02);
-        }
-
-        /* Adjust frame sizing so it sits slightly larger than the poster image */
-        .poster-item .poster-border {
-            transform-origin: center center;
-            transition: transform 0.28s cubic-bezier(.2,.9,.2,1);
+            transform: scale(1.05);
+            z-index: 12; /* bring hovered poster above others */
         }
 
         .poster-item:hover .poster-border {
-            transform: scale(1.04);
+            transform: scale(1.05);
+            transition: transform 0.28s cubic-bezier(.2,.9,.2,1);
         }
 
-        /* Responsive: make posters stack and be very large on small screens */
-        @media (max-width: 1100px) {
-            .poster-frame { gap: 14px; }
+        .poster-item:hover .poster-link img {
+            transform: translateY(-10px) scale(1.02);
+            filter: brightness(1.02);
+        }
+
+        /* On very wide screens, let posters grow a bit more (fills viewport) */
+        @media (min-width: 1600px) {
             .poster-link img { aspect-ratio: 2 / 3; }
+            .poster-frame { gap: 10px; padding: 0 12px 20px; }
         }
 
+        /* Stack posters on narrow screens and make them near-fullwidth */
         @media (max-width: 900px) {
-            .poster-frame { flex-direction: column; gap: 18px; align-items: center; }
-            .poster-item { width: 92%; max-width: 860px; }
+            .poster-frame { flex-direction: column; gap: 18px; align-items: center; padding: 0 6px 18px; }
+            .poster-item { width: 96%; max-width: 980px; }
             .poster-item .poster-border { display: block; }
         }
 
-        /* Footer - keep it below content and visible */
+        /* Footer - ensure it sits after content */
         footer {
             display: block;
             width: 100%;
             padding: 0;
-            background-color: transparent; /* allow camo to show through */
+            background-color: transparent;
             box-sizing: border-box;
             margin-top: 10px;
             clear: both;
