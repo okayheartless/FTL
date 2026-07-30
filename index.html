@@ -301,7 +301,7 @@
             aspect-ratio: 2 / 3; /* tall poster */
             object-fit: contain; /* changed from cover so the entire poster is shown without being cropped */
             object-position: center;
-            box-shadow: 0 16px 36px rgba(0,0,0,0.38);
+            box-shadow: none;
             transition: transform 0.28s cubic-bezier(.2,.9,.2,1), filter 0.28s ease;
             will-change: transform;
             border-radius: 2px; /* slight rounding of the visible poster inside the frame */
@@ -336,7 +336,7 @@
             .poster-frame { grid-template-columns: 1fr; gap: calc(18px * var(--event-section-scale)); padding: 0 calc(18px * var(--event-section-scale)) calc(22px * var(--event-section-scale)); }
             .poster-item { width: 100%; max-width: calc(480px * var(--event-section-scale) * var(--poster-scale)); }
             /* Reduce the frame "overhang" on small screens so the decorative border doesn't look oversized */
-            .poster-item .poster-border { width: calc(100% * var(--poster-scale) + 16px * var(--event-section-scale)); transform: translate(-50%, -50%) scale(calc(var(--frame-scale) * var(--poster-scale) * 0.92)); }
+            .poster-item .poster-border { width: calc(100% * var(--poster-scale) + 16px * var(--event-section-scale)); transform: translate(-50%, -50%) scale(calc(var(--frame-scale) * var(--poste[...]); }
             .poster-link { width: calc(100% * var(--poster-scale) - 24px * var(--event-section-scale)); padding: calc(12px * var(--event-section-scale)); }
             .event-area { margin-top: calc(-60px * var(--event-section-scale)); } /* less overlap on small screens, reduced to lower the section */
         }
