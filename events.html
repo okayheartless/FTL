@@ -196,5 +196,90 @@ body {
   <img src="/FTL_ASSETS/FTL_FOOTER.png" alt="Footer">
 </div>
 
+<script>
+/*
+  Fill this array with artist objects. If 'link' is set the thumbnail will open that link in a new tab;
+  We removed the lightbox: thumbnails without a link will not be clickable.
+  Example:
+    { name: 'Artist Name', image: '/path/to/image.jpg', type: 'cover art', link: 'https://soundcloud.com/artist' }
+*/
+const artists = [
+  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
+  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
+  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
+  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
+  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
+
+  // Add more entries here...
+];
+
+function openLink(url) {
+  window.open(url, '_blank');
+}
+
+/* Generate gallery items from the artists array */
+(function renderGallery() {
+  const gallery = document.querySelector('.gallery');
+  gallery.innerHTML = ''; // clear any existing content
+
+  artists.forEach((a) => {
+    const item = document.createElement('div');
+    item.className = 'item';
+
+    const thumb = document.createElement('div');
+    thumb.className = 'thumb';
+
+    const img = document.createElement('img');
+    img.src = a.image;
+    img.alt = a.name;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+    overlay.textContent = a.link ? 'VIEW' : '';
+
+    thumb.appendChild(img);
+    thumb.appendChild(overlay);
+
+    // click behavior: only add click if link is present
+    if (a.link) {
+      thumb.addEventListener('click', (ev) => {
+        openLink(a.link);
+      });
+      thumb.style.cursor = 'pointer';
+    } else {
+      thumb.style.cursor = 'default';
+    }
+
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+
+    const title = document.createElement('div');
+    title.className = 'title';
+    const titleSpan = document.createElement('span');
+    titleSpan.textContent = a.name;
+    title.appendChild(titleSpan);
+
+    const type = document.createElement('div');
+    type.className = 'type';
+    const typeSpan = document.createElement('span');
+    typeSpan.textContent = a.type || '';
+    type.appendChild(typeSpan);
+
+    meta.appendChild(title);
+    meta.appendChild(type);
+
+    item.appendChild(thumb);
+    item.appendChild(meta);
+
+    gallery.appendChild(item);
+  });
+
+  // stagger animations
+  document.querySelectorAll('.item').forEach((el, i) => {
+    el.style.animationDelay = (i * 0.05) + 's';
+  });
+})();
+</script>
+
 </body>
 </html>
