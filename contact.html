@@ -61,16 +61,17 @@
             width: 100%;
         }
 
+        /* remove white box and move spacing to wrapper */
         .contact-form {
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: transparent;    /* no white background */
+            padding: 0;                       /* remove inner padding so iframe is flush */
+            border-radius: 0;
+            box-shadow: none;
             text-align: center;
         }
 
         .contact-form h2 {
-            margin-bottom: 30px;
+            margin: 30px 0; /* keep spacing for the heading */
             color: #000000;
             font-size: 28px;
             text-align: center;
@@ -80,6 +81,7 @@
         .google-form-wrapper {
             display: flex;
             justify-content: center;
+            padding: 30px;                    /* page spacing without white box */
         }
 
         /* Make the iframe fill most of the viewport so the embedded form doesn't scroll internally. */
@@ -89,7 +91,8 @@
             /* Subtract approximate height of header/logo, page paddings, and footer so iframe fits without inner scroll */
             height: calc(100vh - 260px);
             min-height: 720px;
-            border: none;
+            border: none;                     /* remove iframe border */
+            background: transparent;          /* best-effort (will not change contents of the form) */
         }
 
         .form-message {
@@ -134,16 +137,22 @@
                 padding: 0 30px 30px 30px;
             }
 
+            /* spacing now handled on the wrapper */
             .contact-form {
-                padding: 30px;
+                padding: 0;
             }
 
             .contact-form h2 {
                 font-size: 26px;
+                margin: 24px 0;
             }
 
             .logo-section img {
                 max-width: 220px;
+            }
+
+            .google-form-wrapper {
+                padding: 24px;
             }
 
             .google-form-iframe {
@@ -158,15 +167,20 @@
             }
 
             .contact-form {
-                padding: 25px;
+                padding: 0;
             }
 
             .contact-form h2 {
                 font-size: 24px;
+                margin: 20px 0;
             }
 
             .logo-section img {
                 max-width: 150px;
+            }
+
+            .google-form-wrapper {
+                padding: 20px;
             }
 
             .google-form-iframe {
@@ -181,11 +195,12 @@
             }
 
             .contact-form {
-                padding: 20px;
+                padding: 0;
             }
 
             .contact-form h2 {
                 font-size: 20px;
+                margin: 16px 0;
             }
 
             .form-group input,
@@ -195,6 +210,10 @@
 
             .submit-button {
                 font-size: 14px;
+            }
+
+            .google-form-wrapper {
+                padding: 16px;
             }
 
             .google-form-iframe {
@@ -219,7 +238,7 @@
 
             <div class="google-form-wrapper">
                 <!-- Embedded Google Form -->
-                <iframe class="google-form-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScA54J6IWk3UtsBhTY8FJhCq4UagszacU-_lhvyXgdBs6Xnbw/viewform?embedded=true" frameborder="0" allowfullscreen></iframe>
+                <iframe class="google-form-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScA54J6IWk3UtsBhTY8FJhCq4UagszacU-_lhvyXgdBs6Xnbw/viewform?embedded=true" frameborder="0" allowful[...]>
             </div>
 
         </div>
