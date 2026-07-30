@@ -12,10 +12,12 @@
         /* Scaling variables for easy future edits:
            --event-section-scale: scales the entire poster/frame section (gap, padding, max widths, vertical overlap)
            --frame-scale: scales the decorative frame behind each poster relative to the poster image
+           --poster-scale: additional scale applied to poster + frame to make them slightly larger without changing the overlap
            Change these two variables at the top to adjust sizes site-wide for the event posters. */
         :root {
             --event-section-scale: 1.10; /* 1.10 = +10% overall section size */
             --frame-scale: 1.10;         /* 1.10 = +10% frame size relative to the poster */
+            --poster-scale: 1.06;        /* 1.06 = +6% poster & frame size (tweak as needed) */
         }
 
         /* Box sizing reset */
@@ -226,7 +228,7 @@
             background: transparent;
             position: relative;
             z-index: 10; /* behind the logo-banner (logo-banner z-index:30) */
-            margin-top: calc(-120px * var(--event-section-scale)); /* pull posters upward so they sit partially behind the banner; scaled */
+            margin-top: calc(-100px * var(--event-section-scale)); /* pulled upward slightly; reduced to lower the section a tiny amount */
         }
 
         .poster-frame {
@@ -244,7 +246,7 @@
         .poster-item {
             position: relative;
             width: 100%;
-            max-width: calc(520px * var(--event-section-scale)); /* cap how large each poster grows on very wide screens, scaled */
+            max-width: calc(520px * var(--event-section-scale) * var(--poster-scale)); /* cap how large each poster grows on very wide screens, scaled */
             display: block;
             box-sizing: border-box;
             padding: 0; /* poster image is inset slightly from frame via .poster-link padding */
@@ -265,9 +267,9 @@
             position: absolute;
             left: 50%;
             top: 50%;
-            transform: translate(-50%, -50%) scale(var(--frame-scale)); /* frame scaled via variable */
+            transform: translate(-50%, -50%) scale(calc(var(--frame-scale) * var(--poster-scale))); /* frame scaled via variables */
             /* make the frame a bit larger than the poster; adjust gap here if you want more visible edge */
-            width: calc(100% + 56px * var(--event-section-scale));
+            width: calc(100% * var(--poster-scale) + 56px * var(--event-section-scale));
             height: auto; /* preserve aspect ratio (1334 / 1760) */
             z-index: 1; /* behind the poster-link (z-index: 3) */
             pointer-events: none;
@@ -283,7 +285,7 @@
             position: relative;
             z-index: 3; /* above the frame */
             display: block;
-            width: calc(100% - 36px * var(--event-section-scale));
+            width: calc(100% * var(--poster-scale) - 36px * var(--event-section-scale));
             padding: calc(18px * var(--event-section-scale)); /* creates breathing room between image and frame */
             text-decoration: none;
             overflow: visible; /* allow scaled image to escape and not be clipped */
@@ -311,7 +313,7 @@
         }
 
         .poster-item:hover .poster-border {
-            transform: translate(-50%, -50%) scale(calc(var(--frame-scale) * 1.03)); /* combine base frame-scale with hover growth */
+            transform: translate(-50%, -50%) scale(calc(var(--frame-scale) * var(--poster-scale) * 1.03)); /* combine base frame-scale with hover growth */
         }
 
         .poster-item:hover .poster-link img {
@@ -322,18 +324,18 @@
         /* On very wide screens, allow posters to grow and increase overlap behind banner a bit */
         @media (min-width: 1600px) {
             .poster-frame { gap: calc(36px * var(--event-section-scale)); padding: 0 calc(36px * var(--event-section-scale)) calc(44px * var(--event-section-scale)); }
-            .poster-item { max-width: calc(640px * var(--event-section-scale)); }
-            .poster-item .poster-border { width: calc(100% + 80px * var(--event-section-scale)); }
-            .event-area { margin-top: calc(-150px * var(--event-section-scale)); } /* a bit more overlap on large screens */
+            .poster-item { max-width: calc(640px * var(--event-section-scale) * var(--poster-scale)); }
+            .poster-item .poster-border { width: calc(100% * var(--poster-scale) + 80px * var(--event-section-scale)); }
+            .event-area { margin-top: calc(-130px * var(--event-section-scale)); } /* a bit more overlap on large screens, but reduced to lower section slightly */
         }
 
         /* Stack posters on narrow screens and keep them near-fullwidth. Reduce overlap so footer remains reachable. */
         @media (max-width: 900px) {
             .poster-frame { grid-template-columns: 1fr; gap: calc(18px * var(--event-section-scale)); padding: 0 calc(18px * var(--event-section-scale)) calc(22px * var(--event-section-scale)); }
-            .poster-item { width: 100%; max-width: calc(480px * var(--event-section-scale)); }
-            .poster-item .poster-border { width: calc(100% + 32px * var(--event-section-scale)); }
-            .poster-link { width: calc(100% - 24px * var(--event-section-scale)); padding: calc(12px * var(--event-section-scale)); }
-            .event-area { margin-top: calc(-70px * var(--event-section-scale)); } /* less overlap on small screens */
+            .poster-item { width: 100%; max-width: calc(480px * var(--event-section-scale) * var(--poster-scale)); }
+            .poster-item .poster-border { width: calc(100% * var(--poster-scale) + 32px * var(--event-section-scale)); }
+            .poster-link { width: calc(100% * var(--poster-scale) - 24px * var(--event-section-scale)); padding: calc(12px * var(--event-section-scale)); }
+            .event-area { margin-top: calc(-60px * var(--event-section-scale)); } /* less overlap on small screens, reduced to lower the section */
         }
 
         /* Footer - ensure it stays at the bottom by being outside .site-content; keep it natural flow */
