@@ -26,10 +26,14 @@
             background: url('FTL_ASSETS/FTL_HOME_BG.jpg') center center / cover no-repeat fixed;
         }
 
+        /*
+         Make the page a column flex layout so footer can stick to bottom when content is short.
+         The .site-content area grows to fill available vertical space.
+        */
         body {
-            /* switch to normal document flow so footer reliably sits after content */
+            display: flex;
+            flex-direction: column;
             min-height: 100vh;
-            display: block;
             font-family: 'Arial', Arial, sans-serif;
             color: #000; /* default text color */
             background: transparent; /* ensure html background shows through */
@@ -37,12 +41,17 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
+        /* The main content area should grow so footer sits at bottom on short pages */
+        .site-content {
+            flex: 1 0 auto;
+        }
+
         /* Social Icons Section */
         .social-icons {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 50px;
+            gap: 22px;
             padding: 30px 20px;
             background-color: transparent; /* allow camo to show through */
         }
@@ -194,12 +203,16 @@
             display: block;
         }
 
-        /* Full-bleed events area: stretch to viewport edges so posters nearly touch screen edges */
+        /*
+         Events area:
+         - Use a full-bleed container and a grid for posters that expands to fill horizontal space.
+         - Use equal padding on the poster-frame to match the grid gap so spacing between edges and posters is consistent.
+        */
         .event-area {
             width: 100vw; /* full viewport width */
             margin-left: calc(50% - 50vw); /* center full-bleed inside page */
             box-sizing: border-box;
-            padding: 0; /* remove padding so posters reach edges */
+            padding: 0; /* container padding handled by .poster-frame */
             overflow: visible;
             background: transparent;
             position: relative;
@@ -207,111 +220,122 @@
             margin-top: -120px; /* pull posters upward so they sit partially behind the banner; tweak as needed */
         }
 
-        /* poster frame container stretches across viewport with small gaps */
         .poster-frame {
-            display: flex;
-            gap: 8px; /* very small gap between posters */
-            width: 100%;
-            padding: 0 12px 28px; /* increased horizontal/bottom padding to give breathing room for scaled images */
+            /* grid allows posters to expand evenly and fill the row */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 28px; /* equal spacing between posters */
+            padding: 0 28px 36px; /* padding equals gap so spacing between edge and first/last item == gap */
+            align-items: start;
+            justify-items: center;
             box-sizing: border-box;
-            align-items: flex-start;
-            justify-content: center; /* center posters inside viewport */
             max-width: none;
         }
 
-        /* each poster fills roughly a third of viewport width minus gaps */
         .poster-item {
             position: relative;
-            flex: 0 0 calc(33.333% - 8px); /* three columns, fixed basis */
-            max-width: 320px; /* limit poster width so they appear smaller */
-            min-width: 180px;
+            width: 100%;
+            max-width: 520px; /* cap how large each poster grows on very wide screens */
             display: block;
             box-sizing: border-box;
-            padding: 0; /* remove inner padding so image touches frame */
+            padding: 0; /* poster image is inset slightly from frame via .poster-link padding */
             transition: transform 0.28s cubic-bezier(.2,.9,.2,1), box-shadow 0.28s ease;
             transform-origin: center top;
             z-index: 1; /* keep posters beneath the logo-banner */
-            overflow: visible; /* allow scaled image to extend beyond this box */
+            overflow: visible; /* allow scaled image and enlarged frame to extend */
+            display: flex;
+            justify-content: center;
         }
 
-        /* frame image positioned absolutely so it scales with the poster; kept inside flow because poster-item has no fixed height */
+        /*
+         Make the frame a bit larger than the content so its edges are visible.
+         We position the frame so it can overlap beyond the poster container if necessary.
+        */
         .poster-item .poster-border {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: -12px;
+            left: -12px;
+            width: calc(100% + 24px);
+            height: calc(100% + 24px);
             object-fit: contain;
-            z-index: 2;
+            z-index: 4; /* put the frame visually over the poster image edges */
             pointer-events: none;
+            transition: transform 0.28s cubic-bezier(.2,.9,.2,1);
         }
 
+        /*
+         The poster-link has padding so the poster image doesn't fully touch the frame center,
+         ensuring the frame edges remain visible even when the image is large.
+        */
         .poster-link {
             position: relative;
             z-index: 3;
             display: block;
-            width: 100%;
+            width: calc(100% - 36px);
+            padding: 18px; /* creates breathing room between image and frame */
             text-decoration: none;
             overflow: visible; /* allow scaled image to escape and not be clipped */
             border-radius: 2px;
+            background: transparent;
+            box-sizing: border-box;
         }
 
-        /* make poster images take the available width and be tall — aspect-ratio controls height */
         .poster-link img {
             display: block;
             width: 100%;
-            max-width: 100%;
             height: auto;
             aspect-ratio: 2 / 3; /* tall poster */
             object-fit: cover;
             box-shadow: 0 16px 36px rgba(0,0,0,0.38);
             transition: transform 0.28s cubic-bezier(.2,.9,.2,1), filter 0.28s ease;
             will-change: transform;
+            border-radius: 2px; /* slight rounding of the visible poster inside the frame */
+            display: block;
         }
 
-        /* scale both frame and image together on hover */
+        /* Hover behavior: grow poster and frame, lift above siblings but remain under logo banner */
         .poster-item:hover {
-            transform: scale(1.05);
-            z-index: 25; /* bring hovered poster above other posters but still under the logo-banner (z-index:30) */
+            transform: translateY(-6px) scale(1.03);
+            z-index: 25; /* higher than other posters but less than logo-banner (30) */
         }
 
         .poster-item:hover .poster-border {
-            transform: scale(1.05);
-            transition: transform 0.28s cubic-bezier(.2,.9,.2,1);
+            transform: scale(1.03);
         }
 
         .poster-item:hover .poster-link img {
-            transform: translateY(-10px) scale(1.02);
+            transform: translateY(-8px) scale(1.03);
             filter: brightness(1.02);
         }
 
-        /* On very wide screens, let posters grow a bit more (fills viewport) */
+        /* On very wide screens, allow posters to grow and increase overlap behind banner a bit */
         @media (min-width: 1600px) {
-            .poster-link img { aspect-ratio: 2 / 3; }
-            .poster-frame { gap: 10px; padding: 0 18px 36px; }
-            .poster-item { max-width: 380px; flex: 0 0 calc(30% - 10px); }
+            .poster-frame { gap: 36px; padding: 0 36px 44px; }
+            .poster-item { max-width: 640px; }
             .event-area { margin-top: -150px; } /* a bit more overlap on large screens */
         }
 
-        /* Stack posters on narrow screens and make them near-fullwidth */
+        /* Stack posters on narrow screens and keep them near-fullwidth. Reduce overlap so footer remains reachable. */
         @media (max-width: 900px) {
-            .poster-frame { flex-direction: column; gap: 18px; align-items: center; padding: 0 12px 22px; }
-            .poster-item { width: 96%; max-width: 360px; flex: 0 0 auto; }
-            .poster-item .poster-border { display: block; }
-            .event-area { margin-top: -60px; } /* less overlap on small screens */
+            .poster-frame { grid-template-columns: 1fr; gap: 18px; padding: 0 18px 22px; }
+            .poster-item { width: 100%; max-width: 480px; }
+            .poster-item .poster-border { top: -8px; left: -8px; width: calc(100% + 16px); height: calc(100% + 16px); }
+            .poster-link { width: calc(100% - 24px); padding: 12px; }
+            .event-area { margin-top: -70px; } /* less overlap on small screens */
         }
 
-        /* Footer - ensure it sits after content */
+        /* Footer - ensure it stays at the bottom by being outside .site-content; keep it natural flow */
         footer {
             display: block;
             width: 100%;
             padding: 0;
             background-color: transparent;
             box-sizing: border-box;
-            margin-top: 10px;
+            margin-top: 0;
             clear: both;
             position: relative;
             z-index: 1;
+            flex-shrink: 0;
         }
 
         footer img {
@@ -323,83 +347,86 @@
     </style>
 </head>
 <body>
-    <!-- Social Media Links -->
-    <div class="social-icons">
-        <a href="https://www.instagram.com/frontline.ug/" target="_blank" title="Instagram" aria-label="Instagram">
-            <img src="FTL_ASSETS/FTL_INSTAGRAM_DOGTAG.png" alt="Instagram">
-        </a>
-        <a href="https://www.youtube.com/@FrontlineUnderground" target="_blank" title="YouTube" aria-label="YouTube">
-            <img src="FTL_ASSETS/FTL_YOUTUBE_DOGTAG.png" alt="YouTube">
-        </a>
-        <a href="https://soundcloud.com/frontlineunderground" target="_blank" title="SoundCloud" aria-label="SoundCloud">
-            <img src="FTL_ASSETS/FTL_SOUNDCLOUD_DOGTAG.png" alt="SoundCloud">
-        </a>
-        <a href="https://discord.com/invite/Exs5Kc3Mf6" target="_blank" title="Discord" aria-label="Discord">
-            <img src="FTL_ASSETS/FTL_DISCORD_DOGTAG.png" alt="Discord">
-        </a>
-        <a href="https://www.twitch.tv/frontlineunderground" target="_blank" title="Twitch" aria-label="Twitch">
-            <img src="FTL_ASSETS/FTL_TIWTCH_DOGTAG.png" alt="Twitch">
-        </a>
-    </div>
-
-    <!-- Main Navigation Buttons Container -->
-    <div class="navigation-buttons-container">
-        <div class="navigation-buttons">
-            <a href="https://frontlineug.com/artist" class="nav-button" title="Assets">
-                <img src="FTL_ASSETS/FTL_ARTIST_BADGE.png" alt="Artist">
+    <div class="site-content">
+        <!-- Social Media Links -->
+        <div class="social-icons">
+            <a href="https://www.instagram.com/frontline.ug/" target="_blank" title="Instagram" aria-label="Instagram">
+                <img src="FTL_ASSETS/FTL_INSTAGRAM_DOGTAG.png" alt="Instagram">
             </a>
-            <a href="https://frontlineug.com/producer" class="nav-button" title="Producer">
-                <img src="FTL_ASSETS/FTL_PRODUCER_BADGE.png" alt="Producer">
+            <a href="https://www.youtube.com/@FrontlineUnderground" target="_blank" title="YouTube" aria-label="YouTube">
+                <img src="FTL_ASSETS/FTL_YOUTUBE_DOGTAG.png" alt="YouTube">
             </a>
-            <a href="https://frontlineug.com/work" class="nav-button" title="Work">
-                <img src="FTL_ASSETS/FTL_VISUAL_BADGE.png" alt="Work">
+            <a href="https://soundcloud.com/frontlineunderground" target="_blank" title="SoundCloud" aria-label="SoundCloud">
+                <img src="FTL_ASSETS/FTL_SOUNDCLOUD_DOGTAG.png" alt="SoundCloud">
             </a>
-            <a href="https://frontlineug.com/contact" class="nav-button" title="Contact">
-                <img src="FTL_ASSETS/FTL_CONTACT_BADGE.png" alt="Contact">
+            <a href="https://discord.com/invite/Exs5Kc3Mf6" target="_blank" title="Discord" aria-label="Discord">
+                <img src="FTL_ASSETS/FTL_DISCORD_DOGTAG.png" alt="Discord">
             </a>
-            <a href="https://frontlineug.com/events" class="nav-button" title="Events">
-                <img src="FTL_ASSETS/FTL_EVENTS_BADGE.png" alt="Events">
+            <!-- NEW: Twitch icon -->
+            <a href="https://www.twitch.tv/frontlineunderground" target="_blank" title="Twitch" aria-label="Twitch">
+                <img src="FTL_ASSETS/FTL_TIWTCH_DOGTAG.png" alt="Twitch">
             </a>
         </div>
-    </div>
 
-    <!-- Logo Banner -->
-    <div class="logo-banner">
-        <img src="FTL_ASSETS/FTL_LOGO_BANNER.png" alt="FTL Logo Banner">
-        <!-- Contact button attached to the banner. It scales with the banner width and is tilted 3deg. -->
-        <a href="https://frontlineug.com/contact" class="contact-button" title="Contact Frontline">
-            <img src="FTL_ASSETS/FTL_CONTACT_IMAGE.png" alt="Contact Button">
-        </a>
-    </div>
+        <!-- Main Navigation Buttons Container -->
+        <div class="navigation-buttons-container">
+            <div class="navigation-buttons">
+                <a href="https://frontlineug.com/artist" class="nav-button" title="Assets">
+                    <img src="FTL_ASSETS/FTL_ARTIST_BADGE.png" alt="Artist">
+                </a>
+                <a href="https://frontlineug.com/producer" class="nav-button" title="Producer">
+                    <img src="FTL_ASSETS/FTL_PRODUCER_BADGE.png" alt="Producer">
+                </a>
+                <a href="https://frontlineug.com/work" class="nav-button" title="Work">
+                    <img src="FTL_ASSETS/FTL_VISUAL_BADGE.png" alt="Work">
+                </a>
+                <a href="https://frontlineug.com/contact" class="nav-button" title="Contact">
+                    <img src="FTL_ASSETS/FTL_CONTACT_BADGE.png" alt="Contact">
+                </a>
+                <a href="https://frontlineug.com/events" class="nav-button" title="Events">
+                    <img src="FTL_ASSETS/FTL_EVENTS_BADGE.png" alt="Events">
+                </a>
+            </div>
+        </div>
 
-    <!-- Featured Content Area (for images/videos) -->
-    <div class="featured-content">
-        <!-- Event posters sit directly below the logo banner. Each poster has its own decorative frame and occupies most of the horizontal space. -->
-        <div class="event-area" aria-label="Featured events">
-            <div class="poster-frame">
+        <!-- Logo Banner -->
+        <div class="logo-banner">
+            <img src="FTL_ASSETS/FTL_LOGO_BANNER.png" alt="FTL Logo Banner">
+            <!-- Contact button attached to the banner. It scales with the banner width and is tilted 3deg. -->
+            <a href="https://frontlineug.com/contact" class="contact-button" title="Contact Frontline">
+                <img src="FTL_ASSETS/FTL_CONTACT_IMAGE.png" alt="Contact Button">
+            </a>
+        </div>
 
-                <div class="poster-item" aria-hidden="false">
-                    <!-- individual frame behind this poster -->
-                    <img class="poster-border" src="FTL_ASSETS/FTL_EVENT_BORDER.png" alt="Event frame" aria-hidden="true">
-                    <a class="poster-link" href="https://frontlineug.com/events/event1" title="Event 1" aria-label="Open Event 1">
-                        <img src="FTL_ASSETS/POSTER.jpg" alt="Event Poster 1" loading="lazy">
-                    </a>
+        <!-- Featured Content Area (for images/videos) -->
+        <div class="featured-content">
+            <!-- Event posters sit directly below the logo banner. Each poster has its own decorative frame and occupies most of the horizontal space. -->
+            <div class="event-area" aria-label="Featured events">
+                <div class="poster-frame">
+
+                    <div class="poster-item" aria-hidden="false">
+                        <!-- individual frame behind this poster -->
+                        <img class="poster-border" src="FTL_ASSETS/FTL_EVENT_BORDER.png" alt="Event frame" aria-hidden="true">
+                        <a class="poster-link" href="https://frontlineug.com/events/event1" title="Event 1" aria-label="Open Event 1">
+                            <img src="FTL_ASSETS/POSTER.jpg" alt="Event Poster 1" loading="lazy">
+                        </a>
+                    </div>
+
+                    <div class="poster-item" aria-hidden="false">
+                        <img class="poster-border" src="FTL_ASSETS/FTL_EVENT_BORDER.png" alt="Event frame" aria-hidden="true">
+                        <a class="poster-link" href="https://frontlineug.com/events/event2" title="Event 2" aria-label="Open Event 2">
+                            <img src="FTL_ASSETS/POSTER.jpg" alt="Event Poster 2" loading="lazy">
+                        </a>
+                    </div>
+
+                    <div class="poster-item" aria-hidden="false">
+                        <img class="poster-border" src="FTL_ASSETS/FTL_EVENT_BORDER.png" alt="Event frame" aria-hidden="true">
+                        <a class="poster-link" href="https://frontlineug.com/events/event3" title="Event 3" aria-label="Open Event 3">
+                            <img src="FTL_ASSETS/POSTER.jpg" alt="Event Poster 3" loading="lazy">
+                        </a>
+                    </div>
+
                 </div>
-
-                <div class="poster-item" aria-hidden="false">
-                    <img class="poster-border" src="FTL_ASSETS/FTL_EVENT_BORDER.png" alt="Event frame" aria-hidden="true">
-                    <a class="poster-link" href="https://frontlineug.com/events/event2" title="Event 2" aria-label="Open Event 2">
-                        <img src="FTL_ASSETS/POSTER.jpg" alt="Event Poster 2" loading="lazy">
-                    </a>
-                </div>
-
-                <div class="poster-item" aria-hidden="false">
-                    <img class="poster-border" src="FTL_ASSETS/FTL_EVENT_BORDER.png" alt="Event frame" aria-hidden="true">
-                    <a class="poster-link" href="https://frontlineug.com/events/event3" title="Event 3" aria-label="Open Event 3">
-                        <img src="FTL_ASSETS/POSTER.jpg" alt="Event Poster 3" loading="lazy">
-                    </a>
-                </div>
-
             </div>
         </div>
     </div>
