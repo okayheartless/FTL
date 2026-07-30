@@ -241,35 +241,38 @@
             padding: 0; /* poster image is inset slightly from frame via .poster-link padding */
             transition: transform 0.28s cubic-bezier(.2,.9,.2,1), box-shadow 0.28s ease;
             transform-origin: center top;
-            z-index: 1; /* keep posters beneath the logo-banner */
+            z-index: 2; /* poster-item stack base (frame will be behind, image on top) */
             overflow: visible; /* allow scaled image and enlarged frame to extend */
             display: flex;
             justify-content: center;
         }
 
         /*
-         Make the frame a bit larger than the content so its edges are visible.
-         We position the frame so it can overlap beyond the poster container if necessary.
+         Position the frame BEHIND the poster image and preserve its native aspect ratio.
+         Use width only (height:auto) so the frame image is never squished; center it behind the poster.
+         The frame image original resolution is 1334 x 1760 (width x height).
         */
         .poster-item .poster-border {
             position: absolute;
-            top: -12px;
-            left: -12px;
-            width: calc(100% + 24px);
-            height: calc(100% + 24px);
-            object-fit: contain;
-            z-index: 4; /* put the frame visually over the poster image edges */
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            /* make the frame a bit larger than the poster; adjust gap here if you want more visible edge */
+            width: calc(100% + 56px);
+            height: auto; /* preserve aspect ratio (1334 / 1760) */
+            z-index: 1; /* behind the poster-link (z-index: 3) */
             pointer-events: none;
             transition: transform 0.28s cubic-bezier(.2,.9,.2,1);
+            image-rendering: auto;
         }
 
         /*
-         The poster-link has padding so the poster image doesn't fully touch the frame center,
-         ensuring the frame edges remain visible even when the image is large.
+         The poster-link contains the image and sits above the frame.
+         Use padding so the poster image does not fully touch the frame center.
         */
         .poster-link {
             position: relative;
-            z-index: 3;
+            z-index: 3; /* above the frame */
             display: block;
             width: calc(100% - 36px);
             padding: 18px; /* creates breathing room between image and frame */
@@ -290,7 +293,6 @@
             transition: transform 0.28s cubic-bezier(.2,.9,.2,1), filter 0.28s ease;
             will-change: transform;
             border-radius: 2px; /* slight rounding of the visible poster inside the frame */
-            display: block;
         }
 
         /* Hover behavior: grow poster and frame, lift above siblings but remain under logo banner */
@@ -300,7 +302,7 @@
         }
 
         .poster-item:hover .poster-border {
-            transform: scale(1.03);
+            transform: translate(-50%, -50%) scale(1.03);
         }
 
         .poster-item:hover .poster-link img {
@@ -312,6 +314,7 @@
         @media (min-width: 1600px) {
             .poster-frame { gap: 36px; padding: 0 36px 44px; }
             .poster-item { max-width: 640px; }
+            .poster-item .poster-border { width: calc(100% + 80px); }
             .event-area { margin-top: -150px; } /* a bit more overlap on large screens */
         }
 
@@ -319,7 +322,7 @@
         @media (max-width: 900px) {
             .poster-frame { grid-template-columns: 1fr; gap: 18px; padding: 0 18px 22px; }
             .poster-item { width: 100%; max-width: 480px; }
-            .poster-item .poster-border { top: -8px; left: -8px; width: calc(100% + 16px); height: calc(100% + 16px); }
+            .poster-item .poster-border { width: calc(100% + 32px); }
             .poster-link { width: calc(100% - 24px); padding: 12px; }
             .event-area { margin-top: -70px; } /* less overlap on small screens */
         }
@@ -405,7 +408,7 @@
                 <div class="poster-frame">
 
                     <div class="poster-item" aria-hidden="false">
-                        <!-- individual frame behind this poster -->
+                        <!-- decorative frame behind this poster - now intentionally behind the poster -->
                         <img class="poster-border" src="FTL_ASSETS/FTL_EVENT_BORDER.png" alt="Event frame" aria-hidden="true">
                         <a class="poster-link" href="https://frontlineug.com/events/event1" title="Event 1" aria-label="Open Event 1">
                             <img src="FTL_ASSETS/POSTER.jpg" alt="Event Poster 1" loading="lazy">
