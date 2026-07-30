@@ -31,141 +31,96 @@ body {
 .logo-container {
   display: flex;
   justify-content: center;
-  padding: 40px 16px;
+  padding: 40px 12px;
 }
 
-.logo-img {
-  width: 100%;
-  max-width: 760px;
-  height: auto;
-  cursor: pointer;
-  transition: 0.25s;
-  display: block;
-}
-.logo-img:hover { transform: scale(1.05); }
+.logo-img { width: 100%; max-width: 760px; height: auto; display:block; }
 
-/* GALLERY: cap at 3 columns */
+/* GALLERY: centered, max 3 columns, responsive */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(3, minmax(240px, 1fr)); /* max 3 columns */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 32px;
-  padding: 0 28px 48px;
-  align-items: start;
+  padding: 0 12px 48px; /* reduced side padding */
+  max-width: calc(3 * 520px + 2 * 32px); /* cap to 3 columns */
+  margin: 0 auto; /* center the gallery block */
+  justify-items: center; /* center items inside their grid cells */
 }
 
 /* ITEM */
 .item {
+  width: 100%;
+  max-width: 520px; /* controls poster width, used to center single item */
   display: flex;
   flex-direction: column;
   opacity: 0;
   transform: translateY(20px);
   animation: fadeUp 0.6s ease forwards;
   transition: transform 0.2s ease;
-  position: relative; /* give stacking context for meta */
 }
 .item:hover { transform: translateY(-6px); }
 
-/* Poster wrapper: contains poster image, frame and meta so they scale together */
-.poster-wrapper {
-  position: relative;
-  width: 100%;
-  display: block;
-  overflow: visible;
-}
+/* Poster wrapper: contains poster image and frame */
+.poster-wrapper { position: relative; width: 100%; display:block; overflow: visible; }
 
-/* Make the decorative border match the poster wrapper and SCALE slightly so it bleeds out around the poster.
-   Use transform:scale so it remains centered and scales with the poster's rendered size. */
-:root { --frame-scale: 1.06; }
-.poster-wrapper .poster-border {
+/* frame scale variable (bigger to show bleed) */
+:root { --frame-scale: 1.12; }
+.poster-border {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 100%;
-  height: 100%;
+  left: 50%; top: 50%;
+  width: 100%; height: 100%;
   transform: translate(-50%, -50%) scale(var(--frame-scale));
   transform-origin: center;
-  object-fit: contain; /* preserve aspect ratio */
-  z-index: 2; /* behind poster (poster uses z-index:3) */
+  object-fit: contain;
+  z-index: 2; /* behind poster */
   pointer-events: none;
   display: block;
 }
 
-.poster-link {
-  position: relative;
-  z-index: 3; /* above border */
-  display: block;
-  width: 100%;
-  padding: 0; /* let image define size */
-  text-decoration: none;
-  background: transparent;
-}
-
-/* Ensure the full poster image is visible regardless of its intrinsic dimensions. */
+.poster-link { display:block; width:100%; padding:0; z-index:3; position:relative; text-decoration:none; }
 .poster-link img {
-  display: block;
-  width: 100%;      /* fill wrapper width */
-  height: auto;     /* preserve aspect ratio */
-  object-fit: contain;
-  max-height: 70vh; /* prevents extremely tall posters from breaking layout */
-  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
-  transition: transform 0.28s cubic-bezier(.2,.9,.2,1), filter 0.28s ease;
+  display:block;
+  width:100%; height:auto; object-fit:contain;
+  max-height: 70vh; /* prevents extremely tall posters */
   border-radius: 2px;
+  box-shadow: none; /* remove drop shadow */
+  transition: transform 0.28s cubic-bezier(.2,.9,.2,1), filter 0.28s ease;
 }
 .item:hover .poster-link img { transform: translateY(-6px) scale(1.02); }
 
-/* META: place over the lower area of the wrapper so it is on top of the frame and scales with it */
-.poster-wrapper .meta-row {
-  position: absolute;
-  bottom: 6%;
-  left: 6%;
-  right: 6%;
+/* META: below poster, name left, type right */
+.meta-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  padding: 0 8px;
+  width: 100%;
+  padding: 10px 4px 0 4px; /* small gap above */
   font-size: 1rem;
-  z-index: 4; /* above poster and frame */
-  background: transparent;
+  color: #000;
 }
-.poster-wrapper .meta-row .name { text-align: left; font-weight: 700; color: #000; }
-.poster-wrapper .meta-row .type { text-align: right; font-weight: 900; color: #000; }
+.meta-row .name { text-align: left; font-weight: 700; }
+.meta-row .type { text-align: right; font-weight: 900; }
 
 /* Footer */
-.footer-section {
-    padding: 24px 0 0 0;
-    text-align: center;
-    margin-top: auto;
-}
-.footer-section img {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
+.footer-section { padding: 24px 0 0 0; text-align: center; margin-top: auto; }
+.footer-section img { width: 100%; height: auto; display: block; }
 
 /* Animation */
 @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-/* Responsive: 2 columns on medium screens */
+/* Responsive tweaks */
 @media (max-width: 1100px) {
-  .gallery { grid-template-columns: repeat(2, minmax(220px, 1fr)); gap: 26px; padding: 0 22px 44px; }
-  :root { --frame-scale: 1.04; }
+  .gallery { grid-template-columns: repeat(2, minmax(220px, 1fr)); max-width: calc(2 * 520px + 1 * 32px); }
+  :root { --frame-scale: 1.08; }
 }
-
-/* Small screens: single column */
-@media (max-width: 420px) {
-  .logo-container { padding: 20px 12px; }
-  .gallery { gap: 18px; grid-template-columns: 1fr; padding: 0 14px 28px; }
-  .poster-link { padding: 0; }
-  .poster-link img { max-height: 60vh; }
-  .poster-wrapper .meta-row { bottom: 4%; left: 4%; right: 4%; font-size: 0.95rem; }
-  :root { --frame-scale: 1.02; }
+@media (max-width: 600px) {
+  .gallery { grid-template-columns: 1fr; max-width: 520px; padding: 0 10px 28px; }
+  :root { --frame-scale: 1.04; }
+  .meta-row { padding-top:8px; }
 }
 
     </style>
 </head>
-
 <body>
 
 <div class="logo-container">
@@ -174,7 +129,7 @@ body {
   </a>
 </div>
 
-<div class="gallery">
+<div class="gallery" aria-label="Events gallery">
   <!-- Items are generated by JavaScript from the 'artists' array below -->
 </div>
 
@@ -185,23 +140,18 @@ body {
 
 <script>
 /*
-  Fill this array with event objects. If 'link' is set the poster will open that link in a new tab;
-  Example:
-    { name: 'Event Name', image: '/FTL_ASSETS/POSTER.jpg', type: 'Frontline', link: 'https://...' }
+  Events array: add objects like:
+  { name: 'Event title', image: '/FTL_ASSETS/POSTER.jpg', type: 'Frontline', link: 'https://...' }
 */
 const artists = [
   { name: 'Crosslink Season 3', image: '/FTL_ASSETS/POSTER.jpg', type: 'Frontline', link: 'https://www.instagram.com/p/DW2qYfYlNwI/?img_index=1' },
-  // Add more entries here...
 ];
 
-function openLink(url) {
-  window.open(url, '_blank');
-}
+function openLink(url) { window.open(url, '_blank'); }
 
-/* Generate gallery items from the artists array */
 (function renderGallery() {
   const gallery = document.querySelector('.gallery');
-  gallery.innerHTML = ''; // clear any existing content
+  gallery.innerHTML = '';
 
   artists.forEach((a) => {
     const item = document.createElement('div');
@@ -210,12 +160,10 @@ function openLink(url) {
     const wrapper = document.createElement('div');
     wrapper.className = 'poster-wrapper';
 
-    // poster link (image)
     const link = document.createElement('a');
     link.className = 'poster-link';
     link.href = a.link || '#';
     link.title = a.name;
-    link.setAttribute('aria-label', a.name + (a.type ? ' — ' + a.type : ''));
     if (a.link) link.target = '_blank';
 
     const img = document.createElement('img');
@@ -225,13 +173,16 @@ function openLink(url) {
 
     link.appendChild(img);
 
-    // decorative border that fills the wrapper so it always aligns with the poster
     const border = document.createElement('img');
     border.className = 'poster-border';
     border.src = '/FTL_ASSETS/FTL_EVENT_BORDER.png';
     border.alt = '';
 
-    // meta row: name left, type right (placed inside wrapper so it overlays the frame)
+    // assemble: border behind image
+    wrapper.appendChild(link);
+    wrapper.appendChild(border);
+
+    // meta row sits below the poster
     const metaRow = document.createElement('div');
     metaRow.className = 'meta-row';
 
@@ -246,12 +197,9 @@ function openLink(url) {
     metaRow.appendChild(nameEl);
     metaRow.appendChild(typeEl);
 
-    // assemble wrapper: border is placed so it fills wrapper, link sits above it, meta overlays everything
-    wrapper.appendChild(link);
-    wrapper.appendChild(border);
-    wrapper.appendChild(metaRow);
-
     item.appendChild(wrapper);
+    item.appendChild(metaRow);
+
     gallery.appendChild(item);
   });
 
