@@ -133,6 +133,7 @@
             width: 100%;
             position: relative; /* make this the positioning context for the contact button */
             overflow: visible;
+            z-index: 30; /* bring banner above the events area */
         }
 
         .logo-banner img {
@@ -141,7 +142,7 @@
             display: block;
         }
 
-        /* Contact button attached to logo banner */
+        /* Contact button attached to the banner */
         .logo-banner .contact-button {
             position: absolute;
             /* place on the right side and lower third */
@@ -153,7 +154,7 @@
             transform-origin: center bottom;
             transition: transform 0.25s ease, opacity 0.25s ease, width 0.25s linear;
             display: inline-block;
-            z-index: 5; /* ensure it sits above the banner image */
+            z-index: 35; /* ensure it sits above the banner image */
             will-change: transform, width;
         }
 
@@ -201,6 +202,9 @@
             padding: 0; /* remove padding so posters reach edges */
             overflow: visible;
             background: transparent;
+            position: relative;
+            z-index: 10; /* behind the logo-banner (logo-banner z-index:30) */
+            margin-top: -120px; /* pull posters upward so they sit partially behind the banner; tweak as needed */
         }
 
         /* poster frame container stretches across viewport with small gaps */
@@ -211,20 +215,22 @@
             padding: 0 6px 16px; /* tiny horizontal padding so edges aren't flush-into-device chrome */
             box-sizing: border-box;
             align-items: flex-start;
-            justify-content: space-between;
+            justify-content: center; /* center posters inside viewport */
             max-width: none;
         }
 
         /* each poster fills roughly a third of viewport width minus gaps */
         .poster-item {
             position: relative;
-            flex: 1 1 0%;
-            min-width: 220px;
+            flex: 0 0 calc(33.333% - 8px); /* three columns, fixed basis */
+            max-width: 320px; /* limit poster width so they appear smaller */
+            min-width: 180px;
             display: block;
             box-sizing: border-box;
             padding: 0; /* remove inner padding so image touches frame */
             transition: transform 0.28s cubic-bezier(.2,.9,.2,1), box-shadow 0.28s ease;
             transform-origin: center top;
+            z-index: 1; /* keep posters beneath the logo-banner */
         }
 
         /* frame image positioned absolutely so it scales with the poster; kept inside flow because poster-item has no fixed height */
@@ -235,13 +241,13 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            z-index: 1;
+            z-index: 2;
             pointer-events: none;
         }
 
         .poster-link {
             position: relative;
-            z-index: 2;
+            z-index: 3;
             display: block;
             width: 100%;
             text-decoration: none;
@@ -253,17 +259,18 @@
         .poster-link img {
             display: block;
             width: 100%;
+            max-width: 100%;
             height: auto;
             aspect-ratio: 2 / 3; /* tall poster */
             object-fit: cover;
-            box-shadow: 0 20px 48px rgba(0,0,0,0.45);
+            box-shadow: 0 16px 36px rgba(0,0,0,0.38);
             transition: transform 0.28s cubic-bezier(.2,.9,.2,1), filter 0.28s ease;
         }
 
         /* scale both frame and image together on hover */
         .poster-item:hover {
             transform: scale(1.05);
-            z-index: 12; /* bring hovered poster above others */
+            z-index: 22; /* bring hovered poster above others but still under the logo-banner (which is 30) */
         }
 
         .poster-item:hover .poster-border {
@@ -280,13 +287,16 @@
         @media (min-width: 1600px) {
             .poster-link img { aspect-ratio: 2 / 3; }
             .poster-frame { gap: 10px; padding: 0 12px 20px; }
+            .poster-item { max-width: 380px; flex: 0 0 calc(30% - 10px); }
+            .event-area { margin-top: -150px; } /* a bit more overlap on large screens */
         }
 
         /* Stack posters on narrow screens and make them near-fullwidth */
         @media (max-width: 900px) {
             .poster-frame { flex-direction: column; gap: 18px; align-items: center; padding: 0 6px 18px; }
-            .poster-item { width: 96%; max-width: 980px; }
+            .poster-item { width: 96%; max-width: 360px; flex: 0 0 auto; }
             .poster-item .poster-border { display: block; }
+            .event-area { margin-top: -60px; } /* less overlap on small screens */
         }
 
         /* Footer - ensure it sits after content */
