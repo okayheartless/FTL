@@ -16,7 +16,7 @@
         }
 
 body {
-     background-image: url('/FTL_ASSETS/FTL_WORK_CAMO.jpg');
+     background-image: url('/FTL_ASSETS/FTL_STORE_CAMO.jpg');
     background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
@@ -30,12 +30,12 @@ body {
 .logo-container {
   display: flex;
   justify-content: center;
-  padding: 30px 16px; /* reduced side padding for small screens */
+  padding: 40px 16px; /* slightly more padding for larger header */
 }
 
 .logo-img {
   width: 100%;        /* make responsive */
-  max-width: 600px;   /* keep original max on desktop */
+  max-width: 760px;   /* increase logo max on desktop */
   height: auto;       /* preserve aspect ratio */
   cursor: pointer;
   transition: 0.25s;
@@ -46,11 +46,12 @@ body {
 }
   
 /* GRID */
+/* Increased the min tile size so there are fewer items per row. */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 28px;
-  padding: 0 20px 40px; /* smaller side padding to avoid horizontal cutoff on mobile */
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); /* larger thumbs => fewer per row */
+  gap: 32px; /* slightly larger gap for bigger tiles */
+  padding: 0 28px 48px; /* more side padding to balance larger tiles */
 }
 
 /* ITEM */
@@ -64,28 +65,46 @@ body {
 }
 
 .item:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
 }
 
-/* IMAGE */
+/* IMAGE + FRAME */
 .thumb {
-  position: relative;
+  position: relative; /* positioning context for overlay/meta */
   width: 100%;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
+  /* Keep frame rectangular, same aspect ratio */
+  aspect-ratio: 846 / 1440;
+  overflow: visible; /* allow the frame graphic to show if it extends slightly */
   cursor: pointer; /* use pointer since thumbs open links */
+  display: flex;
+  align-items: flex-start; /* ensure the inner image sits near the top of the frame */
+  justify-content: center;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: 92% auto;
+  transition: transform 0.18s ease;
+  transform-origin: center;
 }
 
+/* scale the profile picture up along with the frame (slightly reduced now for better fit) */
 .thumb img {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 18%; /* keep image slightly higher in the frame */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 76%; /* reduced slightly from 82% so the picture fits better inside the frame */
+  height: auto;
+  max-width: 90%;
   object-fit: cover;
   display: block;
+  border-radius: 6px; /* slight rounding */
+  z-index: 0; /* behind meta */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35); /* slightly larger shadow for scale */
 }
 
-/* NO SCALING */
-.thumb:hover img {
-  filter: brightness(70%);
+/* Remove darkening on hover and instead scale the thumb slightly */
+.thumb:hover {
+  transform: scale(1.035);
 }
 
 /* CLICK FEEDBACK */
@@ -93,63 +112,97 @@ body {
   transform: scale(0.98);
 }
 
-/* OVERLAY */
+/* ensure overlay still covers full thumb area but don't darken */
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.35);
+  background: transparent; /* no dark overlay on hover */
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 0.8em;
+  font-size: 1.1em;
   opacity: 0;
   transition: opacity 0.25s ease;
+  z-index: 1;
+  text-shadow: none; /* remove any text shadow */
 }
 
 .thumb:hover .overlay {
   opacity: 1;
 }
 
-/* META ROW */
+/* place meta in the bottom part of the rectangular frame (dog tag) */
+/* stacked, centered layout: artist name above the type */
 .meta {
+  position: absolute;
+  bottom: 22%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 86%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 6px;
-  font-size: 1.4em;
-  gap: 8px;
+  flex-direction: column; /* stack title and type vertically */
+  justify-content: center;
+  align-items: center; /* center text horizontally */
+  gap: 8px; /* slightly larger gap for bigger text */
+  font-size: 1.25em; /* increased base font size for meta */
+  background: transparent; /* fully transparent */
+  color: #000; /* black font */
+  padding: 8px 14px; /* increased padding to match larger layout */
+  border-radius: 12px;
+  z-index: 2; /* appear above image and overlay */
+  box-shadow: none; /* remove drop shadow */
+  text-shadow: none; /* remove any text shadow */
+  min-height: 0;
+  line-height: 1.12;
+  box-sizing: border-box;
 }
 
-/* TITLE */
+/* make text centered and stacked */
 .title {
   font-family: 'Arial';
-  font-size: 1.2em; /* increased for balance */
+  font-size: 1.3em; /* larger title for readability */
+  font-weight: 700;
+  color: #000; /* black font */
+  text-align: center;
+  text-shadow: none;
+  overflow: visible;
+  white-space: normal; /* allow wrapping if needed */
+  padding-right: 0;
+  padding-left: 0;
 }
 
-/* TEXT ALIGNMENT */
-.title { text-align: left; }
-.date { text-align: center; }
-.type { text-align: right; }
+/* TYPE stacked under title and centered */
+.type {
+  font-weight: 900; /* bold type label */
+  color: #000; /* black font */
+  text-align: center;
+  text-shadow: none;
+  flex: 0 0 auto;
+  margin-left: 0;
+  white-space: nowrap;
+  font-size: 1.05em; /* larger type label */
+}
 
-/* TITLE */
+/* DATE (not used but keep) */
+.date { text-align: center; }
+
+/* TITLE span behavior */
 .title span {
   display: inline-block;
   transform-origin: left;
-  white-space: nowrap;
 }
 
-/* DATE */
+/* DATE span */
 .date span,
 .type span {
   display: inline-block;
   transform-origin: center;
-  white-space: nowrap;
 }
 
        /* Footer */
         .footer-section {
-            padding: 20px 0 0 0;
+            padding: 24px 0 0 0;
             text-align: center;
             margin-top: auto; /* push footer to the bottom when body is a flex column */
         }
@@ -169,11 +222,27 @@ body {
   }
 }
 
+/* Add a mid breakpoint for medium screens (tablets/laptops) */
+@media (max-width: 1024px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); /* moderate tile size on tablets/laptops */
+    gap: 26px;
+    padding: 0 22px 44px;
+  }
+  .thumb img { width: 72%; } /* slightly smaller on medium screens */
+  .meta { font-size: 1.18em; bottom: 20%; padding: 7px 12px; gap: 7px; }
+  .title { font-size: 1.38em; }
+  .type { font-size: 1.08em; }
+}
+
 /* Small tweaks for very small screens */
 @media (max-width: 420px) {
   .logo-container { padding: 20px 12px; }
-  .gallery { gap: 18px; }
-  .title { font-size: 1.05em; }
+  .gallery { gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding: 0 14px 28px; }
+  .title { font-size: 1.02em; }
+  /* reduce profile pic size on very small screens so frame still shows */
+  .thumb img { top: 16%; width: 64%; max-width: 88%; }
+  .meta { width: 92%; font-size: 1.02em; bottom: 18%; padding: 8px 12px; min-height: 0; gap: 6px; }
 }
 
     </style>
@@ -204,12 +273,7 @@ body {
     { name: 'Artist Name', image: '/path/to/image.jpg', type: 'cover art', link: 'https://soundcloud.com/artist' }
 */
 const artists = [
-  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
-  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
-  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
-  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
-  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
-
+  { name: 'Crosslink Season 3', image: 'FTL_ASSETS/POSTER.jpg', type: 'Frontline', link: 'https://www.instagram.com/p/DW2qYfYlNwI/?img_index=1' },
   // Add more entries here...
 ];
 
@@ -222,12 +286,24 @@ function openLink(url) {
   const gallery = document.querySelector('.gallery');
   gallery.innerHTML = ''; // clear any existing content
 
+  // list of available frame images
+  const frames = [
+    '/FTL_ASSETS/FTL_PICTURE_FRAME1.png',
+    '/FTL_ASSETS/FTL_PICTURE_FRAME2.png',
+    '/FTL_ASSETS/FTL_PICTURE_FRAME3.png'
+  ];
+
   artists.forEach((a) => {
     const item = document.createElement('div');
     item.className = 'item';
 
     const thumb = document.createElement('div');
     thumb.className = 'thumb';
+
+    // pick a random frame for this thumb
+    const frame = frames[Math.floor(Math.random() * frames.length)];
+    // set inline background-image so each thumb gets its own random frame
+    thumb.style.backgroundImage = `url('${frame}')`;
 
     const img = document.createElement('img');
     img.src = a.image;
@@ -237,19 +313,7 @@ function openLink(url) {
     overlay.className = 'overlay';
     overlay.textContent = a.link ? 'VIEW' : '';
 
-    thumb.appendChild(img);
-    thumb.appendChild(overlay);
-
-    // click behavior: only add click if link is present
-    if (a.link) {
-      thumb.addEventListener('click', (ev) => {
-        openLink(a.link);
-      });
-      thumb.style.cursor = 'pointer';
-    } else {
-      thumb.style.cursor = 'default';
-    }
-
+    // meta will be placed over the frame inside the thumb
     const meta = document.createElement('div');
     meta.className = 'meta';
 
@@ -268,8 +332,21 @@ function openLink(url) {
     meta.appendChild(title);
     meta.appendChild(type);
 
+    thumb.appendChild(img);
+    thumb.appendChild(overlay);
+    thumb.appendChild(meta); // place meta inside thumb so it sits over the frame
+
+    // click behavior: only add click if link is present
+    if (a.link) {
+      thumb.addEventListener('click', (ev) => {
+        openLink(a.link);
+      });
+      thumb.style.cursor = 'pointer';
+    } else {
+      thumb.style.cursor = 'default';
+    }
+
     item.appendChild(thumb);
-    item.appendChild(meta);
 
     gallery.appendChild(item);
   });
