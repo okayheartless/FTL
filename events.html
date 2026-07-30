@@ -63,8 +63,8 @@ body {
 /* Poster wrapper: contains poster image and frame */
 .poster-wrapper { position: relative; width: 100%; display:block; overflow: visible; }
 
-/* frame scale variable (bigger to show bleed) */
-:root { --frame-scale: 1.12; }
+/* frame scale variable (about 8% larger) */
+:root { --frame-scale: 1.08; }
 .poster-border {
   position: absolute;
   left: 50%; top: 50%;
@@ -88,18 +88,24 @@ body {
 }
 .item:hover .poster-link img { transform: translateY(-6px) scale(1.02); }
 
-/* META: below poster, name left, type right */
-.meta-row {
+/* META: overlay on top of poster and frame; name left, type right */
+.poster-wrapper .meta-row {
+  position: absolute;
+  bottom: 6%;
+  left: 6%;
+  right: 6%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  padding: 10px 4px 0 4px; /* small gap above */
+  gap: 12px;
+  padding: 0 6px;
   font-size: 1rem;
   color: #000;
+  z-index: 5; /* above poster and border */
+  pointer-events: none; /* avoid intercepting clicks */
 }
-.meta-row .name { text-align: left; font-weight: 700; }
-.meta-row .type { text-align: right; font-weight: 900; }
+.poster-wrapper .meta-row .name { text-align: left; font-weight: 700; }
+.poster-wrapper .meta-row .type { text-align: right; font-weight: 900; }
 
 /* Footer */
 .footer-section { padding: 24px 0 0 0; text-align: center; margin-top: auto; }
@@ -111,12 +117,12 @@ body {
 /* Responsive tweaks */
 @media (max-width: 1100px) {
   .gallery { grid-template-columns: repeat(2, minmax(220px, 1fr)); max-width: calc(2 * 520px + 1 * 32px); }
-  :root { --frame-scale: 1.08; }
+  :root { --frame-scale: 1.06; }
 }
 @media (max-width: 600px) {
   .gallery { grid-template-columns: 1fr; max-width: 520px; padding: 0 10px 28px; }
   :root { --frame-scale: 1.04; }
-  .meta-row { padding-top:8px; }
+  .poster-wrapper .meta-row { bottom: 4%; left: 6%; right: 6%; font-size: 0.98rem; }
 }
 
     </style>
@@ -178,11 +184,7 @@ function openLink(url) { window.open(url, '_blank'); }
     border.src = '/FTL_ASSETS/FTL_EVENT_BORDER.png';
     border.alt = '';
 
-    // assemble: border behind image
-    wrapper.appendChild(link);
-    wrapper.appendChild(border);
-
-    // meta row sits below the poster
+    // meta overlay: on top of poster and border
     const metaRow = document.createElement('div');
     metaRow.className = 'meta-row';
 
@@ -197,9 +199,12 @@ function openLink(url) { window.open(url, '_blank'); }
     metaRow.appendChild(nameEl);
     metaRow.appendChild(typeEl);
 
-    item.appendChild(wrapper);
-    item.appendChild(metaRow);
+    // assemble: link (poster), border, then meta overlay appended into wrapper so meta sits on top
+    wrapper.appendChild(link);
+    wrapper.appendChild(border);
+    wrapper.appendChild(metaRow);
 
+    item.appendChild(wrapper);
     gallery.appendChild(item);
   });
 
