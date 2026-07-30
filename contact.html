@@ -15,6 +15,10 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+        }
+
         body {
             background-image: url('/FTL_ASSETS/FTL_CONTACT_CAMO.jpg');
             background-attachment: fixed;
@@ -52,7 +56,7 @@
         .contact-container {
             flex: 1;
             padding: 0 40px 40px 40px;
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
             width: 100%;
         }
@@ -78,10 +82,13 @@
             justify-content: center;
         }
 
+        /* Make the iframe fill most of the viewport so the embedded form doesn't scroll internally. */
         .google-form-iframe {
             width: 100%;
-            max-width: 640px;
-            height: 919px;
+            max-width: 100%;
+            /* Subtract approximate height of header/logo, page paddings, and footer so iframe fits without inner scroll */
+            height: calc(100vh - 260px);
+            min-height: 720px;
             border: none;
         }
 
@@ -122,6 +129,29 @@
         }
 
         /* Responsive Design */
+        @media (max-width: 1024px) {
+            .contact-container {
+                padding: 0 30px 30px 30px;
+            }
+
+            .contact-form {
+                padding: 30px;
+            }
+
+            .contact-form h2 {
+                font-size: 26px;
+            }
+
+            .logo-section img {
+                max-width: 220px;
+            }
+
+            .google-form-iframe {
+                height: calc(100vh - 300px); /* a bit taller on medium screens */
+                min-height: 820px;
+            }
+        }
+
         @media (max-width: 768px) {
             .contact-container {
                 padding: 0 20px 30px 20px;
@@ -140,7 +170,8 @@
             }
 
             .google-form-iframe {
-                height: 1100px; /* taller on smaller screens to reduce internal scroll */
+                height: calc(100vh - 320px); /* taller on smaller screens to reduce internal scroll */
+                min-height: 900px;
             }
         }
 
@@ -167,7 +198,8 @@
             }
 
             .google-form-iframe {
-                height: 1400px; /* increase height for very small screens */
+                height: calc(100vh - 320px); /* increase height for very small screens */
+                min-height: 1000px;
             }
         }
     </style>
@@ -187,7 +219,7 @@
 
             <div class="google-form-wrapper">
                 <!-- Embedded Google Form -->
-                <iframe class="google-form-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScA54J6IWk3UtsBhTY8FJhCq4UagszacU-_lhvyXgdBs6Xnbw/viewform?embedded=true" width="640" height="919" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                <iframe class="google-form-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScA54J6IWk3UtsBhTY8FJhCq4UagszacU-_lhvyXgdBs6Xnbw/viewform?embedded=true" frameborder="0" allowfullscreen></iframe>
             </div>
 
         </div>
