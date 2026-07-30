@@ -34,7 +34,17 @@ body {
   padding: 40px 12px;
 }
 
-.logo-img { width: 100%; max-width: 760px; height: auto; display:block; }
+.logo-img {
+  width: 100%;        /* make responsive */
+  max-width: 600px;   /* keep original max on desktop */
+  height: auto;       /* preserve aspect ratio */
+  cursor: pointer;
+  transition: 0.25s;
+  display: block;
+}
+.logo-img:hover {
+  transform: scale(1.05);
+}
 
 /* GALLERY: centered, max 3 columns, responsive */
 .gallery {
