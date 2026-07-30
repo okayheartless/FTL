@@ -93,10 +93,11 @@
         }
 
         /* Navigation Buttons Container */
+        /* Use responsive side padding (clamp) to avoid fixed large padding causing overflow */
         .navigation-buttons-container {
             display: flex;
             justify-content: center;
-            padding: 30px 150px;
+            padding: 30px clamp(16px, 10vw, 150px);
             background-color: transparent; /* allow camo to show through */
             width: 100%;
         }
@@ -216,12 +217,12 @@
 
         /*
          Events area:
-         - Use a full-bleed container and a grid for posters that expands to fill horizontal space.
-         - Use equal padding on the poster-frame to match the grid gap so spacing between edges and posters is consistent.
+         Avoid width:100vw which includes the scrollbar and can create horizontal overflow.
+         Use width:100% and remove the negative margin so the section follows the page/container width.
         */
         .event-area {
-            width: 100vw; /* full viewport width */
-            margin-left: calc(50% - 50vw); /* center full-bleed inside page */
+            width: 100%;
+            margin-left: 0;
             box-sizing: border-box;
             padding: 0; /* container padding handled by .poster-frame */
             overflow: visible;
@@ -336,7 +337,7 @@
             .poster-frame { grid-template-columns: 1fr; gap: calc(18px * var(--event-section-scale)); padding: 0 calc(18px * var(--event-section-scale)) calc(22px * var(--event-section-scale)); }
             .poster-item { width: 100%; max-width: calc(480px * var(--event-section-scale) * var(--poster-scale)); }
             /* Reduce the frame "overhang" on small screens so the decorative border doesn't look oversized */
-            .poster-item .poster-border { width: calc(100% * var(--poster-scale) + 16px * var(--event-section-scale)); transform: translate(-50%, -50%) scale(calc(var(--frame-scale) * var(--poste[...]); }
+            .poster-item .poster-border { width: calc(100% * var(--poster-scale) + 16px * var(--event-section-scale)); transform: translate(-50%, -50%) scale(calc(var(--frame-scale) * var(--poster-scale))); }
             .poster-link { width: calc(100% * var(--poster-scale) - 24px * var(--event-section-scale)); padding: calc(12px * var(--event-section-scale)); }
             .event-area { margin-top: calc(-60px * var(--event-section-scale)); } /* less overlap on small screens, reduced to lower the section */
         }
@@ -355,6 +356,11 @@
             height: auto;
             display: block;
         }
+
+        /* Optional: If you still see tiny horizontal overflows after the fixes above,
+           you can uncomment the rule below as a last-resort safeguard.
+           Note: hiding overflow may mask layout problems, so prefer fixing the root cause. */
+        /* html, body { overflow-x: hidden; } */
 
     </style>
 </head>
@@ -445,7 +451,7 @@
 
     <!-- Footer -->
 <div class="footer-section page-footer">
-  <img src="/FTL_ASSETS/FTL_FOOTER.png" alt="Footer">
+  <img src="FTL_ASSETS/FTL_FOOTER.png" alt="Footer">
 </div>
     
 </body>
