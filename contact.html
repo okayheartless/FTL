@@ -81,7 +81,15 @@
         .google-form-wrapper {
             display: flex;
             justify-content: center;
-            padding: 30px;                    /* page spacing without white box */
+            /* page spacing without white box */
+            /* the frame image will be used as a decorative background behind the form */
+            padding: 60px 40px;
+
+            /* frame background image (preserve aspect ratio using `contain`) */
+            background-image: url('/FTL_ASSETS/FTL_CONTACT_BORDER.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain; /* preserve aspect ratio so the frame doesn't get squished */
         }
 
         /* Make the iframe fill most of the viewport so the embedded form doesn't scroll internally. */
@@ -152,7 +160,8 @@
             }
 
             .google-form-wrapper {
-                padding: 24px;
+                padding: 48px 32px;
+                background-size: contain;
             }
 
             .google-form-iframe {
@@ -180,7 +189,8 @@
             }
 
             .google-form-wrapper {
-                padding: 20px;
+                padding: 40px 24px;
+                background-size: contain;
             }
 
             .google-form-iframe {
@@ -213,7 +223,8 @@
             }
 
             .google-form-wrapper {
-                padding: 16px;
+                padding: 32px 16px;
+                background-size: contain;
             }
 
             .google-form-iframe {
@@ -237,7 +248,7 @@
 
             <div class="google-form-wrapper">
                 <!-- Embedded Google Form -->
-                <iframe class="google-form-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScA54J6IWk3UtsBhTY8FJhCq4UagszacU-_lhvyXgdBs6Xnbw/viewform?embedded=true" frameborder="0" allowful[...]>
+                <iframe class="google-form-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScA54J6IWk3UtsBhTY8FJhCq4UagszacU-_lhvyXgdBs6Xnbw/viewform?embedded=true" frameborder="0" allowful[...][...]>
             </div>
 
         </div>
