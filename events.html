@@ -24,6 +24,7 @@ body {
     display: flex;
     flex-direction: column;
     font-family: 'Arial', Arial, sans-serif;
+    color: #000;
 }
 
 /* LOGO */
@@ -45,13 +46,13 @@ body {
   transform: scale(1.05);
 }
   
-/* GRID */
-/* Increased the min tile size so there are fewer items per row. */
+/* GALLERY: cap at 3 columns */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); /* larger thumbs => fewer per row */
-  gap: 32px; /* slightly larger gap for bigger tiles */
-  padding: 0 28px 48px; /* more side padding to balance larger tiles */
+  grid-template-columns: repeat(3, minmax(240px, 1fr)); /* max 3 columns */
+  gap: 32px; 
+  padding: 0 28px 48px;
+  align-items: start;
 }
 
 /* ITEM */
@@ -68,151 +69,89 @@ body {
   transform: translateY(-6px);
 }
 
-/* IMAGE + FRAME */
+/* THUMB: uses poster + decorative border behind it (like index.html) */
 .thumb {
-  position: relative; /* positioning context for overlay/meta */
+  position: relative; /* positioning context for border and poster */
   width: 100%;
-  /* Keep frame rectangular, same aspect ratio */
-  aspect-ratio: 846 / 1440;
-  overflow: visible; /* allow the frame graphic to show if it extends slightly */
-  cursor: pointer; /* use pointer since thumbs open links */
-  display: flex;
-  align-items: flex-start; /* ensure the inner image sits near the top of the frame */
-  justify-content: center;
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-size: 92% auto;
-  transition: transform 0.18s ease;
-  transform-origin: center;
-}
-
-/* scale the profile picture up along with the frame (slightly reduced now for better fit) */
-.thumb img {
-  position: absolute;
-  top: 18%; /* keep image slightly higher in the frame */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 76%; /* reduced slightly from 82% so the picture fits better inside the frame */
-  height: auto;
-  max-width: 90%;
-  object-fit: cover;
-  display: block;
-  border-radius: 6px; /* slight rounding */
-  z-index: 0; /* behind meta */
-  box-shadow: 0 8px 24px rgba(0,0,0,0.35); /* slightly larger shadow for scale */
-}
-
-/* Remove darkening on hover and instead scale the thumb slightly */
-.thumb:hover {
-  transform: scale(1.035);
-}
-
-/* CLICK FEEDBACK */
-.thumb:active {
-  transform: scale(0.98);
-}
-
-/* ensure overlay still covers full thumb area but don't darken */
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: transparent; /* no dark overlay on hover */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 1.1em;
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  z-index: 1;
-  text-shadow: none; /* remove any text shadow */
-}
-
-.thumb:hover .overlay {
-  opacity: 1;
-}
-
-/* place meta in the bottom part of the rectangular frame (dog tag) */
-/* stacked, centered layout: artist name above the type */
-.meta {
-  position: absolute;
-  bottom: 22%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 86%;
-  display: flex;
-  flex-direction: column; /* stack title and type vertically */
-  justify-content: center;
-  align-items: center; /* center text horizontally */
-  gap: 8px; /* slightly larger gap for bigger text */
-  font-size: 1.25em; /* increased base font size for meta */
-  background: transparent; /* fully transparent */
-  color: #000; /* black font */
-  padding: 8px 14px; /* increased padding to match larger layout */
-  border-radius: 12px;
-  z-index: 2; /* appear above image and overlay */
-  box-shadow: none; /* remove drop shadow */
-  text-shadow: none; /* remove any text shadow */
-  min-height: 0;
-  line-height: 1.12;
-  box-sizing: border-box;
-}
-
-/* make text centered and stacked */
-.title {
-  font-family: 'Arial';
-  font-size: 1.3em; /* larger title for readability */
-  font-weight: 700;
-  color: #000; /* black font */
-  text-align: center;
-  text-shadow: none;
   overflow: visible;
-  white-space: normal; /* allow wrapping if needed */
-  padding-right: 0;
-  padding-left: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 8px; /* room for texts underneath */
 }
 
-/* TYPE stacked under title and centered */
-.type {
-  font-weight: 900; /* bold type label */
-  color: #000; /* black font */
-  text-align: center;
-  text-shadow: none;
-  flex: 0 0 auto;
-  margin-left: 0;
-  white-space: nowrap;
-  font-size: 1.05em; /* larger type label */
+/* frame behind poster - use the event border from index.html */
+.poster-border {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1.06);
+  width: calc(100% + 56px);
+  height: auto;
+  z-index: 1; /* behind poster */
+  pointer-events: none;
 }
 
-/* DATE (not used but keep) */
-.date { text-align: center; }
-
-/* TITLE span behavior */
-.title span {
-  display: inline-block;
-  transform-origin: left;
+.poster-link {
+  position: relative;
+  z-index: 2; /* above border */
+  display: block;
+  width: calc(100% - 36px);
+  padding: 18px;
+  text-decoration: none;
+  background: transparent;
+  overflow: visible;
 }
 
-/* DATE span */
-.date span,
-.type span {
-  display: inline-block;
-  transform-origin: center;
+.poster-link img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3; /* tall poster */
+  object-fit: cover;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+  transition: transform 0.28s cubic-bezier(.2,.9,.2,1), filter 0.28s ease;
+  border-radius: 2px;
 }
 
-       /* Footer */
-        .footer-section {
-            padding: 24px 0 0 0;
-            text-align: center;
-            margin-top: auto; /* push footer to the bottom when body is a flex column */
-        }
+.item:hover .poster-link img {
+  transform: translateY(-6px) scale(1.02);
+}
 
-        .footer-section img {
-            width: 100%;
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
+/* META ROW: name left, type right */
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 4px 0 4px;
+  font-size: 1rem;
+}
+
+.meta-row .name {
+  text-align: left;
+  font-weight: 700;
+}
+
+.meta-row .type {
+  text-align: right;
+  font-weight: 900;
+}
+
+/* FOOTER */
+.footer-section {
+    padding: 24px 0 0 0;
+    text-align: center;
+    margin-top: auto;
+}
+
+.footer-section img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
 
 /* ANIMATION */
 @keyframes fadeUp {
@@ -222,27 +161,20 @@ body {
   }
 }
 
-/* Add a mid breakpoint for medium screens (tablets/laptops) */
-@media (max-width: 1024px) {
-  .gallery {
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); /* moderate tile size on tablets/laptops */
-    gap: 26px;
-    padding: 0 22px 44px;
-  }
-  .thumb img { width: 72%; } /* slightly smaller on medium screens */
-  .meta { font-size: 1.18em; bottom: 20%; padding: 7px 12px; gap: 7px; }
-  .title { font-size: 1.38em; }
-  .type { font-size: 1.08em; }
+/* Responsive: 2 columns on medium screens */
+@media (max-width: 1100px) {
+  .gallery { grid-template-columns: repeat(2, minmax(220px, 1fr)); gap: 26px; padding: 0 22px 44px; }
+  .poster-border { width: calc(100% + 48px); }
 }
 
-/* Small tweaks for very small screens */
+/* Small screens: single column */
 @media (max-width: 420px) {
   .logo-container { padding: 20px 12px; }
-  .gallery { gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding: 0 14px 28px; }
-  .title { font-size: 1.02em; }
-  /* reduce profile pic size on very small screens so frame still shows */
-  .thumb img { top: 16%; width: 64%; max-width: 88%; }
-  .meta { width: 92%; font-size: 1.02em; bottom: 18%; padding: 8px 12px; min-height: 0; gap: 6px; }
+  .gallery { gap: 18px; grid-template-columns: 1fr; padding: 0 14px 28px; }
+  .poster-link { padding: 12px; }
+  .poster-link img { aspect-ratio: 2 / 3; }
+  .meta-row { font-size: 0.98rem; }
+  .poster-border { width: calc(100% + 32px); }
 }
 
     </style>
@@ -267,13 +199,12 @@ body {
 
 <script>
 /*
-  Fill this array with artist objects. If 'link' is set the thumbnail will open that link in a new tab;
-  We removed the lightbox: thumbnails without a link will not be clickable.
+  Fill this array with event objects. If 'link' is set the poster will open that link in a new tab;
   Example:
-    { name: 'Artist Name', image: '/path/to/image.jpg', type: 'cover art', link: 'https://soundcloud.com/artist' }
+    { name: 'Event Name', image: '/FTL_ASSETS/POSTER.jpg', type: 'Frontline', link: 'https://...' }
 */
 const artists = [
-  { name: 'Crosslink Season 3', image: 'FTL_ASSETS/POSTER.jpg', type: 'Frontline', link: 'https://www.instagram.com/p/DW2qYfYlNwI/?img_index=1' },
+  { name: 'Crosslink Season 3', image: '/FTL_ASSETS/POSTER.jpg', type: 'Frontline', link: 'https://www.instagram.com/p/DW2qYfYlNwI/?img_index=1' },
   // Add more entries here...
 ];
 
@@ -286,13 +217,6 @@ function openLink(url) {
   const gallery = document.querySelector('.gallery');
   gallery.innerHTML = ''; // clear any existing content
 
-  // list of available frame images
-  const frames = [
-    '/FTL_ASSETS/FTL_PICTURE_FRAME1.png',
-    '/FTL_ASSETS/FTL_PICTURE_FRAME2.png',
-    '/FTL_ASSETS/FTL_PICTURE_FRAME3.png'
-  ];
-
   artists.forEach((a) => {
     const item = document.createElement('div');
     item.className = 'item';
@@ -300,53 +224,46 @@ function openLink(url) {
     const thumb = document.createElement('div');
     thumb.className = 'thumb';
 
-    // pick a random frame for this thumb
-    const frame = frames[Math.floor(Math.random() * frames.length)];
-    // set inline background-image so each thumb gets its own random frame
-    thumb.style.backgroundImage = `url('${frame}')`;
+    // decorative border behind this poster (use same border from index)
+    const border = document.createElement('img');
+    border.className = 'poster-border';
+    border.src = '/FTL_ASSETS/FTL_EVENT_BORDER.png';
+    border.alt = '';
+
+    const link = document.createElement('a');
+    link.className = 'poster-link';
+    link.href = a.link || '#';
+    link.title = a.name;
+    link.setAttribute('aria-label', a.name + (a.type ? ' — ' + a.type : ''));
+    if (a.link) link.target = '_blank';
 
     const img = document.createElement('img');
     img.src = a.image;
     img.alt = a.name;
+    img.loading = 'lazy';
 
-    const overlay = document.createElement('div');
-    overlay.className = 'overlay';
-    overlay.textContent = a.link ? 'VIEW' : '';
+    link.appendChild(img);
 
-    // meta will be placed over the frame inside the thumb
-    const meta = document.createElement('div');
-    meta.className = 'meta';
+    thumb.appendChild(border);
+    thumb.appendChild(link);
 
-    const title = document.createElement('div');
-    title.className = 'title';
-    const titleSpan = document.createElement('span');
-    titleSpan.textContent = a.name;
-    title.appendChild(titleSpan);
+    // meta row: name left, type right
+    const metaRow = document.createElement('div');
+    metaRow.className = 'meta-row';
 
-    const type = document.createElement('div');
-    type.className = 'type';
-    const typeSpan = document.createElement('span');
-    typeSpan.textContent = a.type || '';
-    type.appendChild(typeSpan);
+    const nameEl = document.createElement('div');
+    nameEl.className = 'name';
+    nameEl.textContent = a.name;
 
-    meta.appendChild(title);
-    meta.appendChild(type);
+    const typeEl = document.createElement('div');
+    typeEl.className = 'type';
+    typeEl.textContent = a.type || '';
 
-    thumb.appendChild(img);
-    thumb.appendChild(overlay);
-    thumb.appendChild(meta); // place meta inside thumb so it sits over the frame
-
-    // click behavior: only add click if link is present
-    if (a.link) {
-      thumb.addEventListener('click', (ev) => {
-        openLink(a.link);
-      });
-      thumb.style.cursor = 'pointer';
-    } else {
-      thumb.style.cursor = 'default';
-    }
+    metaRow.appendChild(nameEl);
+    metaRow.appendChild(typeEl);
 
     item.appendChild(thumb);
+    item.appendChild(metaRow);
 
     gallery.appendChild(item);
   });
