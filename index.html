@@ -212,7 +212,7 @@
             display: flex;
             gap: 8px; /* very small gap between posters */
             width: 100%;
-            padding: 0 6px 16px; /* tiny horizontal padding so edges aren't flush-into-device chrome */
+            padding: 0 12px 28px; /* increased horizontal/bottom padding to give breathing room for scaled images */
             box-sizing: border-box;
             align-items: flex-start;
             justify-content: center; /* center posters inside viewport */
@@ -231,6 +231,7 @@
             transition: transform 0.28s cubic-bezier(.2,.9,.2,1), box-shadow 0.28s ease;
             transform-origin: center top;
             z-index: 1; /* keep posters beneath the logo-banner */
+            overflow: visible; /* allow scaled image to extend beyond this box */
         }
 
         /* frame image positioned absolutely so it scales with the poster; kept inside flow because poster-item has no fixed height */
@@ -251,7 +252,7 @@
             display: block;
             width: 100%;
             text-decoration: none;
-            overflow: hidden;
+            overflow: visible; /* allow scaled image to escape and not be clipped */
             border-radius: 2px;
         }
 
@@ -265,12 +266,13 @@
             object-fit: cover;
             box-shadow: 0 16px 36px rgba(0,0,0,0.38);
             transition: transform 0.28s cubic-bezier(.2,.9,.2,1), filter 0.28s ease;
+            will-change: transform;
         }
 
         /* scale both frame and image together on hover */
         .poster-item:hover {
             transform: scale(1.05);
-            z-index: 22; /* bring hovered poster above others but still under the logo-banner (which is 30) */
+            z-index: 25; /* bring hovered poster above other posters but still under the logo-banner (z-index:30) */
         }
 
         .poster-item:hover .poster-border {
@@ -286,14 +288,14 @@
         /* On very wide screens, let posters grow a bit more (fills viewport) */
         @media (min-width: 1600px) {
             .poster-link img { aspect-ratio: 2 / 3; }
-            .poster-frame { gap: 10px; padding: 0 12px 20px; }
+            .poster-frame { gap: 10px; padding: 0 18px 36px; }
             .poster-item { max-width: 380px; flex: 0 0 calc(30% - 10px); }
             .event-area { margin-top: -150px; } /* a bit more overlap on large screens */
         }
 
         /* Stack posters on narrow screens and make them near-fullwidth */
         @media (max-width: 900px) {
-            .poster-frame { flex-direction: column; gap: 18px; align-items: center; padding: 0 6px 18px; }
+            .poster-frame { flex-direction: column; gap: 18px; align-items: center; padding: 0 12px 22px; }
             .poster-item { width: 96%; max-width: 360px; flex: 0 0 auto; }
             .poster-item .poster-border { display: block; }
             .event-area { margin-top: -60px; } /* less overlap on small screens */
