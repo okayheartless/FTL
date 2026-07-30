@@ -85,11 +85,13 @@
             /* the frame image will be used as a decorative background behind the form */
             padding: 60px 40px;
 
-            /* frame background image (preserve aspect ratio using `contain`) */
+            /* frame background image (preserve aspect ratio) */
             background-image: url('/FTL_ASSETS/FTL_CONTACT_BORDER.png');
             background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain; /* preserve aspect ratio so the frame doesn't get squished */
+            /* place the top of the frame at the top of the wrapper so it covers the whole form */
+            background-position: center top;
+            /* size the image so its height matches the wrapper while preserving aspect ratio */
+            background-size: auto 100%; /* preserve aspect ratio so the frame doesn't get squished and covers the full height */
         }
 
         /* Make the iframe fill most of the viewport so the embedded form doesn't scroll internally. */
@@ -161,7 +163,8 @@
 
             .google-form-wrapper {
                 padding: 48px 32px;
-                background-size: contain;
+                background-position: center top;
+                background-size: auto 100%;
             }
 
             .google-form-iframe {
@@ -190,7 +193,8 @@
 
             .google-form-wrapper {
                 padding: 40px 24px;
-                background-size: contain;
+                background-position: center top;
+                background-size: auto 100%;
             }
 
             .google-form-iframe {
@@ -224,7 +228,8 @@
 
             .google-form-wrapper {
                 padding: 32px 16px;
-                background-size: contain;
+                background-position: center top;
+                background-size: auto 100%;
             }
 
             .google-form-iframe {
@@ -248,7 +253,7 @@
 
             <div class="google-form-wrapper">
                 <!-- Embedded Google Form -->
-                <iframe class="google-form-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScA54J6IWk3UtsBhTY8FJhCq4UagszacU-_lhvyXgdBs6Xnbw/viewform?embedded=true" frameborder="0" allowful[...][...]>
+                <iframe class="google-form-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScA54J6IWk3UtsBhTY8FJhCq4UagszacU-_lhvyXgdBs6Xnbw/viewform?embedded=true" frameborder="0" allowful[...]
             </div>
 
         </div>
