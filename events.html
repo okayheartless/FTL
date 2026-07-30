@@ -61,6 +61,7 @@ body {
   transform: translateY(20px);
   animation: fadeUp 0.6s ease forwards;
   transition: transform 0.2s ease;
+  position: relative; /* give stacking context for meta */
 }
 .item:hover { transform: translateY(-6px); }
 
@@ -76,14 +77,16 @@ body {
   padding-bottom: 8px; /* room for meta row below */
 }
 
+/* Make the decorative border size follow the thumb/poster proportionally.
+   Use a relative extra gap (min(56px,8%)) rather than a fixed large px value so the frame scales down on small screens. */
 .poster-border {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%) scale(1.06);
-  width: calc(100% + 56px);
+  transform: translate(-50%, -50%) scale(1); /* no independent scaling */
+  width: calc(100% + min(56px, 8%));
   height: auto;
-  z-index: 1;
+  z-index: 1; /* behind poster by default */
   pointer-events: none;
 }
 
@@ -99,12 +102,14 @@ body {
 }
 
 /* Ensure the full poster image is visible regardless of its intrinsic dimensions.
-   Remove fixed aspect-ratio and use contain so the entire image is shown without cropping. */
+   Use contain so the entire image is shown without cropping and allow max-height to prevent extreme tall images. */
 .poster-link img {
   display: block;
-  width: 100%;
-  height: auto;           /* keep natural height so image never gets cropped */
-  object-fit: contain;    /* ensure whole image fits inside its box */
+  max-width: 100%;
+  width: auto;         /* allow portrait or landscape images to size correctly */
+  height: auto;        /* preserve aspect ratio */
+  object-fit: contain; /* ensure whole image is visible */
+  max-height: 70vh;    /* prevent extremely tall posters from pushing layout */
   box-shadow: 0 12px 28px rgba(0,0,0,0.35);
   transition: transform 0.28s cubic-bezier(.2,.9,.2,1), filter 0.28s ease;
   border-radius: 2px;
@@ -119,6 +124,9 @@ body {
   gap: 12px;
   padding: 8px 4px 0 4px;
   font-size: 1rem;
+  position: relative; /* allow z-index to take effect */
+  z-index: 5; /* sit above border/frame */
+  background: transparent;
 }
 .meta-row .name { text-align: left; font-weight: 700; }
 .meta-row .type { text-align: right; font-weight: 900; }
@@ -142,7 +150,7 @@ body {
 /* Responsive: 2 columns on medium screens */
 @media (max-width: 1100px) {
   .gallery { grid-template-columns: repeat(2, minmax(220px, 1fr)); gap: 26px; padding: 0 22px 44px; }
-  .poster-border { width: calc(100% + 48px); }
+  .poster-border { width: calc(100% + min(44px, 7%)); }
 }
 
 /* Small screens: single column */
@@ -150,9 +158,9 @@ body {
   .logo-container { padding: 20px 12px; }
   .gallery { gap: 18px; grid-template-columns: 1fr; padding: 0 14px 28px; }
   .poster-link { padding: 12px; }
-  .poster-link img { height: auto; width: 100%; }
+  .poster-link img { height: auto; width: 100%; max-height: 60vh; }
   .meta-row { font-size: 0.98rem; }
-  .poster-border { width: calc(100% + 32px); }
+  .poster-border { width: calc(100% + min(32px, 6%)); }
 }
 
     </style>
