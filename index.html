@@ -195,6 +195,63 @@
             display: block;
         }
 
+        /* New: Event posters area */
+        .event-area {
+            position: relative; /* for absolute-positioned border image */
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 10px 20px 40px; /* give space below for footer */
+            box-sizing: border-box;
+            max-width: 1280px;
+        }
+
+        /* decorative border behind the posters */
+        .event-area .event-border {
+            position: absolute;
+            top: -22px; /* nudge the border up to sit just under the logo banner */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 1200px;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 1;
+        }
+
+        .poster-frame {
+            position: relative;
+            z-index: 2; /* on top of the border */
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            padding-top: 10px;
+        }
+
+        .poster {
+            display: block;
+            width: calc(33.333% - 13.333px);
+            max-width: 360px;
+            text-decoration: none;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .poster img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+        }
+
+        .poster:hover {
+            transform: translateY(-8px) scale(1.02);
+            opacity: 0.98;
+        }
+
         /* Footer */
         footer {
             display: flex;
@@ -212,6 +269,12 @@
         }
 
         /* Responsive Design - contact-button scales smoothly */
+        @media (max-width: 1024px) {
+            .poster { max-width: 300px; }
+            .event-area { padding: 10px 12px 30px; }
+            .event-area .event-border { top: -16px; }
+        }
+
         @media (max-width: 768px) {
             .social-icons {
                 gap: 18px;
@@ -236,6 +299,23 @@
             .nav-button:nth-child(2):hover,
             .nav-button:nth-child(4):hover {
                 transform: translateY(-20px) scale(1.05);
+            }
+
+            /* stack posters vertically on small screens */
+            .poster-frame {
+                flex-direction: column;
+                gap: 18px;
+                align-items: center;
+            }
+
+            .poster {
+                width: 72%;
+                max-width: 420px;
+            }
+
+            .event-area .event-border {
+                width: 96%;
+                top: -8px;
             }
         }
     </style>
@@ -289,8 +369,23 @@
 
     <!-- Featured Content Area (for images/videos) -->
     <div class="featured-content">
-        <div class="featured-content-placeholder">
-            Add your image or video here
+        <!-- Event posters sit directly below the logo banner. The decorative border image is placed behind the posters. -->
+        <div class="event-area" aria-label="Featured events">
+            <!-- border image behind posters -->
+            <img class="event-border" src="FTL_ASSETS/FTL_EVENT_BORDER.png" alt="Event border decorative frame" aria-hidden="true">
+
+            <div class="poster-frame">
+                <!--: Replace hrefs and poster image paths as you update posters. Three posters shown; you can swap images frequently by replacing the files or updating the src attributes. -->
+                <a href="https://frontlineug.com/events/event1" class="poster" title="Event 1" aria-label="Open Event 1">
+                    <img src="FTL_ASSETS/POSTER.jpg" alt="Event Poster 1">
+                </a>
+                <a href="https://frontlineug.com/events/event2" class="poster" title="Event 2" aria-label="Open Event 2">
+                    <img src="FTL_ASSETS/POSTER.jpg" alt="Event Poster 2">
+                </a>
+                <a href="https://frontlineug.com/events/event3" class="poster" title="Event 3" aria-label="Open Event 3">
+                    <img src="FTL_ASSETS/POSTER.jpg" alt="Event Poster 3">
+                </a>
+            </div>
         </div>
     </div>
 
