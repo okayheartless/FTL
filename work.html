@@ -86,15 +86,15 @@ body {
   transform-origin: center;
 }
 
-/* scale the profile picture up along with the frame */
+/* scale the profile picture up along with the frame (slightly reduced now for better fit) */
 .thumb img {
   position: absolute;
   top: 18%; /* keep image slightly higher in the frame */
   left: 50%;
   transform: translateX(-50%);
-  width: 82%; /* increased from 72% to scale up image */
+  width: 76%; /* reduced slightly from 82% so the picture fits better inside the frame */
   height: auto;
-  max-width: 92%;
+  max-width: 90%;
   object-fit: cover;
   display: block;
   border-radius: 6px; /* slight rounding */
@@ -229,7 +229,7 @@ body {
     gap: 26px;
     padding: 0 22px 44px;
   }
-  .thumb img { width: 78%; } /* slightly smaller on medium screens */
+  .thumb img { width: 72%; } /* slightly smaller on medium screens */
   .meta { font-size: 1.18em; bottom: 20%; padding: 7px 12px; gap: 7px; }
   .title { font-size: 1.38em; }
   .type { font-size: 1.08em; }
@@ -241,7 +241,7 @@ body {
   .gallery { gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding: 0 14px 28px; }
   .title { font-size: 1.02em; }
   /* reduce profile pic size on very small screens so frame still shows */
-  .thumb img { top: 16%; width: 66%; max-width: 88%; }
+  .thumb img { top: 16%; width: 64%; max-width: 88%; }
   .meta { width: 92%; font-size: 1.02em; bottom: 18%; padding: 8px 12px; min-height: 0; gap: 6px; }
 }
 
