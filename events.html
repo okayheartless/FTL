@@ -16,7 +16,7 @@
         }
 
 body {
-     background-image: url('/FTL_ASSETS/FTL_STORE_CAMO.jpg');
+    background-image: url('/FTL_ASSETS/FTL_STORE_CAMO.jpg');
     background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
@@ -31,26 +31,24 @@ body {
 .logo-container {
   display: flex;
   justify-content: center;
-  padding: 40px 16px; /* slightly more padding for larger header */
+  padding: 40px 16px;
 }
 
 .logo-img {
-  width: 100%;        /* make responsive */
-  max-width: 760px;   /* increase logo max on desktop */
-  height: auto;       /* preserve aspect ratio */
+  width: 100%;
+  max-width: 760px;
+  height: auto;
   cursor: pointer;
   transition: 0.25s;
   display: block;
 }
-.logo-img:hover {
-  transform: scale(1.05);
-}
-  
+.logo-img:hover { transform: scale(1.05); }
+
 /* GALLERY: cap at 3 columns */
 .gallery {
   display: grid;
   grid-template-columns: repeat(3, minmax(240px, 1fr)); /* max 3 columns */
-  gap: 32px; 
+  gap: 32px;
   padding: 0 28px 48px;
   align-items: start;
 }
@@ -64,24 +62,20 @@ body {
   animation: fadeUp 0.6s ease forwards;
   transition: transform 0.2s ease;
 }
+.item:hover { transform: translateY(-6px); }
 
-.item:hover {
-  transform: translateY(-6px);
-}
-
-/* THUMB: uses poster + decorative border behind it (like index.html) */
+/* Poster + frame setup (uses same approach as index.html) */
 .thumb {
-  position: relative; /* positioning context for border and poster */
+  position: relative;
   width: 100%;
   overflow: visible;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 8px; /* room for texts underneath */
+  padding-bottom: 8px; /* room for meta row below */
 }
 
-/* frame behind poster - use the event border from index.html */
 .poster-border {
   position: absolute;
   left: 50%;
@@ -89,13 +83,13 @@ body {
   transform: translate(-50%, -50%) scale(1.06);
   width: calc(100% + 56px);
   height: auto;
-  z-index: 1; /* behind poster */
+  z-index: 1;
   pointer-events: none;
 }
 
 .poster-link {
   position: relative;
-  z-index: 2; /* above border */
+  z-index: 2;
   display: block;
   width: calc(100% - 36px);
   padding: 18px;
@@ -104,22 +98,20 @@ body {
   overflow: visible;
 }
 
+/* Ensure the full poster image is visible regardless of its intrinsic dimensions.
+   Remove fixed aspect-ratio and use contain so the entire image is shown without cropping. */
 .poster-link img {
   display: block;
   width: 100%;
-  height: auto;
-  aspect-ratio: 2 / 3; /* tall poster */
-  object-fit: cover;
+  height: auto;           /* keep natural height so image never gets cropped */
+  object-fit: contain;    /* ensure whole image fits inside its box */
   box-shadow: 0 12px 28px rgba(0,0,0,0.35);
   transition: transform 0.28s cubic-bezier(.2,.9,.2,1), filter 0.28s ease;
   border-radius: 2px;
 }
+.item:hover .poster-link img { transform: translateY(-6px) scale(1.02); }
 
-.item:hover .poster-link img {
-  transform: translateY(-6px) scale(1.02);
-}
-
-/* META ROW: name left, type right */
+/* META ROW: name left, type right (directly under the poster) */
 .meta-row {
   display: flex;
   justify-content: space-between;
@@ -128,24 +120,15 @@ body {
   padding: 8px 4px 0 4px;
   font-size: 1rem;
 }
+.meta-row .name { text-align: left; font-weight: 700; }
+.meta-row .type { text-align: right; font-weight: 900; }
 
-.meta-row .name {
-  text-align: left;
-  font-weight: 700;
-}
-
-.meta-row .type {
-  text-align: right;
-  font-weight: 900;
-}
-
-/* FOOTER */
+/* Footer */
 .footer-section {
     padding: 24px 0 0 0;
     text-align: center;
     margin-top: auto;
 }
-
 .footer-section img {
     width: 100%;
     max-width: 100%;
@@ -153,13 +136,8 @@ body {
     display: block;
 }
 
-/* ANIMATION */
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* Animation */
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
 /* Responsive: 2 columns on medium screens */
 @media (max-width: 1100px) {
@@ -172,7 +150,7 @@ body {
   .logo-container { padding: 20px 12px; }
   .gallery { gap: 18px; grid-template-columns: 1fr; padding: 0 14px 28px; }
   .poster-link { padding: 12px; }
-  .poster-link img { aspect-ratio: 2 / 3; }
+  .poster-link img { height: auto; width: 100%; }
   .meta-row { font-size: 0.98rem; }
   .poster-border { width: calc(100% + 32px); }
 }
@@ -247,7 +225,7 @@ function openLink(url) {
     thumb.appendChild(border);
     thumb.appendChild(link);
 
-    // meta row: name left, type right
+    // meta row: name left, type right (under the poster)
     const metaRow = document.createElement('div');
     metaRow.className = 'meta-row';
 
