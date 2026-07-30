@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="The visuals of Frontlime Underground">
+    <meta name="description" content="The Visuals of Frontlime Underground">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visual</title>
     
@@ -48,7 +48,7 @@ body {
 /* GRID */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* slightly larger thumbs */
   gap: 28px;
   padding: 0 20px 40px; /* smaller side padding to avoid horizontal cutoff on mobile */
 }
@@ -67,25 +67,48 @@ body {
   transform: translateY(-4px);
 }
 
-/* IMAGE */
+/* IMAGE + FRAME */
 .thumb {
-  position: relative;
+  position: relative; /* positioning context for overlay/meta */
   width: 100%;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
+  /* Use the new frame aspect ratio (846 x 1440) so frames are rectangular */
+  aspect-ratio: 846 / 1440;
+  overflow: visible; /* allow the frame graphic to show if it extends slightly */
   cursor: pointer; /* use pointer since thumbs open links */
+  display: flex;
+  align-items: flex-start; /* ensure the inner image sits near the top of the frame */
+  justify-content: center;
+  /* frame background behind the profile image
+     NOTE: the actual frame image is set per-thumb in JavaScript so each thumb can have a random frame.
+     If JS is unavailable, there is no frame fallback here. */
+  background-position: top center;
+  background-repeat: no-repeat;
+  /* make the full rectangular frame visible but preserve the frame's own ratio */
+  background-size: 92% auto;
+  /* enable smooth scaling on hover */
+  transition: transform 0.18s ease;
+  transform-origin: center;
 }
 
+/* the actual profile picture is placed inside the top portion of the rectangular frame */
 .thumb img {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 18%; /* moved slightly higher so image sits higher in the frame */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 72%; /* set width and let height auto to avoid stretching */
+  height: auto;
+  max-width: 86%;
   object-fit: cover;
   display: block;
+  border-radius: 5px; /* subtle rounding if desired */
+  z-index: 0; /* behind meta */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.3); /* subtle drop shadow */
 }
 
-/* NO SCALING */
-.thumb:hover img {
-  filter: brightness(70%);
+/* Remove darkening on hover and instead scale the thumb slightly */
+.thumb:hover {
+  transform: scale(1.03);
 }
 
 /* CLICK FEEDBACK */
@@ -93,58 +116,93 @@ body {
   transform: scale(0.98);
 }
 
-/* OVERLAY */
+/* ensure overlay still covers full thumb area but don't darken */
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.35);
+  background: transparent; /* no dark overlay on hover */
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 0.8em;
+  font-size: 1em;
   opacity: 0;
   transition: opacity 0.25s ease;
+  z-index: 1;
+  text-shadow: none; /* remove any text shadow */
 }
 
 .thumb:hover .overlay {
   opacity: 1;
 }
 
-/* META ROW */
+/* place meta in the bottom part of the rectangular frame (dog tag) */
+/* stacked, centered layout: artist name above the type */
 .meta {
+  position: absolute;
+  /* move the dog tag higher (closer to top) by increasing bottom slightly */
+  bottom: 22%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 86%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 6px;
-  font-size: 1.4em;
-  gap: 8px;
+  flex-direction: column; /* stack title and type vertically */
+  justify-content: center;
+  align-items: center; /* center text horizontally */
+  gap: 6px; /* small vertical gap between title and type */
+  font-size: 1.12em; /* slightly larger font */
+  background: transparent; /* made fully transparent per request */
+  color: #000; /* make font black */
+  padding: 6px 12px; /* comfortable padding */
+  border-radius: 12px;
+  z-index: 2; /* appear above image and overlay */
+  box-shadow: none; /* remove drop shadow */
+  text-shadow: none; /* remove any text shadow */
+  min-height: 0; /* not forcing a large tappable area so it sits closer to image */
+  line-height: 1.1;
+  box-sizing: border-box;
 }
 
-/* TITLE */
+/* make text centered and stacked */
 .title {
   font-family: 'Arial';
-  font-size: 1.2em; /* increased for balance */
+  font-size: 1.3em; /* larger title */
+  font-weight: 600;
+  color: #000; /* black font */
+  text-align: center; /* centered below picture */
+  text-shadow: none; /* ensure no shadow */
+  overflow: visible;
+  white-space: normal; /* allow wrapping if needed */
+  padding-right: 0;
+  padding-left: 0;
 }
 
-/* TEXT ALIGNMENT */
-.title { text-align: left; }
-.date { text-align: center; }
-.type { text-align: right; }
+/* TYPE stacked under title and centered */
+.type {
+  font-weight: 900; /* make the 'type' font bold as requested */
+  color: #000; /* black font */
+  text-align: center;
+  text-shadow: none;
+  flex: 0 0 auto;
+  margin-left: 0;
+  white-space: nowrap;
+  font-size: 1.02em; /* match overall meta font sizing */
+}
 
-/* TITLE */
+/* DATE (not used but keep) */
+.date { text-align: center; }
+
+/* TITLE span behavior */
 .title span {
   display: inline-block;
   transform-origin: left;
-  white-space: nowrap;
 }
 
-/* DATE */
+/* DATE span */
 .date span,
 .type span {
   display: inline-block;
   transform-origin: center;
-  white-space: nowrap;
 }
 
        /* Footer */
@@ -172,8 +230,11 @@ body {
 /* Small tweaks for very small screens */
 @media (max-width: 420px) {
   .logo-container { padding: 20px 12px; }
-  .gallery { gap: 18px; }
-  .title { font-size: 1.05em; }
+  .gallery { gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .title { font-size: 1.02em; }
+  /* reduce profile pic size on very small screens so frame still shows */
+  .thumb img { top: 16%; width: 66%; max-width: 88%; } /* moved slightly higher on tiny screens too */
+  .meta { width: 92%; font-size: 1.02em; bottom: 18%; padding: 8px 12px; min-height: 0; gap: 6px; }
 }
 
     </style>
@@ -204,12 +265,15 @@ body {
     { name: 'Artist Name', image: '/path/to/image.jpg', type: 'cover art', link: 'https://soundcloud.com/artist' }
 */
 const artists = [
-  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
-  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
-  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
-  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
-  { name: 'visual', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'VISUAL', link: 'https://soundcloud.com/3hunnaracks' },
-
+  { name: 'Parei', image: 'https://i1.sndcdn.com/avatars-93SDNlezueIUFcK8-3FExlQ-t200x200.jpg', type: 'CA', link: 'https://soundcloud.com/user-483679538' },
+  { name: 'Savedbydari', image: 'https://i1.sndcdn.com/avatars-MxSJsdZLPqvypeRr-isaoFA-t500x500.jpg', type: 'TX', link: 'https://soundcloud.com/ilyglockzy' },
+  { name: 'Baby Maison', image: 'https://i1.sndcdn.com/avatars-rP5wIL928mroPHGU-8bKA7A-t1080x1080.jpg', type: 'AL', link: 'https://soundcloud.com/maisoncampbell' },
+  { name: 'MordiKeye', image: 'https://i1.sndcdn.com/avatars-108IYH9gJJGzSKNI-xnXUSQ-t200x200.jpg', type: 'LA', link: 'https://soundcloud.com/mordik3y3' },
+  { name: 'MENACE', image: 'https://i1.sndcdn.com/avatars-DZwzovJHcumQH8Um-kVmPaA-t200x200.jpg', type: 'CA', link: 'https://soundcloud.com/menacetildeath' },
+  { name: 'XandR', image: 'https://i1.sndcdn.com/avatars-G3946EO8t7igqN6R-eCXgzg-t200x200.jpg', type: 'IL', link: 'https://soundcloud.com/prodbyxandr' },
+  { name: 'Phace', image: 'https://i1.sndcdn.com/avatars-hSMKN0oF7W5KXxFI-i37enA-t200x200.jpg', type: 'CA', link: 'https://soundcloud.com/phxcee-19245964' },
+  { name: 'XandR', image: 'https://i1.sndcdn.com/avatars-G3946EO8t7igqN6R-eCXgzg-t200x200.jpg', type: 'IL', link: 'https://soundcloud.com/prodbyxandr' },
+  { name: 'Phace', image: 'https://i1.sndcdn.com/avatars-hSMKN0oF7W5KXxFI-i37enA-t200x200.jpg', type: 'CA', link: 'https://soundcloud.com/phxcee-19245964' },
   // Add more entries here...
 ];
 
@@ -222,12 +286,24 @@ function openLink(url) {
   const gallery = document.querySelector('.gallery');
   gallery.innerHTML = ''; // clear any existing content
 
+  // list of available frame images
+  const frames = [
+    '/FTL_ASSETS/FTL_PICTURE_FRAME1.png',
+    '/FTL_ASSETS/FTL_PICTURE_FRAME2.png',
+    '/FTL_ASSETS/FTL_PICTURE_FRAME3.png'
+  ];
+
   artists.forEach((a) => {
     const item = document.createElement('div');
     item.className = 'item';
 
     const thumb = document.createElement('div');
     thumb.className = 'thumb';
+
+    // pick a random frame for this thumb
+    const frame = frames[Math.floor(Math.random() * frames.length)];
+    // set inline background-image so each thumb gets its own random frame
+    thumb.style.backgroundImage = `url('${frame}')`;
 
     const img = document.createElement('img');
     img.src = a.image;
@@ -237,19 +313,7 @@ function openLink(url) {
     overlay.className = 'overlay';
     overlay.textContent = a.link ? 'VIEW' : '';
 
-    thumb.appendChild(img);
-    thumb.appendChild(overlay);
-
-    // click behavior: only add click if link is present
-    if (a.link) {
-      thumb.addEventListener('click', (ev) => {
-        openLink(a.link);
-      });
-      thumb.style.cursor = 'pointer';
-    } else {
-      thumb.style.cursor = 'default';
-    }
-
+    // meta will be placed over the frame inside the thumb
     const meta = document.createElement('div');
     meta.className = 'meta';
 
@@ -268,8 +332,21 @@ function openLink(url) {
     meta.appendChild(title);
     meta.appendChild(type);
 
+    thumb.appendChild(img);
+    thumb.appendChild(overlay);
+    thumb.appendChild(meta); // place meta inside thumb so it sits over the frame
+
+    // click behavior: only add click if link is present
+    if (a.link) {
+      thumb.addEventListener('click', (ev) => {
+        openLink(a.link);
+      });
+      thumb.style.cursor = 'pointer';
+    } else {
+      thumb.style.cursor = 'default';
+    }
+
     item.appendChild(thumb);
-    item.appendChild(meta);
 
     gallery.appendChild(item);
   });
