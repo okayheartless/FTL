@@ -25,19 +25,39 @@
             box-sizing: border-box;
         }
 
-        /* Ensure the background covers the entire viewport and beyond */
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
+/* Ensure the background covers the entire viewport and beyond */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 
-        /* Background image on html (use relative path to work on GitHub Pages or subpaths) */
-        html {
-            background: url('FTL_ASSETS/FTL_HOME_BG.mp4') center center / cover no-repeat fixed;
-        }
+/* Remove the old background image */
+html {
+    background: #000;
+}
 
-        /*
+/* Fullscreen looping background video */
+#bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    pointer-events: none;
+}
+
+/* Optional dark overlay to improve readability */
+#bg-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.25);
+    z-index: -1;
+    pointer-events: none;
+}
+/*
          Make the page a column flex layout so footer can stick to bottom when content is short.
          The .site-content area grows to fill available vertical space.
         */
@@ -365,6 +385,13 @@
     </style>
 </head>
 <body>
+    
+<video id="bg-video" autoplay muted loop playsinline preload="auto">
+    <source src="FTL_ASSETS/FTL_HOME_BG.mp4" type="video/mp4">
+</video>
+
+<div id="bg-overlay"></div>
+    
     <div class="site-content">
         <!-- Social Media Links -->
         <div class="social-icons">
