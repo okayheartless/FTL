@@ -369,10 +369,12 @@ html {
             padding: 0;
             text-align: center;
             margin-top: auto; /* push footer to the bottom when body is a flex column */
-            overflow: hidden;
+            overflow: visible;
+            flex-shrink: 0;
         }
 
         .footer-section img {
+            position: relative;
             width: 100%;
             max-width: 100%;
             height: auto;
@@ -381,29 +383,36 @@ html {
 
         .footer-partners {
             position: absolute;
-            left: 50%;
-            bottom: 22%;
-            transform: translateX(-50%);
+            inset: 0;
             display: flex;
-            flex-wrap: wrap;
+            align-items: center;
             justify-content: center;
+            flex-wrap: nowrap;
             gap: 24px;
-            width: min(100%, 1080px);
-            padding: 0 16px;
+            width: calc(100% - 48px);
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 24px;
             z-index: 10;
+            pointer-events: auto;
+            box-sizing: border-box;
         }
 
         .footer-partners a {
             display: inline-flex;
+            flex: 1 1 clamp(120px, 18vw, 260px);
             align-items: center;
             justify-content: center;
-            width: clamp(120px, 16vw, 180px);
+            min-width: 120px;
+            max-width: 300px;
             transition: transform 0.25s ease, opacity 0.25s ease;
         }
 
         .footer-partners a img {
-            width: 100%;
+            width: auto;
+            max-width: 100%;
             height: auto;
+            max-height: 100px;
             display: block;
         }
 
@@ -412,14 +421,29 @@ html {
             opacity: 0.92;
         }
 
-        @media (max-width: 700px) {
+        @media (max-width: 900px) {
             .footer-partners {
-                gap: 16px;
-                bottom: 18%;
+                gap: 12px;
+                width: calc(100% - 32px);
+                padding: 0 16px;
             }
 
             .footer-partners a {
-                width: clamp(100px, 26vw, 140px);
+                flex: 1 1 clamp(90px, 22vw, 160px);
+                max-width: 220px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .footer-partners {
+                gap: 10px;
+                width: calc(100% - 24px);
+                padding: 0 12px;
+            }
+
+            .footer-partners a {
+                flex: 1 1 clamp(90px, 30vw, 140px);
+                max-width: 180px;
             }
         }
 
@@ -503,7 +527,6 @@ html {
                         <!-- decorative frame behind this poster - now intentionally behind the poster -->
                         <img class="poster-border" src="FTL_ASSETS/FTL_EVENT_BORDER.png" alt="Event frame" aria-hidden="true">
                         <a class="poster-link" href="https://frontlineug.com/events" title="Event 1" aria-label="Open Event 1">
-                            <img src="FTL_ASSETS/POSTER.jpg" alt="Event Poster 1" loading="lazy">
                             <img src="FTL_ASSETS/PFP/POSTER_COMING_SOON.jpg" alt="Event 1" loading="lazy">
                         </a>
                     </div>
@@ -511,7 +534,6 @@ html {
                     <div class="poster-item" aria-hidden="false">
                         <img class="poster-border" src="FTL_ASSETS/FTL_EVENT_BORDER.png" alt="Event frame" aria-hidden="true">
                         <a class="poster-link" href="https://frontlineug.com/events" title="Event 2" aria-label="Open Event 2">
-                            <img src="FTL_ASSETS/POSTER.jpg" alt="Event Poster 2" loading="lazy">
                             <img src="FTL_ASSETS/PFP/POSTER_COMING_SOON.jpg" alt="Event 2" loading="lazy">
                         </a>
                     </div>
