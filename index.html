@@ -368,6 +368,8 @@ html {
             padding: 20px 0 0 0;
             text-align: center;
             margin-top: auto; /* push footer to the bottom when body is a flex column */
+            position: relative; /* positioning context for partner logos */
+            background: transparent;
         }
 
         .footer-section img {
@@ -375,6 +377,62 @@ html {
             max-width: 100%;
             height: auto;
             display: block;
+        }
+
+        /* Partner logos overlay on footer */
+        .partner-logos {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 6%; /* adjust to move logos up/down relative to footer image */
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            z-index: 40; /* above the footer image */
+            pointer-events: auto;
+            padding: 6px 12px;
+        }
+
+        /* Individual partner link styles */
+        .partner-logos a {
+            display: inline-block;
+            width: auto;
+            height: 56px; /* default height for logos */
+            transition: transform 0.18s ease, opacity 0.18s ease;
+        }
+
+        /* Images inside the links */
+        .partner-logos a img {
+            height: 100%;
+            width: auto;
+            display: block;
+            object-fit: contain;
+            opacity: 0.98;
+        }
+
+        /* hover/tap states */
+        .partner-logos a:hover,
+        .partner-logos a:focus {
+            transform: translateY(-4px) scale(1.03);
+            opacity: 1;
+            outline: none;
+        }
+
+        /* Responsive sizes */
+        @media (max-width: 900px) {
+            .partner-logos {
+                gap: 12px;
+                top: 8%;
+            }
+            .partner-logos a {
+                height: 40px;
+            }
+        }
+        @media (min-width: 1600px) {
+            .partner-logos a {
+                height: 72px;
+            }
         }
 
         /* Optional: If you still see tiny horizontal overflows after the fixes above,
@@ -385,7 +443,7 @@ html {
     </style>
 </head>
 <body>
-    
+
 <video id="bg-video" autoplay muted loop playsinline preload="auto" poster="FTL_ASSETS/FTL_HOME_BG.jpg">
     <source src="FTL_ASSETS/FTL_HOME_BG.mp4" type="video/mp4">
 </video>
@@ -395,7 +453,7 @@ html {
 <noscript>
   <img src="FTL_ASSETS/FTL_HOME_BG.jpg" alt="" style="position:fixed; inset:0; width:100%; height:100%; object-fit:cover; z-index:-2; pointer-events:none;">
 </noscript>
-    
+
     <div class="site-content">
         <!-- Social Media Links -->
         <div class="social-icons">
@@ -483,7 +541,24 @@ html {
     <!-- Footer -->
 <div class="footer-section page-footer">
   <img src="FTL_ASSETS/FTL_FOOTER.png" alt="Footer">
+<div class="footer-section page-footer" aria-label="Footer with partners">
+  <!-- Partner logos overlay (clickable links open in new tabs) -->
+  <div class="partner-logos" aria-hidden="false">
+    <a href="https://symphonic.com/" target="_blank" rel="noopener noreferrer" title="Symphonic" aria-label="Symphonic">
+      <img src="FTL_ASSETS/SYMPHONIC_LOGO.png" alt="Symphonic logo">
+    </a>
+    <a href="https://www.veryrarecinema.com/" target="_blank" rel="noopener noreferrer" title="Very Rare Cinema" aria-label="Very Rare Cinema">
+      <img src="FTL_ASSETS/VRC_LOGO.png" alt="Very Rare Cinema logo">
+    </a>
+    <a href="https://audiomack.com/" target="_blank" rel="noopener noreferrer" title="Audiomack" aria-label="Audiomack">
+      <img src="FTL_ASSETS/AUDIOMACK_LOGO.png" alt="Audiomack logo">
+    </a>
+    <!-- Add more partner <a> elements here as needed -->
+  </div>
+
+  <!-- Use the larger/taller footer image so the overlay has room -->
+  <img src="FTL_ASSETS/FTL_FOOTER_LARGE.png" alt="Footer">
 </div>
-    
+
 </body>
 </html>
