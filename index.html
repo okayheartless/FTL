@@ -365,9 +365,11 @@ html {
         /* Footer - ensure it stays at the bottom by being outside .site-content; keep it natural flow */
        /* Footer */
         .footer-section {
-            padding: 20px 0 0 0;
+            position: relative;
+            padding: 0;
             text-align: center;
             margin-top: auto; /* push footer to the bottom when body is a flex column */
+            overflow: hidden;
         }
 
         .footer-section img {
@@ -375,6 +377,50 @@ html {
             max-width: 100%;
             height: auto;
             display: block;
+        }
+
+        .footer-partners {
+            position: absolute;
+            left: 50%;
+            bottom: 22%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 24px;
+            width: min(100%, 1080px);
+            padding: 0 16px;
+            z-index: 10;
+        }
+
+        .footer-partners a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: clamp(120px, 16vw, 180px);
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .footer-partners a img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .footer-partners a:hover {
+            transform: translateY(-4px);
+            opacity: 0.92;
+        }
+
+        @media (max-width: 700px) {
+            .footer-partners {
+                gap: 16px;
+                bottom: 18%;
+            }
+
+            .footer-partners a {
+                width: clamp(100px, 26vw, 140px);
+            }
         }
 
         /* Optional: If you still see tiny horizontal overflows after the fixes above,
@@ -484,7 +530,18 @@ html {
 
     <!-- Footer -->
 <div class="footer-section page-footer">
-  <img src="FTL_ASSETS/FTL_FOOTER.png" alt="Footer">
+  <img src="FTL_ASSETS/FTL_FOOTER_LARGE.png" alt="Footer">
+  <div class="footer-partners" aria-label="Our partners">
+    <a href="https://symphonic.com/" target="_blank" rel="noopener noreferrer" title="Symphonic">
+      <img src="FTL_ASSETS/SYMPHONIC_LOGO.png" alt="Symphonic logo">
+    </a>
+    <a href="https://www.veryrarecinema.com/" target="_blank" rel="noopener noreferrer" title="Very Rare Cinema">
+      <img src="FTL_ASSETS/VRC_LOGO.png" alt="Very Rare Cinema logo">
+    </a>
+    <a href="https://audiomack.com/" target="_blank" rel="noopener noreferrer" title="Audiomack">
+      <img src="FTL_ASSETS/AUDIOMACK_LOGO.png" alt="Audiomack logo">
+    </a>
+  </div>
 </div>
 
 </body>
