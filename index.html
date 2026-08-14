@@ -380,16 +380,20 @@ html {
             overflow-y: visible; /* allow partner row to extend vertically if needed */
             z-index: 40;
             line-height: 0; /* remove small descender gap under images */
+            /* Respect device safe area (iOS) so the footer image can sit flush */
+            padding-bottom: env(safe-area-inset-bottom, 0);
         }
 
         .footer-section img {
             position: relative;
+            z-index: 10; /* keep the image behind the partner row */
             width: 100%;
             max-width: 100%;
             height: auto;
             display: block;
             margin: 0; /* ensure no default margins create gaps */
             padding: 0;
+            -webkit-user-drag: none;
         }
 
         .footer-partners {
@@ -407,7 +411,7 @@ html {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
-            z-index: 20;
+            z-index: 60; /* ensure logos are painted above the footer image */
             pointer-events: auto;
             box-sizing: border-box;
         }
