@@ -370,7 +370,7 @@ html {
             padding: 0;
             text-align: center;
             margin-top: auto; /* push footer to the bottom when body is a flex column */
-            overflow: visible;
+            overflow: hidden; /* clip any horizontal overflow from partner logos */
             flex-shrink: 0;
         }
 
@@ -443,11 +443,22 @@ html {
                 padding: 0 12px;
             }
 
+            /* Limit partners to two-per-row at small widths to avoid overflow */
             .footer-partners a {
-                flex: 1 1 0;
+                flex: 1 1 45%;
                 min-width: 0;
-                max-width: 180px;
+                max-width: calc(50% - 12px);
             }
+
+            .footer-partners a img { max-height: 64px; }
+        }
+
+        /* Extra small devices - reduce logo heights further and ensure no horizontal scroll */
+        @media (max-width: 420px) {
+            .footer-partners { padding: 0 8px; gap: 8px; }
+            .footer-partners a { flex: 1 1 48%; max-width: calc(50% - 8px); }
+            .footer-partners a img { max-height: 52px; }
+            html, body { overflow-x: hidden; } /* last-resort safeguard on very small devices */
         }
 
         /* Optional: If you still see tiny horizontal overflows after the fixes above,
