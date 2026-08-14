@@ -376,7 +376,8 @@ html {
             width: 100%;
             padding: 0;
             text-align: center;
-            overflow: hidden; /* clip any horizontal overflow from partner logos */
+            overflow-x: hidden; /* hide horizontal overflow only */
+            overflow-y: visible; /* allow partner row to extend vertically if needed */
             z-index: 40;
             line-height: 0; /* remove small descender gap under images */
         }
@@ -393,18 +394,20 @@ html {
 
         .footer-partners {
             position: absolute;
-            inset: 0;
+            left: 0;
+            right: 0;
+            bottom: 12px; /* position slightly above the bottom so logos remain visible */
             display: flex;
             align-items: center;
             justify-content: center;
-            align-content: center; /* center wrapped rows vertically */
+            align-content: center;
             flex-wrap: nowrap; /* keep logos on a single row and let them shrink instead */
-            gap: 16px;
+            gap: 12px;
             width: 100%;
             max-width: 1200px;
-            margin: auto;
-            padding: 0 24px;
-            z-index: 10;
+            margin: 0 auto;
+            padding: 0 20px;
+            z-index: 20;
             pointer-events: auto;
             box-sizing: border-box;
         }
