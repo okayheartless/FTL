@@ -398,7 +398,7 @@ html {
             align-items: center;
             justify-content: center;
             align-content: center; /* center wrapped rows vertically */
-            flex-wrap: wrap; /* allow logos to wrap to additional lines on small screens */
+            flex-wrap: nowrap; /* keep logos on a single row and let them shrink instead */
             gap: 16px;
             width: 100%;
             max-width: 1200px;
@@ -456,9 +456,9 @@ html {
 
             /* Limit partners to two-per-row at small widths to avoid overflow */
             .footer-partners a {
-                flex: 1 1 45%;
+                flex: 1 1 0; /* allow logos to shrink in a single row */
                 min-width: 0;
-                max-width: calc(50% - 12px);
+                max-width: 220px;
             }
 
             .footer-partners a img { max-height: 64px; }
@@ -467,7 +467,7 @@ html {
         /* Extra small devices - reduce logo heights further and ensure no horizontal scroll */
         @media (max-width: 420px) {
             .footer-partners { padding: 0 8px; gap: 8px; }
-            .footer-partners a { flex: 1 1 48%; max-width: calc(50% - 8px); }
+            .footer-partners a { flex: 1 1 0; max-width: 200px; }
             .footer-partners a img { max-height: 52px; }
             html, body { overflow-x: hidden; } /* last-resort safeguard on very small devices */
             .site-content { padding-bottom: 110px; }
