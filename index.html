@@ -388,9 +388,9 @@ html {
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-wrap: nowrap;
-            gap: 24px;
-            width: calc(100% - 48px);
+            flex-wrap: wrap; /* allow logos to wrap to additional lines on small screens */
+            gap: 16px;
+            width: 100%;
             max-width: 1200px;
             margin: auto;
             padding: 0 24px;
@@ -401,10 +401,10 @@ html {
 
         .footer-partners a {
             display: inline-flex;
-            flex: 1 1 clamp(120px, 18vw, 260px);
+            flex: 1 1 0; /* allow items to shrink evenly and wrap */
             align-items: center;
             justify-content: center;
-            min-width: 120px;
+            min-width: 0; /* allow flex items to become smaller than their contents if needed */
             max-width: 300px;
             transition: transform 0.25s ease, opacity 0.25s ease;
         }
@@ -430,7 +430,8 @@ html {
             }
 
             .footer-partners a {
-                flex: 1 1 clamp(90px, 22vw, 160px);
+                flex: 1 1 0;
+                min-width: 0;
                 max-width: 220px;
             }
         }
@@ -443,7 +444,8 @@ html {
             }
 
             .footer-partners a {
-                flex: 1 1 clamp(90px, 30vw, 140px);
+                flex: 1 1 0;
+                min-width: 0;
                 max-width: 180px;
             }
         }
