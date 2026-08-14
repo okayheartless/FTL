@@ -73,10 +73,10 @@ html {
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* The main content area should grow so footer sits at bottom on short pages */
+        /* The main content area should grow so the footer sits at the bottom on short pages */
         .site-content {
             flex: 1 0 auto;
-            padding-bottom: 140px; /* reserve space for the fixed footer so content isn't covered */
+            padding-bottom: 0;
         }
 
         /* Social Icons Section */
@@ -387,16 +387,13 @@ html {
             .event-area { margin-top: calc(-60px * var(--event-section-scale)); } /* less overlap on small screens, reduced to lower the section */
         }
 
-        /* Footer - ensure it stays at the bottom by being outside .site-content; keep it natural flow */
-       /* Footer */
-        /* Make the footer sit flush at the bottom of the viewport and avoid layout gaps.
-           We reserve space in `.site-content` so the footer does not cover page content. */
+        /* Footer - visible and anchored at the bottom without floating over content */
         .footer-section {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            position: relative;
+            display: block;
             width: 100%;
+            flex-shrink: 0;
+            margin-top: auto;
             padding: 0;
             text-align: center;
             overflow-x: hidden; /* hide horizontal overflow only */
