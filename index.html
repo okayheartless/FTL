@@ -167,6 +167,29 @@ html {
             transform: translateY(-35px) scale(1.05);
         }
 
+        @media (max-width: 700px) {
+            .navigation-buttons-container {
+                padding: 18px 12px 0;
+            }
+
+            .navigation-buttons {
+                gap: 12px;
+            }
+
+            .nav-button {
+                flex: 1 1 calc(50% - 12px);
+                min-width: 0;
+                max-width: 200px;
+            }
+
+            .nav-button:nth-child(2),
+            .nav-button:nth-child(4),
+            .nav-button:nth-child(2):hover,
+            .nav-button:nth-child(4):hover {
+                transform: none;
+            }
+        }
+
         /* Logo Banner Section */
         .logo-banner {
             display: flex;
