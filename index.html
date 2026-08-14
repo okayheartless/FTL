@@ -76,6 +76,7 @@ html {
         /* The main content area should grow so footer sits at bottom on short pages */
         .site-content {
             flex: 1 0 auto;
+            padding-bottom: 140px; /* reserve space for the fixed footer so content isn't covered */
         }
 
         /* Social Icons Section */
@@ -365,13 +366,19 @@ html {
 
         /* Footer - ensure it stays at the bottom by being outside .site-content; keep it natural flow */
        /* Footer */
+        /* Make the footer sit flush at the bottom of the viewport and avoid layout gaps.
+           We reserve space in `.site-content` so the footer does not cover page content. */
         .footer-section {
-            position: relative;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
             padding: 0;
             text-align: center;
-            margin-top: auto; /* push footer to the bottom when body is a flex column */
             overflow: hidden; /* clip any horizontal overflow from partner logos */
-            flex-shrink: 0;
+            z-index: 40;
+            line-height: 0; /* remove small descender gap under images */
         }
 
         .footer-section img {
@@ -380,6 +387,8 @@ html {
             max-width: 100%;
             height: auto;
             display: block;
+            margin: 0; /* ensure no default margins create gaps */
+            padding: 0;
         }
 
         .footer-partners {
@@ -388,6 +397,7 @@ html {
             display: flex;
             align-items: center;
             justify-content: center;
+            align-content: center; /* center wrapped rows vertically */
             flex-wrap: wrap; /* allow logos to wrap to additional lines on small screens */
             gap: 16px;
             width: 100%;
@@ -410,11 +420,12 @@ html {
         }
 
         .footer-partners a img {
-            width: auto;
+            width: 100%; /* always scale to the anchor container width */
             max-width: 100%;
             height: auto;
             max-height: 100px;
             display: block;
+            object-fit: contain; /* preserve logo aspect while fitting */
         }
 
         .footer-partners a:hover {
@@ -459,6 +470,12 @@ html {
             .footer-partners a { flex: 1 1 48%; max-width: calc(50% - 8px); }
             .footer-partners a img { max-height: 52px; }
             html, body { overflow-x: hidden; } /* last-resort safeguard on very small devices */
+            .site-content { padding-bottom: 110px; }
+        }
+
+        /* Reduce reserved content space for medium and small screens */
+        @media (max-width: 900px) {
+            .site-content { padding-bottom: 120px; }
         }
 
         /* Optional: If you still see tiny horizontal overflows after the fixes above,
