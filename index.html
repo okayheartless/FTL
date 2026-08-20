@@ -420,7 +420,7 @@ html {
             position: absolute;
             left: 0;
             right: 0;
-            bottom: 12px; /* position slightly above the bottom so logos remain visible */
+            top: 50%; /* center the partner logos within the footer image */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -434,6 +434,7 @@ html {
             z-index: 60; /* ensure logos are painted above the footer image */
             pointer-events: auto;
             box-sizing: border-box;
+            transform: translateY(-50%);
         }
 
         .footer-partners a {
