@@ -1,380 +1,1373 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="The musicians of Frontline Underground">
+    <meta name="description" content="The music network of Frontline Underground">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music</title>
-    
+
+    <title>Music | Frontline Underground</title>
+
     <link rel="icon" href="/FTL_ASSETS/FTL_FAVICON_96.png">
     <link rel="stylesheet" href="/custom.css">
+
     <style>
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-body {
-     background-image: url('/FTL_ASSETS/FTL_ARTIST_CAMO.jpg');
-    background-attachment: fixed;
-    background-size: cover;
-    background-repeat: no-repeat;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    font-family: 'Arial', Arial, sans-serif;
-}
+        body {
+            background-image: url('/FTL_ASSETS/FTL_PRODUCER_CAMO.jpg');
+            background-attachment: fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
 
-/* LOGO */
-.logo-container {
-  display: flex;
-  justify-content: center;
-  padding: 30px 16px; /* reduced side padding for small screens */
-}
+            min-height: 100vh;
 
-.logo-img {
-  width: 100%;        /* make responsive */
-  max-width: 600px;   /* keep original max on desktop */
-  height: auto;       /* preserve aspect ratio */
-  cursor: pointer;
-  transition: 0.25s;
-  display: block;
-}
-.logo-img:hover {
-  transform: scale(1.05);
-}
-  
-/* GRID */
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* slightly larger thumbs */
-  gap: 28px;
-  padding: 0 20px 40px; /* smaller side padding to avoid horizontal cutoff on mobile */
-}
+            display: flex;
+            flex-direction: column;
 
-/* ITEM */
-.item {
-  display: flex;
-  flex-direction: column;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 0.6s ease forwards;
-  transition: transform 0.2s ease;
-}
-
-.item:hover {
-  transform: translateY(-4px);
-}
-
-/* IMAGE + FRAME */
-.thumb {
-  position: relative; /* positioning context for overlay/meta */
-  width: 100%;
-  /* Use the new frame aspect ratio (846 x 1440) so frames are rectangular */
-  aspect-ratio: 846 / 1440;
-  overflow: visible; /* allow the frame graphic to show if it extends slightly */
-  cursor: pointer; /* use pointer since thumbs open links */
-  display: flex;
-  align-items: flex-start; /* ensure the inner image sits near the top of the frame */
-  justify-content: center;
-  /* frame background behind the profile image
-     NOTE: the actual frame image is set per-thumb in JavaScript so each thumb can have a random frame.
-     If JS is unavailable, there is no frame fallback here. */
-  background-position: top center;
-  background-repeat: no-repeat;
-  /* make the full rectangular frame visible but preserve the frame's own ratio */
-  background-size: 92% auto;
-  /* enable smooth scaling on hover */
-  transition: transform 0.18s ease;
-  transform-origin: center;
-}
-
-/* the actual profile picture is placed inside the top portion of the rectangular frame */
-.thumb img {
-  position: absolute;
-  top: 18%; /* moved slightly higher so image sits higher in the frame */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 72%; /* set width and let height auto to avoid stretching */
-  height: auto;
-  max-width: 86%;
-  object-fit: cover;
-  display: block;
-  border-radius: 5px; /* subtle rounding if desired */
-  z-index: 0; /* behind meta */
-  box-shadow: 0 6px 18px rgba(0,0,0,0.3); /* subtle drop shadow */
-}
-
-/* Remove darkening on hover and instead scale the thumb slightly */
-.thumb:hover {
-  transform: scale(1.03);
-}
-
-/* CLICK FEEDBACK */
-.thumb:active {
-  transform: scale(0.98);
-}
-
-/* ensure overlay still covers full thumb area but don't darken */
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: transparent; /* no dark overlay on hover */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 1em;
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  z-index: 1;
-  text-shadow: none; /* remove any text shadow */
-}
-
-.thumb:hover .overlay {
-  opacity: 1;
-}
-
-/* place meta in the bottom part of the rectangular frame (dog tag) */
-/* stacked, centered layout: artist name above the type */
-.meta {
-  position: absolute;
-  /* move the dog tag higher (closer to top) by increasing bottom slightly */
-  bottom: 22%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 86%;
-  display: flex;
-  flex-direction: column; /* stack title and type vertically */
-  justify-content: center;
-  align-items: center; /* center text horizontally */
-  gap: 6px; /* small vertical gap between title and type */
-  font-size: 1.12em; /* slightly larger font */
-  background: transparent; /* made fully transparent per request */
-  color: #000; /* make font black */
-  padding: 6px 12px; /* comfortable padding */
-  border-radius: 12px;
-  z-index: 2; /* appear above image and overlay */
-  box-shadow: none; /* remove drop shadow */
-  text-shadow: none; /* remove any text shadow */
-  min-height: 0; /* not forcing a large tappable area so it sits closer to image */
-  line-height: 1.1;
-  box-sizing: border-box;
-}
-
-/* make text centered and stacked */
-.title {
-  font-family: 'Arial';
-  font-size: 1.3em; /* larger title */
-  font-weight: 600;
-  color: #000; /* black font */
-  text-align: center; /* centered below picture */
-  text-shadow: none; /* ensure no shadow */
-  overflow: visible;
-  white-space: normal; /* allow wrapping if needed */
-  padding-right: 0;
-  padding-left: 0;
-}
-
-/* TYPE stacked under title and centered */
-.type {
-  font-weight: 900; /* make the 'type' font bold as requested */
-  color: #000; /* black font */
-  text-align: center;
-  text-shadow: none;
-  flex: 0 0 auto;
-  margin-left: 0;
-  white-space: nowrap;
-  font-size: 1.02em; /* match overall meta font sizing */
-}
-
-/* DATE (not used but keep) */
-.date { text-align: center; }
-
-/* TITLE span behavior */
-.title span {
-  display: inline-block;
-  transform-origin: left;
-}
-
-/* DATE span */
-.date span,
-.type span {
-  display: inline-block;
-  transform-origin: center;
-}
-
-       /* Footer */
-        .footer-section {
-            padding: 20px 0 0 0;
-            text-align: center;
-            margin-top: auto; /* push footer to the bottom when body is a flex column */
+            font-family: 'Arial', Arial, sans-serif;
         }
 
-        .footer-section img {
+
+        /* =========================
+           LOGO
+        ========================= */
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            padding: 30px 16px;
+        }
+
+        .logo-img {
             width: 100%;
-            max-width: 100%;
+            max-width: 600px;
             height: auto;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+
             display: block;
         }
 
-/* ANIMATION */
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
 
-/* Small tweaks for very small screens */
-@media (max-width: 420px) {
-  .logo-container { padding: 20px 12px; }
-  .gallery { gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-  .title { font-size: 1.02em; }
-  /* reduce profile pic size on very small screens so frame still shows */
-  .thumb img { top: 16%; width: 66%; max-width: 88%; } /* moved slightly higher on tiny screens too */
-  .meta { width: 92%; font-size: 1.02em; bottom: 18%; padding: 8px 12px; min-height: 0; gap: 6px; }
-}
+
+        /* =========================
+           MUSIC FILTERS
+        ========================= */
+
+        .music-controls {
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            padding: 0 20px 35px;
+        }
+
+
+        .filter-btn {
+
+            font-family: Arial, sans-serif;
+
+            font-size: 14px;
+
+            font-weight: 900;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+
+            padding: 12px 22px;
+
+            border: 2px solid #000;
+
+            background: #f3f1ee;
+
+            color: #000;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+
+        }
+
+
+        .filter-btn:hover {
+
+            transform: translateY(-2px);
+
+            background: #000;
+
+            color: #fff;
+
+        }
+
+
+        .filter-btn.active {
+
+            background: #000;
+
+            color: #fff;
+
+        }
+
+
+        /* =========================
+           GRID
+        ========================= */
+
+        .gallery {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(300px, 1fr));
+
+            gap: 28px;
+
+            padding: 0 20px 40px;
+
+        }
+
+
+        /* =========================
+           ITEM
+        ========================= */
+
+        .item {
+
+            display: flex;
+
+            flex-direction: column;
+
+            opacity: 0;
+
+            transform: translateY(20px);
+
+            animation: fadeUp 0.6s ease forwards;
+
+            transition:
+                transform 0.2s ease,
+                opacity 0.25s ease;
+
+        }
+
+
+        .item:hover {
+
+            transform: translateY(-4px);
+
+        }
+
+
+        /* =========================
+           IMAGE + FRAME
+        ========================= */
+
+        .thumb {
+
+            position: relative;
+
+            width: 100%;
+
+            aspect-ratio: 846 / 1440;
+
+            overflow: visible;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: center;
+
+            background-position: top center;
+
+            background-repeat: no-repeat;
+
+            background-size: 92% auto;
+
+            transition: transform 0.18s ease;
+
+            transform-origin: center;
+
+        }
+
+
+        /* =========================
+           PROFILE IMAGE
+        ========================= */
+
+        .thumb img {
+
+            position: absolute;
+
+            top: 18%;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            width: 72%;
+
+            height: auto;
+
+            max-width: 86%;
+
+            object-fit: cover;
+
+            display: block;
+
+            border-radius: 5px;
+
+            z-index: 0;
+
+            box-shadow:
+                0 6px 18px rgba(0,0,0,0.3);
+
+        }
+
+
+        .thumb:hover {
+
+            transform: scale(1.03);
+
+        }
+
+
+        .thumb:active {
+
+            transform: scale(0.98);
+
+        }
+
+
+        /* =========================
+           OVERLAY
+        ========================= */
+
+        .overlay {
+
+            position: absolute;
+
+            inset: 0;
+
+            background: transparent;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #fff;
+
+            font-size: 1em;
+
+            opacity: 0;
+
+            transition: opacity 0.25s ease;
+
+            z-index: 1;
+
+            text-shadow: none;
+
+        }
+
+
+        .thumb:hover .overlay {
+
+            opacity: 1;
+
+        }
+
+
+        /* =========================
+           META
+        ========================= */
+
+        .meta {
+
+            position: absolute;
+
+            bottom: 22%;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            width: 86%;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 6px;
+
+            font-size: 1.12em;
+
+            background: transparent;
+
+            color: #000;
+
+            padding: 6px 12px;
+
+            border-radius: 12px;
+
+            z-index: 2;
+
+            box-shadow: none;
+
+            text-shadow: none;
+
+            min-height: 0;
+
+            line-height: 1.1;
+
+            box-sizing: border-box;
+
+        }
+
+
+        /* =========================
+           NAME
+        ========================= */
+
+        .title {
+
+            font-family: Arial, sans-serif;
+
+            font-size: 1.3em;
+
+            font-weight: 600;
+
+            color: #000;
+
+            text-align: center;
+
+            text-shadow: none;
+
+            overflow: visible;
+
+            white-space: normal;
+
+            padding-right: 0;
+
+            padding-left: 0;
+
+        }
+
+
+        /* =========================
+           LOCATION / TYPE
+        ========================= */
+
+        .type {
+
+            font-weight: 900;
+
+            color: #000;
+
+            text-align: center;
+
+            text-shadow: none;
+
+            flex: 0 0 auto;
+
+            margin-left: 0;
+
+            white-space: nowrap;
+
+            font-size: 1.02em;
+
+        }
+
+
+        /* =========================
+           ROLE TAGS
+        ========================= */
+
+        .role-tags {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 5px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .role-tag {
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+
+            padding: 4px 7px;
+
+            background: #000;
+
+            color: #fff;
+
+            line-height: 1;
+
+        }
+
+
+        /* =========================
+           TITLE SPANS
+        ========================= */
+
+        .title span {
+
+            display: inline-block;
+
+            transform-origin: left;
+
+        }
+
+
+        .date span,
+        .type span {
+
+            display: inline-block;
+
+            transform-origin: center;
+
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer-section {
+
+            padding: 20px 0 0 0;
+
+            text-align: center;
+
+            margin-top: auto;
+
+        }
+
+
+        .footer-section img {
+
+            width: 100%;
+
+            max-width: 100%;
+
+            height: auto;
+
+            display: block;
+
+        }
+
+
+        /* =========================
+           ANIMATION
+        ========================= */
+
+        @keyframes fadeUp {
+
+            to {
+
+                opacity: 1;
+
+                transform: translateY(0);
+
+            }
+
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 420px) {
+
+            .logo-container {
+
+                padding: 20px 12px;
+
+            }
+
+
+            .gallery {
+
+                gap: 18px;
+
+                grid-template-columns:
+                    repeat(auto-fit, minmax(220px, 1fr));
+
+            }
+
+
+            .title {
+
+                font-size: 1.02em;
+
+            }
+
+
+            .thumb img {
+
+                top: 16%;
+
+                width: 66%;
+
+                max-width: 88%;
+
+            }
+
+
+            .meta {
+
+                width: 92%;
+
+                font-size: 1.02em;
+
+                bottom: 18%;
+
+                padding: 8px 12px;
+
+                min-height: 0;
+
+                gap: 6px;
+
+            }
+
+
+            .filter-btn {
+
+                font-size: 12px;
+
+                padding: 10px 15px;
+
+            }
+
+        }
 
     </style>
+
 </head>
+
 
 <body>
 
-<div class="logo-container">
-  <a href="https://frontlineug.com/">
-    <img src="/FTL_ASSETS/FTL_LOGO.png" class="logo-img" alt="Frontline UG Logo">
-  </a>
-</div>
 
-<div class="gallery">
-  <!-- Items are generated by JavaScript from the 'artists' array below -->
-</div>
+    <!-- =========================
+         LOGO
+    ========================= -->
 
-<!-- FOOTER IMAGE -->
-<div class="footer-section page-footer">
-  <img src="/FTL_ASSETS/FTL_FOOTER.png" alt="Footer">
-</div>
+    <div class="logo-container">
+
+        <a href="https://frontlineug.com/">
+
+            <img
+                src="/FTL_ASSETS/FTL_LOGO.png"
+                class="logo-img"
+                alt="Frontline UG Logo"
+            >
+
+        </a>
+
+    </div>
+
+
+
+    <!-- =========================
+         MUSIC FILTERS
+    ========================= -->
+
+    <div class="music-controls">
+
+        <button
+            class="filter-btn active"
+            data-filter="all"
+        >
+            All
+        </button>
+
+
+        <button
+            class="filter-btn"
+            data-filter="artist"
+        >
+            Artists
+        </button>
+
+
+        <button
+            class="filter-btn"
+            data-filter="producer"
+        >
+            Producers
+        </button>
+
+    </div>
+
+
+
+    <!-- =========================
+         MUSIC GALLERY
+    ========================= -->
+
+    <div class="gallery">
+
+        <!-- Generated by JavaScript -->
+
+    </div>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <div class="footer-section page-footer">
+
+        <img
+            src="/FTL_ASSETS/FTL_FOOTER.png"
+            alt="Footer"
+        >
+
+    </div>
+
+
 
 <script>
-/*
-  Fill this array with artist objects. If 'link' is set the thumbnail will open that link in a new tab;
-  We removed the lightbox: thumbnails without a link will not be clickable.
-  Example:
-    { name: 'Artist Name', image: '/path/to/image.jpg', type: 'cover art', link: 'https://soundcloud.com/artist' }
-*/
-const artists = [
-  { name: 'Parei', image: 'https://i1.sndcdn.com/avatars-93SDNlezueIUFcK8-3FExlQ-t200x200.jpg', type: 'CA', link: 'https://soundcloud.com/user-483679538' },
-  { name: 'Savedbydari', image: 'https://i1.sndcdn.com/avatars-MxSJsdZLPqvypeRr-isaoFA-t500x500.jpg', type: 'TX', link: 'https://soundcloud.com/ilyglockzy' },
-  { name: 'Baby Maison', image: 'FTL_ASSETS/PFP/babymaison2.jpg', type: 'AL', link: 'https://soundcloud.com/maisoncampbell' },
-  { name: 'MordiKeye', image: 'FTL_ASSETS/PFP/mordikeye2.PNG', type: 'LA', link: 'https://soundcloud.com/mordik3y3' },
-  { name: 'MENACE', image: 'FTL_ASSETS/PFP/MENACE3.png', type: 'CA', link: 'https://linktr.ee/mxnvce' },
-  { name: 'XandR', image: 'https://i1.sndcdn.com/avatars-G3946EO8t7igqN6R-eCXgzg-t200x200.jpg', type: 'IL', link: 'https://guns.lol/.xandr' },
-  { name: 'Phace', image: 'https://i1.sndcdn.com/avatars-hSMKN0oF7W5KXxFI-i37enA-t200x200.jpg', type: 'CA', link: 'https://soundcloud.com/phxcee-19245964' },
-  { name: 'Kappa', image: 'https://i1.sndcdn.com/avatars-AbuOwLpwElXCqW0A-zomotQ-t200x200.jpg', type: 'WA', link: 'https://soundcloud.com/06broken' },
-  { name: 'Filayyy', image: 'https://i1.sndcdn.com/avatars-BYIxSNGnln95w5jy-zGcq8Q-t200x200.jpg', type: 'TN', link: 'https://soundcloud.com/matt-the-fat' },
-  { name: 'Punt', image: 'https://i1.sndcdn.com/avatars-zJS8sxKOKXrUFTlR-PTBZyw-t200x200.jpg', type: 'US', link: 'https://soundcloud.com/user-572055262' },
-  { name: '3hunnaracks', image: 'https://i1.sndcdn.com/avatars-wEKvVAzTBwoLzTof-oOMOEQ-t1080x1080.jpg', type: 'SWE', link: 'https://soundcloud.com/3hunnaracks' },
-  { name: 'Whotfismar', image: 'https://i1.sndcdn.com/avatars-31TYrHEZVpAWiEVz-wqUDhw-t200x200.jpg', type: 'LA', link: 'https://soundcloud.com/user-602672535' },
-  { name: 'Bleach3k', image: 'https://i1.sndcdn.com/avatars-ipjiB43NwSwJXKx9-POIzsQ-t200x200.jpg', type: 'CAN', link: 'https://soundcloud.com/stoked-out' },
-  { name: 'Kylei', image: 'https://i1.sndcdn.com/avatars-54eVyFxByoXvcjlz-FztjZw-t200x200.jpg', type: 'NY', link: 'https://soundcloud.com/kyleic' },
-  { name: 'Ebony White', image: 'https://i1.sndcdn.com/avatars-RPEj9ci4CAtOpEqQ-lLo1Kg-t200x200.jpg', type: 'CAN', link: 'https://soundcloud.com/user-175937093' },
-  { name: 'Avalon', image: 'https://i1.sndcdn.com/avatars-La6HHFzIBIkFMMz1-DNgpCg-t200x200.jpg', type: 'CA', link: 'https://soundcloud.com/findavalon' },
-  { name: 'Baby Yaad', image: 'https://i1.sndcdn.com/avatars-hZfHHyG1IDLT0zsw-nSlHdw-t200x200.jpg', type: 'GA', link: 'https://soundcloud.com/babyyaad' },
-  { name: 'Jjaey', image: 'FTL_ASSETS/PFP/jjaey2.jpg', type: 'JAP', link: 'https://soundcloud.com/jake-morrison-927780005' },
-  { name: 'Jiyū', image: 'https://i1.sndcdn.com/avatars-hWQOjlyVXhh9uqpi-daU5rA-t200x200.jpg', type: 'GER', link: 'https://soundcloud.com/jiyuudat' },
-  { name: 'ilyreddo', image: 'FTL_ASSETS/PFP/reddo2.jpg', type: 'US', link: 'https://soundcloud.com/ilyreddoofficial' },
-  { name: 'Saint!', image: 'FTL_ASSETS/PFP/saint2.jpg', type: 'IL', link: 'https://soundcloud.com/glizzx-saucy' },
-  { name: 'Aqoye', image: 'https://i1.sndcdn.com/avatars-QctyC4jkZdhp4GnN-HbK8bA-t200x200.jpg', type: 'TX', link: 'https://soundcloud.com/aqoye' },
-  { name: 'YellerBoy', image: 'https://i1.sndcdn.com/avatars-zUf5jWq5MEqX4ryz-wTPGAA-t200x200.jpg', type: 'TX', link: 'https://soundcloud.com/ranteyella' },
-  { name: 'Tjxwho', image: 'FTL_ASSETS/PFP/who2.png', type: 'MS', link: 'https://soundcloud.com/much0tj' },
-  { name: 'Regel', image: 'https://i1.sndcdn.com/avatars-zan3ODpLP76oVzj2-x6q4NQ-t200x200.jpg', type: 'SWE', link: 'https://soundcloud.com/regelxdx' },
-  { name: 'Blehsehs', image: 'FTL_ASSETS/PFP/blehsehs2.jpg', type: 'SWE', link: 'https://soundcloud.com/porcelaining' },
 
-  // Add more entries here...
-];
 
-function openLink(url) {
-  window.open(url, '_blank');
-}
+/* ==========================================
+   FRONTLINE MUSIC ROSTER
 
-/* Generate gallery items from the artists array */
-(function renderGallery() {
-  const gallery = document.querySelector('.gallery');
-  gallery.innerHTML = ''; // clear any existing content
+   roles:
 
-  // list of available frame images
-  const frames = [
-    '/FTL_ASSETS/FTL_PICTURE_FRAME1.png',
-    '/FTL_ASSETS/FTL_PICTURE_FRAME2.png',
-    '/FTL_ASSETS/FTL_PICTURE_FRAME3.png'
-  ];
+   ['artist']
 
-  artists.forEach((a) => {
-    const item = document.createElement('div');
-    item.className = 'item';
+   ['producer']
 
-    const thumb = document.createElement('div');
-    thumb.className = 'thumb';
+   ['artist', 'producer']
 
-    // pick a random frame for this thumb
-    const frame = frames[Math.floor(Math.random() * frames.length)];
-    // set inline background-image so each thumb gets its own random frame
-    thumb.style.backgroundImage = `url('${frame}')`;
+========================================== */
 
-    const img = document.createElement('img');
-    img.src = a.image;
-    img.alt = a.name;
 
-    const overlay = document.createElement('div');
-    overlay.className = 'overlay';
-    overlay.textContent = a.link ? 'VIEW' : '';
+const members = [
 
-    // meta will be placed over the frame inside the thumb
-    const meta = document.createElement('div');
-    meta.className = 'meta';
 
-    const title = document.createElement('div');
-    title.className = 'title';
-    const titleSpan = document.createElement('span');
-    titleSpan.textContent = a.name;
-    title.appendChild(titleSpan);
+    {
+        name: 'OBSSD',
+        image: 'FTL_ASSETS/PFP/OBSSD PFP NEW.jpg',
+        type: 'NZ',
+        roles: ['artist', 'producer'],
+        link: 'https://www.instagram.com/imobssd/'
+    },
 
-    const type = document.createElement('div');
-    type.className = 'type';
-    const typeSpan = document.createElement('span');
-    typeSpan.textContent = a.type || '';
-    type.appendChild(typeSpan);
 
-    meta.appendChild(title);
-    meta.appendChild(type);
+    {
+        name: 'Banette',
+        image: 'FTL_ASSETS/PFP/banette2.jpg',
+        type: 'FL',
+        roles: ['artist'],
+        link: 'https://www.instagram.com/ybanette/'
+    },
 
-    thumb.appendChild(img);
-    thumb.appendChild(overlay);
-    thumb.appendChild(meta); // place meta inside thumb so it sits over the frame
 
-    // click behavior: only add click if link is present
-    if (a.link) {
-      thumb.addEventListener('click', (ev) => {
-        openLink(a.link);
-      });
-      thumb.style.cursor = 'pointer';
-    } else {
-      thumb.style.cursor = 'default';
+    {
+        name: 'Aystero',
+        image: 'FTL_ASSETS/PFP/aystero2.jpg',
+        type: 'NOR',
+        roles: ['artist'],
+        link: 'https://www.instagram.com/ayster0/'
+    },
+
+
+    {
+        name: 'Mxoudy',
+        image: 'FTL_ASSETS/PFP/mxoudy2.jpg',
+        type: 'ITA',
+        roles: ['artist'],
+        link: 'https://guns.lol/mxoudy'
+    },
+
+
+    {
+        name: 'Bugxp',
+        image: 'FTL_ASSETS/PFP/bugxp2.jpg',
+        type: 'POL',
+        roles: ['artist'],
+        link: 'https://www.instagram.com/_bugxp/'
+    },
+
+
+    {
+        name: 'L1sten',
+        image: 'FTL_ASSETS/PFP/l1sten2.jpg',
+        type: 'EARTH',
+        roles: ['artist'],
+        link: 'https://guns.lol/l1sten'
+    },
+
+
+    {
+        name: 'XandR',
+        image: 'FTL_ASSETS/PFP/xandr2.jpg',
+        type: 'IL',
+        roles: ['artist'],
+        link: 'https://guns.lol/.xandr./'
+    },
+
+
+    {
+        name: 'ttwwaann',
+        image: 'FTL_ASSETS/PFP/ttwwaann2.jpg',
+        type: 'EARTH',
+        roles: ['artist'],
+        link: 'https://www.instagram.com/ttwwaannnn/'
+    },
+
+
+    {
+        name: '1psych3',
+        image: 'FTL_ASSETS/PFP/1psych3.jpg',
+        type: 'EARTH',
+        roles: ['artist'],
+        link: 'https://www.instagram.com/1psych3/'
+    },
+
+
+    {
+        name: 'Itzberzerk',
+        image: 'FTL_ASSETS/PFP/berzerk2.png',
+        type: 'EARTH',
+        roles: ['artist'],
+        link: 'https://www.instagram.com/its_berzerk/'
+    },
+
+
+    {
+        name: 'Ayymwad',
+        image: 'FTL_ASSETS/PFP/MWAD.png',
+        type: 'UK',
+        roles: ['artist'],
+        link: 'https://inevanse.com/'
+    },
+
+
+    {
+        name: 'Ftnssy',
+        image: 'FTL_ASSETS/PFP/fntssy2.jpg',
+        type: 'EARTH',
+        roles: ['artist'],
+        link: 'https://www.instagram.com/fntssy1/'
+    },
+
+
+    {
+        name: 'Jiyu',
+        image: 'FTL_ASSETS/PFP/jiyu1.png',
+        type: 'GER',
+        roles: ['artist'],
+        link: 'https://www.instagram.com/jiyudat/'
+    },
+
+
+    {
+        name: 'Falsifyed',
+        image: 'FTL_ASSETS/PFP/falsifyed2.jpg',
+        type: 'EARTH',
+        roles: ['artist'],
+        link: 'https://www.instagram.com/falsifyed/'
+    },
+
+
+    {
+        name: 'Pbyoscar',
+        image: 'FTL_ASSETS/PFP/pbyoscar2.jpg',
+        type: 'NY',
+        roles: ['artist'],
+        link: 'https://www.instagram.com/pbyoscar/'
+    },
+
+
+    {
+        name: 'Jiorno',
+        image: 'FTL_ASSETS/PFP/Jiorno2.jpg',
+        type: 'EARTH',
+        roles: ['artist'],
+        link: 'https://guns.lol/1viohh'
+    },
+
+
+    {
+        name: 'D4yzzzzz',
+        image: 'FTL_ASSETS/PFP/d4yz.png',
+        type: 'EARTH',
+        roles: ['artist'],
+        link: 'https://guns.lol/d4yzz'
+    },
+
+
+    {
+        name: 'Wh1sper',
+        image: 'FTL_ASSETS/PFP/wh1sper.jpg',
+        type: 'POL',
+        roles: ['producer'],
+        link: 'https://www.instagram.com/prodwh1sper/'
+    },
+
+
+    {
+        name: 'Aris',
+        image: 'FTL_ASSETS/PFP/aris.jpg',
+        type: 'EARTH',
+        roles: ['artist'],
+        link: 'https://www.instagram.com/arisisdeadinside/'
+    },
+
+
+    {
+        name: 'Juski',
+        image: 'FTL_ASSETS/PFP/juski2.jpg',
+        type: 'EARTH',
+        roles: ['artist'],
+        link: 'https://www.instagram.com/juskilol/'
+    },
+
+
+    {
+        name: 'Arty',
+        image: 'FTL_ASSETS/PFP/arty2.png',
+        type: 'LAT',
+        roles: ['producer'],
+        link: 'https://www.instagram.com/prod.arty/'
+    },
+
+
+    {
+        name: 'Bentley',
+        image: 'FTL_ASSETS/PFP/bentley2.jpg',
+        type: 'EARTH',
+        roles: ['producer'],
+        link: 'https://www.instagram.com/prod.bentley/'
+    },
+
+
+    {
+        name: 'Envy',
+        image: 'FTL_ASSETS/PFP/envy2.jpg',
+        type: 'EARTH',
+        roles: ['producer'],
+        link: 'https://youtube.com/@envy_prodd'
+    },
+
+
+    {
+        name: 'Sntry',
+        image: 'FTL_ASSETS/PFP/sntry.jpg',
+        type: 'EARTH',
+        roles: ['producer'],
+        link: 'https://www.instagram.com/prodsntry/'
+    },
+
+
+    {
+        name: 'Pryzur',
+        image: 'FTL_ASSETS/PFP/pryzur2.jpg',
+        type: 'EARTH',
+        roles: ['producer'],
+        link: 'https://pryzur.com/'
+    },
+
+
+    {
+        name: 'TripleOpbeats',
+        image: 'FTL_ASSETS/PFP/tripleop2.jpg',
+        type: 'FL',
+        roles: ['producer'],
+        link: 'https://www.instagram.com/tripleopbeats/'
+    },
+
+
+    {
+        name: 'Ktwin',
+        image: 'FTL_ASSETS/PFP/ktwin2.jpg',
+        type: 'LON',
+        roles: ['producer'],
+        link: 'https://www.instagram.com/11ktwin/'
+    },
+
+
+    {
+        name: 'Fybelx',
+        image: 'FTL_ASSETS/PFP/Fybelx2.png',
+        type: 'GER',
+        roles: ['producer'],
+        link: 'https://www.instagram.com/fybelx/'
+    },
+
+
+    {
+        name: 'Krey',
+        image: 'FTL_ASSETS/PFP/krey.jpg',
+        type: 'EARTH',
+        roles: ['producer'],
+        link: 'https://www.instagram.com/prodkrey/'
+    },
+
+
+    {
+        name: 'Athn',
+        image: 'FTL_ASSETS/PFP/athn.jpg',
+        type: 'EARTH',
+        roles: ['producer'],
+        link: 'https://www.instagram.com/notathn/'
+    },
+
+
+    {
+        name: 'MDI',
+        image: 'FTL_ASSETS/PFP/mordikeye2.PNG',
+        type: 'LA',
+        roles: ['producer'],
+        link: 'https://www.instagram.com/mordik3y3/'
+    },
+
+
+    {
+        name: 'Clawsome',
+        image: 'FTL_ASSETS/PFP/clawsome2.png',
+        type: 'FL',
+        roles: ['producer'],
+        link: 'https://www.instagram.com/clawsome.exe/'
+    },
+
+
+    {
+        name: 'Khellay',
+        image: 'FTL_ASSETS/PFP/khellay2.jpg',
+        type: 'INDO',
+        roles: ['producer'],
+        link: 'https://www.instagram.com/khellay_/'
+    },
+
+
+    {
+        name: 'Cartier Diamonds',
+        image: 'FTL_ASSETS/PFP/cartierdiamonds.png',
+        type: 'TOR',
+        roles: ['producer'],
+        link: 'https://www.instagram.com/itscartierdiamonds/'
+    },
+
+
+    {
+        name: 'Truly',
+        image: 'FTL_ASSETS/PFP/truly2.png',
+        type: 'AL',
+        roles: ['producer'],
+        link: 'https://www.instagram.com/prod.by.truly/'
+    },
+
+
+    {
+        name: 'Blehsehs',
+        image: 'FTL_ASSETS/PFP/blehsehs2.jpg',
+        type: 'AL',
+        roles: ['producer'],
+        link: 'https://soundcloud.com/porcelaining'
+    },
+
+
+    {
+        name: 'Nuztumi',
+        image: 'FTL_ASSETS/PFP/nuztumi.jpg',
+        type: 'AL',
+        roles: ['producer'],
+        link: 'https://linktr.ee/nuztumi'
     }
 
-    item.appendChild(thumb);
 
-    gallery.appendChild(item);
-  });
+];
 
-  // stagger animations
-  document.querySelectorAll('.item').forEach((el, i) => {
-    el.style.animationDelay = (i * 0.05) + 's';
-  });
-})();
+
+
+/* ==========================================
+   OPEN LINK
+========================================== */
+
+function openLink(url) {
+
+    window.open(
+        url,
+        '_blank'
+    );
+
+}
+
+
+
+/* ==========================================
+   FRAMES
+========================================== */
+
+const frames = [
+
+    '/FTL_ASSETS/FTL_PICTURE_FRAME1.png',
+
+    '/FTL_ASSETS/FTL_PICTURE_FRAME2.png',
+
+    '/FTL_ASSETS/FTL_PICTURE_FRAME3.png'
+
+];
+
+
+
+/* ==========================================
+   RENDER GALLERY
+========================================== */
+
+function renderGallery(filter = 'all') {
+
+
+    const gallery =
+        document.querySelector('.gallery');
+
+
+    gallery.innerHTML = '';
+
+
+    const filteredMembers =
+        filter === 'all'
+
+            ? members
+
+            : members.filter(member =>
+
+                member.roles.includes(filter)
+
+            );
+
+
+
+    filteredMembers.forEach((member, index) => {
+
+
+        const item =
+            document.createElement('div');
+
+
+        item.className = 'item';
+
+
+        item.style.animationDelay =
+            (index * 0.05) + 's';
+
+
+
+        /* THUMB */
+
+        const thumb =
+            document.createElement('div');
+
+
+        thumb.className = 'thumb';
+
+
+
+        /* RANDOM FRAME */
+
+        const frame =
+            frames[
+                Math.floor(
+                    Math.random() * frames.length
+                )
+            ];
+
+
+        thumb.style.backgroundImage =
+            `url('${frame}')`;
+
+
+
+        /* PROFILE IMAGE */
+
+        const img =
+            document.createElement('img');
+
+
+        img.src = member.image;
+
+        img.alt = member.name;
+
+
+
+        /* OVERLAY */
+
+        const overlay =
+            document.createElement('div');
+
+
+        overlay.className = 'overlay';
+
+
+        overlay.textContent =
+            member.link
+                ? 'VIEW'
+                : '';
+
+
+
+        /* META */
+
+        const meta =
+            document.createElement('div');
+
+
+        meta.className = 'meta';
+
+
+
+        /* NAME */
+
+        const title =
+            document.createElement('div');
+
+
+        title.className = 'title';
+
+
+        const titleSpan =
+            document.createElement('span');
+
+
+        titleSpan.textContent =
+            member.name;
+
+
+        title.appendChild(titleSpan);
+
+
+
+        /* LOCATION */
+
+        const type =
+            document.createElement('div');
+
+
+        type.className = 'type';
+
+
+        const typeSpan =
+            document.createElement('span');
+
+
+        typeSpan.textContent =
+            member.type || '';
+
+
+        type.appendChild(typeSpan);
+
+
+
+        /* ROLE TAGS */
+
+        const roleTags =
+            document.createElement('div');
+
+
+        roleTags.className =
+            'role-tags';
+
+
+
+        member.roles.forEach(role => {
+
+
+            const roleTag =
+                document.createElement('span');
+
+
+            roleTag.className =
+                'role-tag';
+
+
+            roleTag.textContent =
+                role;
+
+
+            roleTags.appendChild(roleTag);
+
+
+        });
+
+
+
+        /* ASSEMBLE META */
+
+        meta.appendChild(title);
+
+        meta.appendChild(type);
+
+        meta.appendChild(roleTags);
+
+
+
+        /* ASSEMBLE THUMB */
+
+        thumb.appendChild(img);
+
+        thumb.appendChild(overlay);
+
+        thumb.appendChild(meta);
+
+
+
+        /* CLICK */
+
+        if (member.link) {
+
+
+            thumb.addEventListener(
+                'click',
+
+                () => {
+
+                    openLink(member.link);
+
+                }
+
+            );
+
+
+            thumb.style.cursor =
+                'pointer';
+
+
+        }
+
+        else {
+
+
+            thumb.style.cursor =
+                'default';
+
+
+        }
+
+
+
+        /* ADD TO PAGE */
+
+        item.appendChild(thumb);
+
+        gallery.appendChild(item);
+
+
+    });
+
+
+}
+
+
+
+/* ==========================================
+   FILTER BUTTONS
+========================================== */
+
+const filterButtons =
+    document.querySelectorAll(
+        '.filter-btn'
+    );
+
+
+filterButtons.forEach(button => {
+
+
+    button.addEventListener(
+        'click',
+
+        () => {
+
+
+            const filter =
+                button.dataset.filter;
+
+
+
+            /* ACTIVE BUTTON */
+
+            filterButtons.forEach(btn =>
+
+                btn.classList.remove('active')
+
+            );
+
+
+            button.classList.add(
+                'active'
+            );
+
+
+
+            /* RENDER FILTERED MEMBERS */
+
+            renderGallery(filter);
+
+
+        }
+
+    );
+
+
+});
+
+
+
+/* ==========================================
+   INITIAL RENDER
+========================================== */
+
+renderGallery('all');
+
+
 </script>
 
+
 </body>
+
 </html>
