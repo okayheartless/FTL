@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="The Events of Frontline Underground">
+    <meta name="description" content="Upcoming events from Frontline Underground">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events</title>
-    
-    <link rel="icon" href="/FTL_ASSETS/FTL_FAVICON_96.png">
-    <link rel="stylesheet" href="/custom.css">
+
+    <link rel="icon" href="FTL_ASSETS/FTL_FAVICON_96.png">
+    <link rel="stylesheet" href="custom.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -16,206 +19,427 @@
         }
 
 body {
-    background-image: url('FTL_ASSETS\\FTL_EVENTS_CAMO.jpg');
+  background-image: url('FTL_ASSETS\\FTL_EVENTS_CAMO.jpg');
     background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    font-family: 'Arial', Arial, sans-serif;
-    color: #000;
+    font-family: 'Instrument Serif', Georgia, serif;
 }
 
 /* LOGO */
 .logo-container {
-  display: flex;
-  justify-content: center;
-  padding: 30px 16px; /* reduced side padding for small screens */
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 10;
 }
 
 .logo-img {
-  width: 100%;        /* make responsive */
-  max-width: 600px;   /* keep original max on desktop */
-  height: auto;       /* preserve aspect ratio */
+  width: min(460px, 38vw);
+  height: auto;
   cursor: pointer;
-  transition: 0.25s;
+  transition: filter 0.15s ease;
   display: block;
 }
 .logo-img:hover {
-  transform: scale(1.05);
+  filter: brightness(1.35);
 }
 
-/* GALLERY: centered, max 3 columns, responsive */
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 32px;
-  padding: 0 12px 48px; /* reduced side padding */
-  max-width: calc(3 * 520px + 2 * 32px); /* cap to 3 columns */
-  margin: 0 auto; /* center the gallery block */
-  justify-items: center; /* center items inside their grid cells */
+.partner-button {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 10;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: filter 0.15s ease;
 }
 
-/* ITEM */
-.item {
-  width: 100%;
-  max-width: 520px; /* controls poster width, used to center single item */
+.partner-button:hover,
+.partner-button:focus-visible {
+  filter: brightness(1.35);
+}
+
+.partner-button img {
+  display: block;
+  width: min(340px, 38vw);
+  height: auto;
+}
+
+.partner-dialog {
+  position: fixed;
+  inset: 48px;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 66px 58px 28px;
+  border: 0;
+  background: #000 url('FTL_ASSETS/FTL_PARTNER_FRAME.jpg') center / 100% 100% no-repeat;
+  color: #fff;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.partner-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.partner-dialog[open] {
   display: flex;
   flex-direction: column;
+  animation: spotlightIn 0.25s ease-out;
+}
+
+.partner-dialog h2 {
+  margin-bottom: 18px;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 400;
+  color: #fff;
+}
+
+.dialog-close {
+  position: absolute;
+  top: 34px;
+  right: 44px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.form-embed {
+  flex: 1;
+  min-height: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-embed iframe {
+  display: block;
+  width: min(100%, 720px);
+  height: 100%;
+  border: 0;
+}
+  
+/* EVENTS */
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: min(1100px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 260px 0 40px;
+}
+
+/* EVENT ROW */
+.item {
+  display: grid;
+  grid-template-columns: minmax(180px, 280px) 1fr auto;
+  align-items: center;
+  gap: clamp(20px, 4vw, 56px);
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.78);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.28);
   opacity: 0;
   transform: translateY(20px);
   animation: fadeUp 0.6s ease forwards;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
-.item:hover { transform: translateY(-6px); }
 
-/* Poster wrapper: contains poster image and frame */
-.poster-wrapper { position: relative; width: 100%; display:block; overflow: visible; }
+.item:hover {
+  transform: translateY(-4px);
+  background: rgba(0, 0, 0, 0.9);
+}
 
-/* frame scale variable (about 8% larger) */
-:root { --frame-scale: 1.08; }
-.poster-border {
-  position: absolute;
-  left: 50%; top: 50%;
-  width: 100%; height: 100%;
-  transform: translate(-50%, -50%) scale(var(--frame-scale));
-  transform-origin: center;
-  object-fit: contain;
-  z-index: 2; /* behind poster */
-  pointer-events: none;
+/* EVENT ARTWORK */
+.thumb {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #111;
+}
+
+/* EVENT IMAGE */
+.thumb img {
+  width: 100%;
+  height: 100%;
+  max-width: 86%;
+  max-width: none;
+  object-fit: cover;
   display: block;
+  box-shadow: none;
 }
 
-.poster-link { display:block; width:100%; padding:0; z-index:3; position:relative; text-decoration:none; }
-.poster-link img {
-  display:block;
-  width:100%; height:auto; object-fit:contain;
-  max-height: 70vh; /* prevents extremely tall posters */
-  border-radius: 2px;
-  box-shadow: none; /* remove drop shadow */
-  transition: transform 0.28s cubic-bezier(.2,.9,.2,1), filter 0.28s ease;
-}
-.item:hover .poster-link img { transform: translateY(-6px) scale(1.02); }
-
-/* META: overlay on top of poster and frame; name left, type right */
-.poster-wrapper .meta-row {
-  position: absolute;
-  bottom: -9%; /* moved lower so meta sits beneath poster edge (still overlapping) */
-  left: 6%;
-  right: 6%;
+/* EVENT DETAILS */
+.meta {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  padding: 0 6px;
-  font-size: 1.2rem;
-  color: #000;
-  z-index: 5; /* above poster and border */
-  pointer-events: none; /* avoid intercepting clicks */
+  flex-direction: column; /* stack title and type vertically */
+  align-items: flex-start;
+  gap: 10px;
 }
-.poster-wrapper .meta-row .name { text-align: left; font-weight: 700; }
-.poster-wrapper .meta-row .type { text-align: right; font-weight: 900; }
 
-/* Footer */
-.footer-section { padding: 24px 0 0 0; text-align: center; margin-top: auto; }
-.footer-section img { width: 100%; height: auto; display: block; }
-
-/* Animation */
-@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-
-/* Responsive tweaks */
-@media (max-width: 1100px) {
-  .gallery { grid-template-columns: repeat(2, minmax(220px, 1fr)); max-width: calc(2 * 520px + 1 * 32px); }
-  :root { --frame-scale: 1.06; }
-  .poster-wrapper .meta-row { bottom: -4%; }
+.title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 400;
+  color: #fff;
+  line-height: 0.95;
 }
-@media (max-width: 600px) {
-  .gallery { grid-template-columns: 1fr; max-width: 520px; padding: 0 10px 28px; }
-  :root { --frame-scale: 1.04; }
-  .poster-wrapper .meta-row { bottom: -2%; left: 6%; right: 6%; font-size: 0.98rem; }
+
+.type {
+  font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.event-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 1.25rem;
+  line-height: 1.1;
+}
+
+.event-label {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.7em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.event-link {
+  display: inline-block;
+  padding: 12px 18px;
+  border: 1px solid #fff;
+  color: #fff;
+  font: inherit;
+  font-size: 1.1rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.event-link:hover,
+.event-link:focus-visible { background: #fff; color: #000; }
+
+@media (max-width: 700px) {
+  .gallery {
+    width: calc(100% - 28px);
+    padding-top: 180px;
+  }
+
+  .item {
+    grid-template-columns: 110px 1fr;
+    gap: 18px;
+    padding: 14px;
+  }
+
+  .item .event-link { grid-column: 2; justify-self: start; }
+  .title { font-size: 2rem; }
+  .event-detail { font-size: 1.05rem; }
+  .event-link { padding: 9px 13px; font-size: 1rem; }
+}
+
+       /* Footer */
+        .footer-section {
+          min-height: 190px;
+          flex-shrink: 0;
+          margin-top: auto; /* push footer to the bottom when body is a flex column */
+          background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.55) 32%, #000 82%);
+        }
+
+        .page-footer {
+          display: grid;
+          grid-template-columns: 1fr auto 1fr;
+          align-items: end;
+          gap: 1rem;
+          padding: 110px 24px 24px;
+          color: #f4f1e9;
+          font-size: clamp(.9rem, 1.3vw, 1.1rem);
+        }
+
+        .page-footer .copyright {
+          white-space: nowrap;
+        }
+
+        .footer-links {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: clamp(.8rem, 2vw, 2rem);
+        }
+
+        .page-footer a {
+          color: inherit;
+          text-decoration: none;
+          transition: opacity .2s ease;
+        }
+
+        .page-footer a:hover,
+        .page-footer a:focus-visible {
+          opacity: .58;
+        }
+
+        .link-star {
+          display: inline-flex;
+          align-items: center;
+          color: inherit;
+          font-size: .55em;
+          line-height: 1;
+          opacity: .85;
+        }
+
+        .page-footer .credit {
+          justify-self: end;
+          text-align: right;
+        }
+
+/* ANIMATION */
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spotlightIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Small tweaks for very small screens */
+@media (max-width: 420px) {
+  .logo-container { top: 14px; left: 14px; }
+  .partner-button { top: 14px; right: 14px; }
+  .logo-img,
+  .partner-button img { width: min(190px, 42vw); }
+  .gallery { gap: 16px; padding-top: 150px; }
+  .item { grid-template-columns: 86px 1fr; }
+  .title { font-size: 1.7rem; }
+  .partner-dialog {
+    inset: 14px;
+    padding: 52px 28px 20px;
+  }
+  .page-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .75rem;
+    padding: 110px 14px 24px;
+    text-align: center;
+  }
+  .page-footer .credit { text-align: center; }
 }
 
     </style>
 </head>
+
 <body>
 
 <div class="logo-container">
   <a href="https://frontlineug.com/">
-    <img src="/FTL_ASSETS/FTL_LOGO.png" class="logo-img" alt="Frontline UG Logo">
+    <img src="FTL_ASSETS/FTL_LOGO.png" class="logo-img" alt="Frontline UG Logo">
   </a>
 </div>
 
-<div class="gallery" aria-label="Events gallery">
-  <!-- Items are generated by JavaScript from the 'artists' array below -->
+<a class="partner-button" href="https://docs.google.com/forms/d/e/1FAIpQLScA54J6IWk3UtsBhTY8FJhCq4UagszacU-_lhvyXgdBs6Xnbw/viewform?usp=header" target="_blank" rel="noreferrer" aria-label="Open partner contact form">
+  <img src="FTL_ASSETS/FTL_PARTNER_2.png" alt="Partner with Frontline Underground">
+</a>
+
+<div class="gallery">
+  <!-- Upcoming events are generated from the events array below -->
 </div>
 
-<!-- FOOTER IMAGE -->
-<div class="footer-section page-footer">
-  <img src="/FTL_ASSETS/FTL_FOOTER.png" alt="Footer">
-</div>
+<!-- FOOTER -->
+<footer class="footer-section page-footer">
+  <span class="copyright">© FRONTLINE 2026</span>
+  <nav class="footer-links" aria-label="Footer links">
+    <a href="https://frontlineug.com/contact">CONTACT</a>
+    <span class="link-star" aria-hidden="true">★</span>
+    <a href="https://frontlineug.com/about">WHY FRONTLINE ?</a>
+    <span class="link-star" aria-hidden="true">★</span>
+    <a href="https://frontlineug.com/music">PARTNER</a>
+  </nav>
+  <a class="credit" href="https://obssd.online/">DESIGNED BY OBSSD + HEARTLESS</a>
+</footer>
 
 <script>
 /*
-  Events array: add objects like:
-  { name: 'Event title', image: '/FTL_ASSETS/POSTER.jpg', type: 'Frontline', link: 'https://...' }
+  Fill this array with artist objects. If 'link' is set the thumbnail will open that link in a new tab;
+  We removed the lightbox: thumbnails without a link will not be clickable.
+  Example:
+    { name: 'Artist Name', image: '/path/to/image.jpg', type: 'cover art', link: 'https://soundcloud.com/artist' }
 */
-const artists = [
-  { name: 'Crosslink Season 3', image: '/FTL_ASSETS/POSTER.jpg', type: 'Frontline', link: 'https://www.instagram.com/p/DW2qYfYlNwI/?img_index=1' },
+const events = [
+  {
+    name: 'Crosslink Season 3',
+    image: 'FTL_ASSETS\\EVENTS\\crosslink season 3.jpg',
+    date: 'Date to be announced',
+    time: 'Time to be announced',
+    location: 'Online',
+    link: 'https://www.instagram.com/p/DW2qYfYlNwI/?img_index=1'
+  }
+  // Add future events here using the same fields.
 ];
 
-function openLink(url) { window.open(url, '_blank'); }
-
-(function renderGallery() {
+function renderEvents() {
   const gallery = document.querySelector('.gallery');
   gallery.innerHTML = '';
 
-  artists.forEach((a) => {
+  events.forEach((event) => {
     const item = document.createElement('div');
     item.className = 'item';
 
-    const wrapper = document.createElement('div');
-    wrapper.className = 'poster-wrapper';
-
-    const link = document.createElement('a');
-    link.className = 'poster-link';
-    link.href = a.link || '#';
-    link.title = a.name;
-    if (a.link) link.target = '_blank';
+    const thumb = document.createElement('div');
+    thumb.className = 'thumb';
 
     const img = document.createElement('img');
-    img.src = a.image;
-    img.alt = a.name;
-    img.loading = 'lazy';
+    img.src = event.image;
+    img.alt = `${event.name} artwork`;
 
-    link.appendChild(img);
+    const meta = document.createElement('div');
+    meta.className = 'meta';
 
-    const border = document.createElement('img');
-    border.className = 'poster-border';
-    border.src = '/FTL_ASSETS/FTL_EVENT_BORDER.png';
-    border.alt = '';
+    const title = document.createElement('div');
+    title.className = 'title';
+    title.textContent = event.name;
 
-    // meta overlay: on top of poster and border
-    const metaRow = document.createElement('div');
-    metaRow.className = 'meta-row';
+    const details = document.createElement('div');
+    details.className = 'event-detail';
+    details.innerHTML = `
+      <span class="event-label">Date</span><span>${event.date}</span>
+      <span class="event-label">Time</span><span>${event.time}</span>
+      <span class="event-label">Location</span><span>${event.location}</span>
+    `;
 
-    const nameEl = document.createElement('div');
-    nameEl.className = 'name';
-    nameEl.textContent = a.name;
+    meta.appendChild(title);
+    meta.appendChild(details);
 
-    const typeEl = document.createElement('div');
-    typeEl.className = 'type';
-    typeEl.textContent = a.type || '';
+    const link = document.createElement('a');
+    link.className = 'event-link';
+    link.href = event.link;
+    link.target = '_blank';
+    link.rel = 'noreferrer';
+    link.textContent = 'Find out more';
 
-    metaRow.appendChild(nameEl);
-    metaRow.appendChild(typeEl);
+    thumb.appendChild(img);
 
-    // assemble: link (poster), border, then meta overlay appended into wrapper so meta sits on top
-    wrapper.appendChild(link);
-    wrapper.appendChild(border);
-    wrapper.appendChild(metaRow);
-
-    item.appendChild(wrapper);
+    item.appendChild(thumb);
+    item.appendChild(meta);
+    item.appendChild(link);
     gallery.appendChild(item);
   });
 
@@ -223,7 +447,9 @@ function openLink(url) { window.open(url, '_blank'); }
   document.querySelectorAll('.item').forEach((el, i) => {
     el.style.animationDelay = (i * 0.05) + 's';
   });
-})();
+}
+
+renderEvents();
 </script>
 
 </body>
