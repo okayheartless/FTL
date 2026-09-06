@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="About Frontline Underground">
+	<title>About | Frontline Underground</title>
+
+	<link rel="icon" href="FTL_ASSETS/FTL_FAVICON_96.png">
+	<link rel="stylesheet" href="custom.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+	<style>
+		*, *::before, *::after {
+			box-sizing: border-box;
+		}
+
+		html,
+		body {
+			min-height: 100%;
+			margin: 0;
+		}
+
+		body {
+			display: flex;
+			flex-direction: column;
+			min-height: 100svh;
+			background: #111 url("FTL_ASSETS/FTL_ROOM_BG.jpg") center / cover no-repeat;
+			color: #f4f1e9;
+			font-family: "Instrument Serif", serif;
+			font-size: clamp(1rem, 1.3vw, 1.4rem);
+			-webkit-font-smoothing: antialiased;
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		.about-header {
+			display: flex;
+			justify-content: center;
+			padding: clamp(1.5rem, 5vw, 4rem) clamp(1.25rem, 4vw, 4rem);
+		}
+
+		.about-logo {
+			display: block;
+			width: min(80vw, 32rem);
+			transition: filter .2s ease;
+		}
+
+		.about-logo:hover {
+			filter: brightness(1.3);
+		}
+
+		.about-logo img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+
+		.about-content {
+			display: grid;
+			flex: 1;
+			place-items: center;
+			padding: 2rem clamp(1.25rem, 8vw, 10rem) 6rem;
+			text-align: center;
+		}
+
+		.about-content p {
+			max-width: 52rem;
+			margin: 0;
+			font-size: clamp(2rem, 4vw, 4.5rem);
+			line-height: 1.08;
+		}
+
+		.about-footer {
+			display: grid;
+			grid-template-columns: 1fr auto 1fr;
+			align-items: end;
+			gap: 1rem;
+			padding: 1.5rem clamp(1.25rem, 4vw, 4rem) 2rem;
+		}
+
+		.about-footer a {
+			transition: opacity .2s ease;
+		}
+
+		.about-footer a:hover {
+			opacity: .58;
+		}
+
+		.copyright {
+			white-space: nowrap;
+		}
+
+		.footer-links {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-end;
+			gap: clamp(.8rem, 2vw, 2rem);
+		}
+
+		.link-star {
+			display: inline-flex;
+			align-items: center;
+			color: #f4f1e9;
+			font-size: .55em;
+			line-height: 1;
+			opacity: .85;
+		}
+
+		.footer-credit {
+			justify-self: end;
+			text-align: right;
+		}
+
+		.about-footer .footer-links {
+			justify-content: center;
+		}
+
+		@media (max-width: 640px) {
+			.about-footer {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				padding-bottom: 1.5rem;
+			}
+
+			.about-footer .copyright,
+			.about-footer .footer-credit {
+				width: 100%;
+				text-align: center;
+			}
+		}
+	</style>
+</head>
+<body>
+	<header class="about-header">
+		<a class="about-logo" href="index.html" aria-label="Back to Frontline Underground home">
+			<img src="FTL_ASSETS/FTL_LOGO.png" alt="Frontline Underground">
+		</a>
+	</header>
+
+	<main class="about-content">
+		<p>Frontline is a Multimedia Production Company and Record label, Specializing in Music, Media, and Events</p>
+	</main>
+
+	<footer class="about-footer">
+		<span class="copyright">© FRONTLINE 2026</span>
+		<nav class="footer-links" aria-label="Footer links">
+			<a href="https://frontlineug.com/contact">CONTACT</a>
+			<span class="link-star" aria-hidden="true">★</span>
+			<a href="https://frontlineug.com/about">WHY FRONTLINE ?</a>
+			<span class="link-star" aria-hidden="true">★</span>
+			<a href="https://frontlineug.com/music">PARTNER</a>
+		</nav>
+		<a class="footer-credit" href="https://obssd.online/">DESIGNED BY OBSSD + HEARTLESS</a>
+	</footer>
+</body>
+</html>
