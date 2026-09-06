@@ -193,10 +193,13 @@
 		.contact {
 			display: block;
 			width: clamp(12rem, 27vw, 27rem);
-			transition: transform .15s ease;
+			transition: filter .15s ease;
 		}
 
-		.contact:hover,
+		.contact:hover {
+			filter: brightness(1.35);
+		}
+
 		.partner:hover {
 			transform: scale(1.03);
 		}
@@ -216,7 +219,7 @@
 		.city-navigation a {
 			display: block;
 			width: 33.333%;
-			transition: transform .25s ease, filter .25s ease;
+			transition: transform .15s ease, filter .15s ease;
 		}
 
 		.city-navigation a:nth-child(1) {
@@ -236,15 +239,15 @@
 		}
 
 		.city-navigation a:nth-child(1):hover {
-			transform: translate(clamp(-5rem, -5vw, -1rem), 2.6rem) rotate(-5deg) scale(1.05);
+			transform: translate(clamp(-5rem, -5vw, -1rem), 2.6rem) rotate(-8deg) scale(1.02);
 		}
 
 		.city-navigation a:nth-child(2):hover {
-			transform: translateY(-1.1rem) rotate(1deg) scale(1.05);
+			transform: translateY(-1.1rem) rotate(4deg) scale(1.02);
 		}
 
 		.city-navigation a:nth-child(3):hover {
-			transform: translate(clamp(1rem, 5vw, 5rem), 2rem) rotate(5deg) scale(1.05);
+			transform: translate(clamp(1rem, 5vw, 5rem), 2rem) rotate(1deg) scale(1.02);
 		}
 
 		.city-navigation img {
