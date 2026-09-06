@@ -38,14 +38,14 @@ body {
 }
 
 .logo-img {
-  width: min(340px, 38vw);
+  width: min(460px, 38vw);
   height: auto;
   cursor: pointer;
-  transition: 0.25s;
+  transition: filter 0.15s ease;
   display: block;
 }
 .logo-img:hover {
-  transform: scale(1.05);
+  filter: brightness(1.35);
 }
 
 .partner-button {
@@ -57,12 +57,12 @@ body {
   padding: 0;
   background: transparent;
   cursor: pointer;
-  transition: transform 0.25s ease;
+  transition: filter 0.15s ease;
 }
 
 .partner-button:hover,
 .partner-button:focus-visible {
-  transform: scale(1.05);
+  filter: brightness(1.35);
 }
 
 .partner-button img {
@@ -435,17 +435,9 @@ body {
   </a>
 </div>
 
-<button class="partner-button" type="button" aria-label="Open partner contact form" aria-controls="partner-dialog">
+<a class="partner-button" href="https://docs.google.com/forms/d/e/1FAIpQLSfvmJPorSVbBjZ4uIUwX8oYmqfhEXfrVA2tycjEQHVaozBQGg/viewform?usp=header" target="_blank" rel="noreferrer" aria-label="Open partner contact form">
   <img src="FTL_ASSETS/FTL_PARTNER_2.png" alt="Partner with Frontline Underground">
-</button>
-
-<dialog class="partner-dialog" id="partner-dialog" aria-labelledby="partner-dialog-title">
-  <button class="dialog-close" type="button" aria-label="Close contact form">&times;</button>
-<!-- <h2 id="partner-dialog-title">Partner with Frontline</h2> -->
-  <div class="form-embed">
-    <iframe src="https://forms.gle/NWZoux8Y8PeXeqa68" title="Frontline partner contact form" loading="lazy"></iframe>
-  </div>
-</dialog>
+</a>
 
 <nav class="filters" aria-label="Profile filters">
   <button class="filter-button" type="button" data-filter="all" aria-pressed="true">All</button>
@@ -504,7 +496,6 @@ const artists = [
   { name: 'Tjxwho', image: 'FTL_ASSETS/PFP/who2.png', type: 'MS', link: 'https://soundcloud.com/much0tj' },
   { name: 'Regel', image: 'https://i1.sndcdn.com/avatars-zan3ODpLP76oVzj2-x6q4NQ-t200x200.jpg', type: 'SWE', link: 'https://soundcloud.com/regelxdx' },
   { name: 'Blehsehs', image: 'FTL_ASSETS/PFP/blehsehs2.jpg', type: 'SWE', link: 'https://soundcloud.com/porcelaining', roles: ['artist', 'producer'] },
-
   { name: 'OBSSD', image: 'FTL_ASSETS/PFP/OBSSD PFP NEW.jpg', type: 'NZ', link: 'https://www.instagram.com/imobssd/', roles: ['producer'] },
   { name: 'Banette', image: 'FTL_ASSETS/PFP/banette2.jpg', type: 'FL', link: 'https://www.instagram.com/ybanette/', roles: ['producer'] },
   { name: 'Aystero', image: 'FTL_ASSETS/PFP/aystero2.jpg', type: 'NOR', link: 'https://www.instagram.com/ayster0/', roles: ['producer'] },
@@ -547,16 +538,6 @@ const artists = [
 function openLink(url) {
   window.open(url, '_blank');
 }
-
-const partnerDialog = document.querySelector('#partner-dialog');
-const partnerButton = document.querySelector('.partner-button');
-const closeDialogButton = partnerDialog.querySelector('.dialog-close');
-
-partnerButton.addEventListener('click', () => partnerDialog.showModal());
-closeDialogButton.addEventListener('click', () => partnerDialog.close());
-partnerDialog.addEventListener('click', (event) => {
-  if (event.target === partnerDialog) partnerDialog.close();
-});
 
 /* Generate gallery items from the artists array */
 function renderGallery(filter = 'all') {
