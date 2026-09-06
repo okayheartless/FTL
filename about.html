@@ -64,6 +64,8 @@
 		.about-content {
 			display: grid;
 			flex: 1;
+			align-content: center;
+			gap: clamp(.5rem, 1.5vw, 1rem);
 			place-items: center;
 			padding: 2rem clamp(1.25rem, 8vw, 10rem) 6rem;
 			text-align: center;
@@ -72,8 +74,21 @@
 		.about-content p {
 			max-width: 52rem;
 			margin: 0;
-			font-size: clamp(2rem, 4vw, 4.5rem);
+			font-size: clamp(1.5rem, 3vw, 3.5rem);
 			line-height: 1.08;
+		}
+
+		.about-images {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: clamp(.5rem, 1.5vw, 1rem);
+			width: min(100%, 64rem);
+		}
+
+		.about-images img {
+			display: block;
+			width: 100%;
+			height: auto;
 		}
 
 		.about-footer {
@@ -145,7 +160,12 @@
 	</header>
 
 	<main class="about-content">
-		<p>Frontline is a Multimedia Production Company and Record label, Specializing in Music, Media, and Events. We exist to unite underground creatives who value experimentation, collaboration, and authenticity.</p>
+		<p>Frontline is a Multimedia Production Company and Record label, Specializing in Music, Media, and Events.<br>We exist to unite underground creatives who value experimentation, collaboration, and authenticity.</p>
+		<div class="about-images">
+			<img src="FTL_ASSETS/FTL_ABOUT_1.jpg" alt="Frontline Underground" />
+			<img src="FTL_ASSETS/FTL_ABOUT_2.jpg" alt="Frontline Underground" />
+			<img src="FTL_ASSETS/FTL_ABOUT_3.jpg" alt="Frontline Underground" />
+		</div>
 	</main>
 
 	<footer class="about-footer">
