@@ -61,6 +61,14 @@
 			background: #121212 center / cover no-repeat;
 		}
 
+		@media (min-aspect-ratio: 16 / 9) {
+			.city-section {
+				min-height: 0;
+				height: 100svh;
+				aspect-ratio: auto;
+			}
+		}
+
 		.city-frame {
 			position: absolute;
 			inset: 0;
@@ -155,7 +163,7 @@
 
 		.logo {
 			display: block;
-			width: clamp(11rem, 22vw, 22rem);
+			width: clamp(14rem, 35vw, 35rem);
 		}
 
 		.logo img,
@@ -167,13 +175,13 @@
 
 		.contact {
 			display: block;
-			width: clamp(7rem, 13vw, 12rem);
-			transition: transform .25s ease;
+			width: clamp(12rem, 27vw, 27rem);
+			transition: transform .15s ease;
 		}
 
 		.contact:hover,
 		.partner:hover {
-			transform: scale(1.06);
+			transform: scale(1.03);
 		}
 
 		.city-navigation {
@@ -419,13 +427,13 @@
 
 		<section class="home-section room-section" aria-label="Frontline partners">
 			<div class="partners">
-				<a class="partner" href="https://vrchat.com/" target="_blank" rel="noreferrer" aria-label="VRChat">
+				<a class="partner" href="https://www.veryrarecinema.com/" target="_blank" rel="noreferrer" aria-label="VRChat">
 					<img src="FTL_ASSETS/VRC_LOGO.png" alt="VRChat">
 				</a>
 				<a class="partner" href="https://symphonic.com/" target="_blank" rel="noreferrer" aria-label="Symphonic">
 					<img src="FTL_ASSETS/SYMPHONIC_LOGO.png" alt="Symphonic">
 				</a>
-				<a class="partner" href="https://mobworld.co/" target="_blank" rel="noreferrer" aria-label="Mob World">
+				<a class="partner" href="https://mobworld.cc/" target="_blank" rel="noreferrer" aria-label="Mob World">
 					<img src="FTL_ASSETS/MOBWORLD_LOGO.png" alt="Mob World">
 				</a>
 				<a class="partner" href="https://audiomack.com/" target="_blank" rel="noreferrer" aria-label="Audiomack">
@@ -437,11 +445,11 @@
 				<nav class="footer-links" aria-label="Footer links">
 					<a href="https://frontlineug.com/contact">CONTACT</a>
 					<span class="link-star" aria-hidden="true">★</span>
-					<a href="https://frontlineug.com/why-frontline">WHY FRONTLINE ?</a>
+					<a href="https://frontlineug.com/about">WHY FRONTLINE ?</a>
 					<span class="link-star" aria-hidden="true">★</span>
 					<a href="https://frontlineug.com/partner">PARTNER</a>
 				</nav>
-				<a class="credit" href="https://www.instagram.com/obssd/">DESIGNED BY OBSSD + HEARTLESS</a>
+				<a class="credit" href="https://obssd.online/">DESIGNED BY OBSSD + HEARTLESS</a>
 			</footer>
 		</section>
 	</main>
@@ -475,8 +483,8 @@
 		});
 
 		const mediaItems = [
-			{ type: 'image', src: 'FTL_ASSETS/PLACEHOLDER IMAGE.jpg', alt: 'Frontline media placeholder' },
-            { type: 'youtube', src: 'https://www.youtube.com/watch?v=BEg25IJDyaw' }
+            { type: 'youtube', src: 'https://www.youtube.com/watch?v=BEg25IJDyaw' },
+            { type: 'youtube', src: 'https://www.youtube.com/watch?v=EsBedxfoiNA' }
 			// { type: 'youtube', src: 'https://www.youtube.com/watch?v=BEg25IJDyaw' },
 			// Add more entries here using type 'youtube', 'video', or 'image'.
 			// { type: 'video', src: 'FTL_ASSETS/example.mp4' },
