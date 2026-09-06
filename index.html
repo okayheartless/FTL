@@ -479,26 +479,51 @@
 		const cityFrames = Array.from({ length: 49 }, (_, index) =>
 			`FTL_ASSETS/FTL_CITY_BACKGROUND/FTL CITY_${String(index).padStart(5, '0')}.jpg`
 		);
-		const preloadedFrames = cityFrames.map((source) => {
-			const image = new Image();
-			image.src = source;
-			return image.decode().then(() => image).catch(() => image);
-		});
+		const cityFrameCache = new Map();
 		let currentFrame = 0;
 		let lastFrameTime = 0;
+		let loadingNextFrame = false;
 
-		Promise.all(preloadedFrames).then((frames) => {
-			cityFrame.src = frames[0].src;
-
-			function animateCity(timestamp) {
-				if (timestamp - lastFrameTime >= 100) {
-					currentFrame = (currentFrame + 1) % frames.length;
-					cityFrame.src = frames[currentFrame].src;
-					lastFrameTime = timestamp;
-				}
-				requestAnimationFrame(animateCity);
+		function loadCityFrame(index) {
+			if (cityFrameCache.has(index)) {
+				return cityFrameCache.get(index);
 			}
 
+			const image = new Image();
+			image.src = cityFrames[index];
+			const frame = image.decode().then(() => image).catch(() => image);
+			cityFrameCache.set(index, frame);
+			return frame;
+		}
+
+		function trimCityFrameCache() {
+			for (const index of cityFrameCache.keys()) {
+				if (index !== currentFrame && index !== (currentFrame + 1) % cityFrames.length) {
+					cityFrameCache.delete(index);
+				}
+			}
+		}
+
+		async function animateCity(timestamp) {
+			if (!loadingNextFrame && timestamp - lastFrameTime >= 100) {
+				const nextFrame = (currentFrame + 1) % cityFrames.length;
+				loadingNextFrame = true;
+				try {
+					const image = await loadCityFrame(nextFrame);
+					currentFrame = nextFrame;
+					cityFrame.src = image.src;
+					trimCityFrameCache();
+					lastFrameTime = timestamp;
+				} finally {
+					loadingNextFrame = false;
+				}
+			}
+			requestAnimationFrame(animateCity);
+		}
+
+		loadCityFrame(currentFrame).then((image) => {
+			cityFrame.src = image.src;
+			loadCityFrame((currentFrame + 1) % cityFrames.length);
 			requestAnimationFrame(animateCity);
 		});
 
