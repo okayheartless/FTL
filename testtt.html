@@ -120,6 +120,23 @@
 			cursor: pointer;
 		}
 
+		.screen-control:hover {
+			filter: brightness(1.35);
+		}
+
+		.screen-control.is-flashing {
+			animation: screenControlFlash .12s ease-out;
+		}
+
+		@keyframes screenControlFlash {
+			0%, 100% {
+				filter: brightness(1);
+			}
+			35% {
+				filter: brightness(2);
+			}
+		}
+
 		.screen-control img {
 			display: block;
 			width: 100%;
@@ -447,7 +464,7 @@
 					<span class="link-star" aria-hidden="true">★</span>
 					<a href="https://frontlineug.com/about">WHY FRONTLINE ?</a>
 					<span class="link-star" aria-hidden="true">★</span>
-					<a href="https://frontlineug.com/partner">PARTNER</a>
+					<a href="https://frontlineug.com/music">PARTNER</a>
 				</nav>
 				<a class="credit" href="https://obssd.online/">DESIGNED BY OBSSD + HEARTLESS</a>
 			</footer>
@@ -531,8 +548,20 @@
 			renderMedia();
 		}
 
-		previousMediaButton.addEventListener('click', () => changeMedia(-1));
-		nextMediaButton.addEventListener('click', () => changeMedia(1));
+		function flashButton(button) {
+			button.classList.remove('is-flashing');
+			void button.offsetWidth;
+			button.classList.add('is-flashing');
+		}
+
+		previousMediaButton.addEventListener('click', () => {
+			changeMedia(-1);
+			flashButton(previousMediaButton);
+		});
+		nextMediaButton.addEventListener('click', () => {
+			changeMedia(1);
+			flashButton(nextMediaButton);
+		});
 		renderMedia();
 	</script>
 </body>
