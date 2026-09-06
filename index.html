@@ -1,632 +1,571 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Welcome to Frontline Underground">
-    <title>Frontline</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Frontline Underground">
+	<title>Frontline Underground</title>
+	<link rel="icon" href="FTL_ASSETS/FTL_FAVICON_96.png">
+	<link rel="stylesheet" href="custom.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--ink: #f4f1e9;
+			--page-padding: clamp(1.25rem, 4vw, 4.5rem);
+		}
 
-    <link rel="icon" href="/FTL_ASSETS/FTL_FAVICON_96.png">
-    <link rel="stylesheet" href="/custom.css">
+		*, *::before, *::after {
+			box-sizing: border-box;
+		}
 
-    <style>
-        /* Scaling variables for easy future edits:
-           --event-section-scale: scales the entire poster/frame section (gap, padding, max widths, vertical overlap)
-           --frame-scale: scales the decorative frame behind each poster relative to the poster image
-           --poster-scale: additional scale applied to poster + frame to make them slightly larger without changing the overlap
-           Change these two variables at the top to adjust sizes site-wide for the event posters. */
-        :root {
-            --event-section-scale: 1.05; /* 1.10 = +10% overall section size */
-            --frame-scale: 1.0;         /* 1.10 = +10% frame size relative to the poster */
-            --poster-scale: 0.9;        /* 1.06 = +6% poster & frame size (tweak as needed) */
-        }
+		html {
+			background: #090909;
+			scroll-behavior: smooth;
+		}
 
-        /* Box sizing reset */
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
+		body {
+			margin: 0;
+			background: #090909;
+			color: var(--ink);
+			font-family: "Instrument Serif", serif;
+			font-size: clamp(1rem, 1.3vw, 1.4rem);
+			-webkit-font-smoothing: antialiased;
+		}
 
-/* Ensure the background covers the entire viewport and beyond */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
 
-/* Use a static image as a fallback background for browsers that don't render the video */
-html {
-    background: #000 url('FTL_ASSETS/FTL_HOME_BG.jpg') center/cover no-repeat;
-}
+		.home-section {
+			position: relative;
+			width: 100%;
+			min-height: 100svh;
+			aspect-ratio: 16 / 9;
+			overflow: hidden;
+			isolation: isolate;
+		}
 
-/* Fullscreen looping background video */
-#bg-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -2;
-    pointer-events: none;
-}
+		.home-section::after {
+			position: absolute;
+			inset: 0;
+			z-index: -1;
+			background: linear-gradient(180deg, rgba(0, 0, 0, .18), transparent 45%, rgba(0, 0, 0, .38));
+			content: "";
+			pointer-events: none;
+		}
 
-/* Optional dark overlay to improve readability */
-#bg-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.25);
-    z-index: -1;
-    pointer-events: none;
-}
-/*
-         Make the page a column flex layout so footer can stick to bottom when content is short.
-         The .site-content area grows to fill available vertical space.
-        */
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            font-family: 'Arial', Arial, sans-serif;
-            color: #000; /* default text color */
-            background: transparent; /* ensure html background shows through */
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+		.city-section {
+			background: #121212 center / cover no-repeat;
+		}
 
-        /* The main content area should grow so the footer sits at the bottom on short pages */
-        .site-content {
-            flex: 1 0 auto;
-            padding-bottom: 0;
-        }
+		@media (min-aspect-ratio: 16 / 9) {
+			.city-section {
+				min-height: 0;
+				height: 100svh;
+				aspect-ratio: auto;
+			}
+		}
 
-        /* Social Icons Section */
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 22px;
-            padding: 30px 20px;
-            background-color: transparent; /* allow camo to show through */
-        }
+		.city-frame {
+			position: absolute;
+			inset: 0;
+			z-index: -1;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			pointer-events: none;
+		}
 
-        .social-icons a {
-            text-decoration: none;
-            color: black;
-            font-family: 'Arial', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            display: inline-block;
-            width: 48px; /* make anchors square for icons */
-            height: 48px;
-        }
+		.screen-section {
+			min-height: 0;
+			aspect-ratio: 16 / 9;
+			background: #000 url("FTL_ASSETS/FTL_SCREEN.jpg") center / 100% 100% no-repeat;
+		}
 
-        .social-icons a img {
-            width: 100%;
-            height: 100%;
-            display: block;
-            object-fit: contain;
-        }
+		/* Adjust these percentages to fine-tune the media composite on the screen artwork. */
+		.screen-carousel {
+			--controls-left: 3.2%;
+			--controls-top: 37%;
+			--controls-width: 9.5%;
+			--controls-gap: 2.7vw;
+			--media-left: 22%;
+			--media-top: 15%;
+			--media-width: 69%;
+			position: absolute;
+			inset: 0;
+			z-index: 1;
+			pointer-events: none;
+		}
 
-        .social-icons a:hover {
-            opacity: 0.85;
-            transform: scale(1.1);
-        }
+		.screen-controls {
+			position: absolute;
+			top: var(--controls-top);
+			left: var(--controls-left);
+			display: flex;
+			flex-direction: column;
+			width: var(--controls-width);
+			gap: var(--controls-gap);
+			pointer-events: auto;
+		}
 
-        /* Navigation Buttons Container */
-        /* Use responsive side padding (clamp) to avoid fixed large padding causing overflow */
-        .navigation-buttons-container {
-            display: flex;
-            justify-content: center;
-            padding: 30px clamp(16px, 10vw, 150px);
-            background-color: transparent; /* allow camo to show through */
-            width: 100%;
-        }
+		.screen-control {
+			display: block;
+			width: 100%;
+			padding: 0;
+			border: 0;
+			background: transparent;
+			cursor: pointer;
+		}
 
-        /* Main Navigation Buttons */
-        .navigation-buttons {
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 10px;
-            width: 100%;
-            flex-wrap: wrap;
-        }
+		.screen-control:hover {
+			filter: brightness(1.35);
+		}
 
-        .nav-button {
-            display: inline-flex;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            text-decoration: none;
-            flex: 1;
-            min-width: 76px;
-            justify-content: center;
-            align-items: flex-end;
-        }
+		.screen-control.is-flashing {
+			animation: screenControlFlash .12s ease-out;
+		}
 
-        .nav-button img {
-            display: block;
-            max-width: 100%;
-            height: auto;
-            width: 100%;
-        }
+		@keyframes screenControlFlash {
+			0%, 100% {
+				filter: brightness(1);
+			}
+			35% {
+				filter: brightness(2);
+			}
+		}
 
-        .nav-button:hover {
-            transform: scale(1.05);
-        }
+		.screen-control img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
 
-        /* Asymmetrical positioning for 2nd and 4th buttons */
-        .nav-button:nth-child(2),
-        .nav-button:nth-child(4) {
-            transform: translateY(-35px);
-        }
+		.screen-media {
+			position: absolute;
+			top: var(--media-top);
+			left: var(--media-left);
+			width: var(--media-width);
+			aspect-ratio: 16 / 9;
+			overflow: hidden;
+			pointer-events: auto;
+		}
 
-        .nav-button:nth-child(2):hover,
-        .nav-button:nth-child(4):hover {
-            transform: translateY(-35px) scale(1.05);
-        }
+		.screen-media iframe,
+		.screen-media video,
+		.screen-media img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			border: 0;
+			object-fit: contain;
+		}
 
-        @media (max-width: 700px) {
-            .navigation-buttons-container {
-                padding: 18px 12px 0;
-            }
+		.room-section {
+			background: url("FTL_ASSETS/FTL_ROOM_BG.jpg") center / cover no-repeat;
+		}
 
-            .navigation-buttons {
-                gap: 12px;
-            }
+		.topbar {
+			position: absolute;
+			top: var(--page-padding);
+			left: var(--page-padding);
+			right: var(--page-padding);
+			z-index: 2;
+			display: flex;
+			align-items: flex-start;
+			justify-content: space-between;
+		}
 
-            .nav-button {
-                flex: 1 1 calc(50% - 12px);
-                min-width: 0;
-                max-width: 200px;
-            }
+		.logo {
+			display: block;
+			width: clamp(14rem, 35vw, 35rem);
+		}
 
-            .nav-button:nth-child(2),
-            .nav-button:nth-child(4),
-            .nav-button:nth-child(2):hover,
-            .nav-button:nth-child(4):hover {
-                transform: none;
-            }
-        }
+		.logo img,
+		.contact img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
 
-        /* Logo Banner Section */
-        .logo-banner {
-            display: flex;
-            justify-content: center;
-            padding: 0;
-            background-color: transparent; /* allow camo to show through */
-            width: 100%;
-            position: relative; /* make this the positioning context for the contact button */
-            overflow: visible;
-            z-index: 30; /* bring banner above the events area */
-        }
+		.contact {
+			display: block;
+			width: clamp(12rem, 27vw, 27rem);
+			transition: filter .15s ease;
+		}
 
-        .logo-banner img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+		.contact:hover {
+			filter: brightness(1.35);
+		}
 
-        /* Contact button attached to the banner */
-        .logo-banner .contact-button {
-            position: absolute;
-            /* place on the right side and lower third */
-            right: 11.5%;
-            bottom: 24.5%;
-            width: 14.5%; /* scales smoothly with the banner width */
-            height: auto;
-            transform: rotate(3deg);
-            transform-origin: center bottom;
-            transition: transform 0.25s ease, opacity 0.25s ease, width 0.25s linear;
-            display: inline-block;
-            z-index: 35; /* ensure it sits above the banner image */
-            will-change: transform, width;
-        }
+		.partner:hover {
+			transform: scale(1.03);
+		}
 
-        .logo-banner .contact-button img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+		.city-navigation {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			z-index: 2;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: min(92vw, 86rem);
+			transform: translate(-50%, -50%);
+		}
 
-        .logo-banner .contact-button:hover {
-            transform: rotate(3deg) scale(1.03);
-            opacity: 0.95;
-        }
+		.city-navigation a {
+			display: block;
+			width: 33.333%;
+			transition: transform .15s ease, filter .15s ease;
+		}
 
-        /* Featured Content Area */
-        .featured-content {
-            display: block; /* let height be determined by content so footer sits below */
-            justify-content: center;
-            align-items: center;
-            padding: 8px 0 12px; /* tightened padding so posters sit closer under the banner */
-            background-color: transparent; /* allow camo to show through */
-            min-height: 0;
-            box-sizing: border-box;
-        }
+		.city-navigation a:nth-child(1) {
+			transform: translate(clamp(-5rem, -5vw, -1rem), 2.6rem) rotate(-5deg);
+		}
 
-        .featured-content-placeholder {
-            text-align: center;
-            color: #999;
-            font-size: 18px;
-            background: rgba(255,255,255,0.0); /* explicit transparent fallback */
-        }
+		.city-navigation a:nth-child(2) {
+			transform: translateY(-1.1rem) rotate(1deg);
+		}
 
-        .featured-content img,
-        .featured-content video {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
+		.city-navigation a:nth-child(3) {
+			transform: translate(clamp(1rem, 5vw, 5rem), 2rem) rotate(5deg);
+		}
 
-        /*
-         Events area:
-         Avoid width:100vw which includes the scrollbar and can create horizontal overflow.
-         Use width:100% and remove the negative margin so the section follows the page/container width.
-        */
-        .event-area {
-            width: 100%;
-            margin-left: 0;
-            box-sizing: border-box;
-            padding: 0; /* container padding handled by .poster-frame */
-            overflow: visible;
-            background: transparent;
-            position: relative;
-            z-index: 10; /* behind the logo-banner (logo-banner z-index:30) */
-            margin-top: calc(-100px * var(--event-section-scale)); /* pulled upward slightly; reduced to lower the section a tiny amount */
-        }
+		.city-navigation a:hover {
+			filter: brightness(1.12);
+		}
 
-        .poster-frame {
-            /* grid allows posters to expand evenly and fill the row */
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: calc(28px * var(--event-section-scale)); /* equal spacing between posters, scaled */
-            padding: 0 calc(28px * var(--event-section-scale)) calc(36px * var(--event-section-scale)); /* padding equals gap so spacing between edge and first/last item == gap */
-            align-items: start;
-            justify-items: center;
-            box-sizing: border-box;
-            max-width: none;
-        }
+		.city-navigation a:nth-child(1):hover {
+			transform: translate(clamp(-5rem, -5vw, -1rem), 2.6rem) rotate(-8deg) scale(1.02);
+		}
 
-        .poster-item {
-            position: relative;
-            width: 100%;
-            max-width: calc(520px * var(--event-section-scale) * var(--poster-scale)); /* cap how large each poster grows on very wide screens, scaled */
-            display: block;
-            box-sizing: border-box;
-            padding: 0; /* poster image is inset slightly from frame via .poster-link padding */
-            transition: transform 0.28s cubic-bezier(.2,.9,.2,1), box-shadow 0.28s ease;
-            transform-origin: center top;
-            z-index: 2; /* poster-item stack base (frame will be behind, image on top) */
-            overflow: visible; /* allow scaled image and enlarged frame to extend */
-            display: flex;
-            justify-content: center;
-        }
+		.city-navigation a:nth-child(2):hover {
+			transform: translateY(-1.1rem) rotate(4deg) scale(1.02);
+		}
 
-        /*
-         Position the frame BEHIND the poster image and preserve its native aspect ratio.
-         Use width only (height:auto) so the frame image is never squished; center it behind the poster.
-         The frame image original resolution is 1334 x 1760 (width x height).
-        */
-        .poster-item .poster-border {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%) scale(calc(var(--frame-scale) * var(--poster-scale))); /* frame scaled via variables */
-            /* make the frame a bit larger than the poster; adjust gap here if you want more visible edge */
-            width: calc(100% * var(--poster-scale) + 56px * var(--event-section-scale));
-            height: auto; /* preserve aspect ratio (1334 / 1760) */
-            z-index: 1; /* behind the poster-link (z-index: 3) */
-            pointer-events: none;
-            transition: transform 0.28s cubic-bezier(.2,.9,.2,1);
-            image-rendering: auto;
-        }
+		.city-navigation a:nth-child(3):hover {
+			transform: translate(clamp(1rem, 5vw, 5rem), 2rem) rotate(1deg) scale(1.02);
+		}
 
-        /*
-         The poster-link contains the image and sits above the frame.
-         Use padding so the poster image does not fully touch the frame center.
-        */
-        .poster-link {
-            position: relative;
-            z-index: 3; /* above the frame */
-            display: block;
-            width: calc(100% * var(--poster-scale) - 36px * var(--event-section-scale));
-            padding: calc(18px * var(--event-section-scale)); /* creates breathing room between image and frame */
-            text-decoration: none;
-            overflow: visible; /* allow scaled image to escape and not be clipped */
-            border-radius: 2px;
-            background: transparent;
-            box-sizing: border-box;
-        }
+		.city-navigation img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
 
-        .poster-link img {
-            display: block;
-            width: 100%;
-            height: auto;
-            aspect-ratio: 2 / 3; /* tall poster */
-            object-fit: contain; /* changed from cover so the entire poster is shown without being cropped */
-            object-position: center;
-            box-shadow: none;
-            transition: transform 0.28s cubic-bezier(.2,.9,.2,1), filter 0.28s ease;
-            will-change: transform;
-            border-radius: 2px; /* slight rounding of the visible poster inside the frame */
-            background-color: transparent;
-        }
+		.section-meta {
+			position: absolute;
+			right: var(--page-padding);
+			bottom: var(--page-padding);
+			left: var(--page-padding);
+			z-index: 2;
+			display: flex;
+			align-items: flex-end;
+			justify-content: space-between;
+			gap: 2rem;
+		}
 
-        /* Hover behavior: grow poster and frame, lift above siblings but remain under logo banner */
-        .poster-item:hover {
-            transform: translateY(-6px) scale(1.03);
-            z-index: 25; /* higher than other posters but less than logo-banner (30) */
-        }
+		.copyright {
+			white-space: nowrap;
+		}
 
-        .poster-item:hover .poster-border {
-            transform: translate(-50%, -50%) scale(calc(var(--frame-scale) * var(--poster-scale) * 1.03)); /* combine base frame-scale with hover growth */
-        }
+		.social-links,
+		.footer-links {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-end;
+			gap: clamp(.8rem, 2vw, 2rem);
+		}
 
-        .poster-item:hover .poster-link img {
-            transform: translateY(-8px) scale(1.03);
-            filter: brightness(1.02);
-        }
+		.link-star {
+			display: inline-flex;
+			align-items: center;
+			color: var(--ink);
+			font-size: .55em;
+			line-height: 1;
+			opacity: .85;
+		}
 
-        /* On very wide screens, allow posters to grow and increase overlap behind banner a bit */
-        @media (min-width: 1600px) {
-            .poster-frame { gap: calc(36px * var(--event-section-scale)); padding: 0 calc(36px * var(--event-section-scale)) calc(44px * var(--event-section-scale)); }
-            .poster-item { max-width: calc(640px * var(--event-section-scale) * var(--poster-scale)); }
-            .poster-item .poster-border { width: calc(100% * var(--poster-scale) + 80px * var(--event-section-scale)); }
-            .event-area { margin-top: calc(-130px * var(--event-section-scale)); } /* a bit more overlap on large screens, but reduced to lower section slightly */
-        }
+		.social-links a,
+		.footer-links a,
+		.credit {
+			transition: opacity .2s ease;
+		}
 
-        /* Stack posters on narrower screens and keep them near-fullwidth. Reduce overlap so footer remains reachable. */
-        @media (max-width: 1100px) {
-            .poster-frame { grid-template-columns: 1fr; gap: calc(18px * var(--event-section-scale)); padding: 0 calc(18px * var(--event-section-scale)) calc(22px * var(--event-section-scale)); }
-            .poster-item { width: 100%; max-width: calc(480px * var(--event-section-scale) * var(--poster-scale)); }
-            /* Reduce the frame "overhang" on small screens so the decorative border doesn't look oversized */
-            .poster-item .poster-border { width: calc(100% * var(--poster-scale) + 16px * var(--event-section-scale)); transform: translate(-50%, -50%) scale(calc(var(--frame-scale) * var(--poster-scale))); }
-            .poster-link { width: calc(100% * var(--poster-scale) - 24px * var(--event-section-scale)); padding: calc(12px * var(--event-section-scale)); }
-            .event-area { margin-top: calc(-60px * var(--event-section-scale)); } /* less overlap on small screens, reduced to lower the section */
-        }
+		.social-links a:hover,
+		.footer-links a:hover,
+		.credit:hover {
+			opacity: .58;
+		}
 
-        /* Footer - visible and anchored at the bottom without floating over content */
-        .footer-section {
-            position: relative;
-            display: block;
-            width: 100%;
-            flex-shrink: 0;
-            margin-top: auto;
-            padding: 0;
-            text-align: center;
-            overflow-x: hidden; /* hide horizontal overflow only */
-            overflow-y: visible; /* allow partner row to extend vertically if needed */
-            z-index: 40;
-            line-height: 0; /* remove small descender gap under images */
-            /* Respect device safe area (iOS) so the footer image can sit flush */
-            padding-bottom: env(safe-area-inset-bottom, 0);
-        }
+		.partners {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			z-index: 2;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: min(82vw, 75rem);
+			transform: translate(-50%, -50%);
+		}
 
-        .footer-section img {
-            position: relative;
-            z-index: 10; /* keep the image behind the partner row */
-            width: 100%;
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0; /* ensure no default margins create gaps */
-            padding: 0;
-            -webkit-user-drag: none;
-        }
+		.partner {
+			display: block;
+			width: 25%;
+			padding: clamp(.3rem, 1.5vw, 1.5rem);
+			transition: transform .25s ease;
+		}
 
-        .footer-partners {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 50%; /* center the partner logos within the footer image */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            align-content: center;
-            flex-wrap: nowrap; /* keep logos on a single row and let them shrink instead */
-            gap: 12px;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            z-index: 60; /* ensure logos are painted above the footer image */
-            pointer-events: auto;
-            box-sizing: border-box;
-            transform: translateY(-50%);
-        }
+		.partner img {
+			display: block;
+			width: 100%;
+			height: auto;
+			object-fit: contain;
+		}
 
-        .footer-partners a {
-            display: inline-flex;
-            flex: 1 1 0; /* allow items to shrink evenly and wrap */
-            align-items: center;
-            justify-content: center;
-            min-width: 0; /* allow flex items to become smaller than their contents if needed */
-            max-width: 300px;
-            transition: transform 0.25s ease, opacity 0.25s ease;
-        }
+		.room-footer {
+			position: absolute;
+			right: var(--page-padding);
+			bottom: var(--page-padding);
+			left: var(--page-padding);
+			z-index: 2;
+			display: grid;
+			grid-template-columns: 1fr auto 1fr;
+			align-items: end;
+			gap: 1rem;
+		}
 
-        .footer-partners a img {
-            width: 100%; /* always scale to the anchor container width */
-            max-width: 100%;
-            height: auto;
-            max-height: 100px;
-            display: block;
-            object-fit: contain; /* preserve logo aspect while fitting */
-        }
+		.room-footer .footer-links {
+			justify-content: center;
+		}
 
-        .footer-partners a:hover {
-            transform: translateY(-4px);
-            opacity: 0.92;
-        }
+		.room-footer .credit {
+			justify-self: end;
+		}
 
-        @media (max-width: 900px) {
-            .footer-partners {
-                gap: 12px;
-                width: calc(100% - 32px);
-                padding: 0 16px;
-            }
+		@media (max-width: 640px) {
+			.home-section {
+				aspect-ratio: auto;
+			}
 
-            .footer-partners a {
-                flex: 1 1 0;
-                min-width: 0;
-                max-width: 220px;
-            }
-        }
+			.screen-section {
+				min-height: 0;
+				aspect-ratio: 16 / 9;
+			}
 
-        @media (max-width: 700px) {
-            .footer-partners {
-                gap: 10px;
-                width: calc(100% - 24px);
-                padding: 0 12px;
-            }
+			.section-meta,
+			.room-footer {
+				align-items: flex-start;
+				flex-direction: column;
+				gap: .75rem;
+			}
 
-            /* Limit partners to two-per-row at small widths to avoid overflow */
-            .footer-partners a {
-                flex: 1 1 0; /* allow logos to shrink in a single row */
-                min-width: 0;
-                max-width: 220px;
-            }
+			.social-links,
+			.footer-links {
+				justify-content: flex-start;
+				gap: .5rem 1rem;
+			}
 
-            .footer-partners a img { max-height: 64px; }
-        }
+			.room-footer {
+				display: flex;
+			}
 
-        /* Extra small devices - reduce logo heights further and ensure no horizontal scroll */
-        @media (max-width: 420px) {
-            .footer-partners { padding: 0 8px; gap: 8px; }
-            .footer-partners a { flex: 1 1 0; max-width: 200px; }
-            .footer-partners a img { max-height: 52px; }
-            html, body { overflow-x: hidden; } /* last-resort safeguard on very small devices */
-            .site-content { padding-bottom: 110px; }
-        }
+			.room-footer .footer-links {
+				justify-content: flex-start;
+			}
 
-        /* Reduce reserved content space for medium and small screens */
-        @media (max-width: 900px) {
-            .site-content { padding-bottom: 120px; }
-        }
+			.room-footer .credit {
+				align-self: flex-start;
+			}
 
-        /* Optional: If you still see tiny horizontal overflows after the fixes above,
-           you can uncomment the rule below as a last-resort safeguard.
-           Note: hiding overflow may mask layout problems, so prefer fixing the root cause. */
-        /* html, body { overflow-x: hidden; } */
+			.partners {
+				width: 100%;
+			}
 
-    </style>
+			.partner {
+				padding: .2rem;
+			}
+		}
+	</style>
 </head>
 <body>
+	<main>
+		<section class="home-section city-section" aria-label="Frontline Underground">
+			<img class="city-frame" src="FTL_ASSETS/FTL_CITY_BACKGROUND/FTL CITY_00000.jpg" alt="">
+			<div class="topbar">
+				<a class="logo" href="https://frontlineug.com/" aria-label="Frontline Underground home">
+					<img src="FTL_ASSETS/FTL_LOGO.png" alt="Frontline Underground">
+				</a>
+				<a class="contact" href="https://frontlineug.com/contact" aria-label="Contact Frontline Underground">
+					<img src="FTL_ASSETS/FTL_CONTACT.png" alt="Contact">
+				</a>
+			</div>
+			<nav class="city-navigation" aria-label="Frontline sections">
+				<a href="https://frontlineug.com/music" aria-label="Music">
+					<img src="FTL_ASSETS/FTL_MUSIC_BUTTON.png" alt="Music">
+				</a>
+				<a href="https://frontlineug.com/visuals" aria-label="Visuals">
+					<img src="FTL_ASSETS/FTL_VISUAL_BUTTON.png" alt="Visuals">
+				</a>
+				<a href="https://frontlineug.com/events" aria-label="Events">
+					<img src="FTL_ASSETS/FTL_EVENTS_BUTTON.png" alt="Events">
+				</a>
+			</nav>
+			<div class="section-meta">
+				<span class="copyright">© FRONTLINE 2026</span>
+				<nav class="social-links" aria-label="Social links">
+					<a href="https://discord.com/invite/Exs5Kc3Mf6" target="_blank" rel="noreferrer">DISCORD</a>
+					<span class="link-star" aria-hidden="true">★</span>
+					<a href="https://www.twitch.tv/frontlineunderground" target="_blank" rel="noreferrer">TWITCH</a>
+					<span class="link-star" aria-hidden="true">★</span>
+					<a href="https://soundcloud.com/frontlineunderground" target="_blank" rel="noreferrer">SOUNDCLOUD</a>
+					<span class="link-star" aria-hidden="true">★</span>
+					<a href="https://www.youtube.com/@FrontlineUnderground" target="_blank" rel="noreferrer">YOUTUBE</a>
+					<span class="link-star" aria-hidden="true">★</span>
+					<a href="https://www.instagram.com/frontline.ug/" target="_blank" rel="noreferrer">INSTAGRAM</a>
+				</nav>
+			</div>
+		</section>
 
-<video id="bg-video" autoplay muted loop playsinline preload="auto" poster="FTL_ASSETS/FTL_HOME_BG.jpg">
-    <source src="FTL_ASSETS/FTL_HOME_BG.mp4" type="video/mp4">
-</video>
+		<section class="home-section screen-section" aria-label="Frontline screen">
+			<div class="screen-carousel">
+				<div class="screen-controls" aria-label="Media carousel controls">
+					<button class="screen-control" type="button" data-carousel-next aria-label="Next media">
+						<img src="FTL_ASSETS/FTL_BUTTON_NEXT.png" alt="Next">
+					</button>
+					<button class="screen-control" type="button" data-carousel-prev aria-label="Previous media">
+						<img src="FTL_ASSETS/FTL_BUTTON_PREV.png" alt="Previous">
+					</button>
+				</div>
+				<div class="screen-media" data-carousel-media aria-live="polite"></div>
+			</div>
+		</section>
 
-<div id="bg-overlay"></div>
+		<section class="home-section room-section" aria-label="Frontline partners">
+			<div class="partners">
+				<a class="partner" href="https://www.veryrarecinema.com/" target="_blank" rel="noreferrer" aria-label="VRChat">
+					<img src="FTL_ASSETS/VRC_LOGO.png" alt="VRChat">
+				</a>
+				<a class="partner" href="https://symphonic.com/" target="_blank" rel="noreferrer" aria-label="Symphonic">
+					<img src="FTL_ASSETS/SYMPHONIC_LOGO.png" alt="Symphonic">
+				</a>
+				<a class="partner" href="https://mobworld.cc/" target="_blank" rel="noreferrer" aria-label="Mob World">
+					<img src="FTL_ASSETS/MOBWORLD_LOGO.png" alt="Mob World">
+				</a>
+				<a class="partner" href="https://audiomack.com/" target="_blank" rel="noreferrer" aria-label="Audiomack">
+					<img src="FTL_ASSETS/AUDIOMACK_LOGO.png" alt="Audiomack">
+				</a>
+			</div>
+			<footer class="room-footer">
+				<span class="copyright">© FRONTLINE 2026</span>
+				<nav class="footer-links" aria-label="Footer links">
+					<a href="https://frontlineug.com/contact">CONTACT</a>
+					<span class="link-star" aria-hidden="true">★</span>
+					<a href="https://frontlineug.com/about">WHY FRONTLINE ?</a>
+					<span class="link-star" aria-hidden="true">★</span>
+					<a href="https://frontlineug.com/music">PARTNER</a>
+				</nav>
+				<a class="credit" href="https://obssd.online/">DESIGNED BY OBSSD + HEARTLESS</a>
+			</footer>
+		</section>
+	</main>
+	<script>
+		const citySection = document.querySelector('.city-section');
+		const cityFrame = document.querySelector('.city-frame');
+		const cityFrames = Array.from({ length: 49 }, (_, index) =>
+			`FTL_ASSETS/FTL_CITY_BACKGROUND/FTL CITY_${String(index).padStart(5, '0')}.jpg`
+		);
+		const preloadedFrames = cityFrames.map((source) => {
+			const image = new Image();
+			image.src = source;
+			return image.decode().then(() => image).catch(() => image);
+		});
+		let currentFrame = 0;
+		let lastFrameTime = 0;
 
-<noscript>
-  <img src="FTL_ASSETS/FTL_HOME_BG.jpg" alt="" style="position:fixed; inset:0; width:100%; height:100%; object-fit:cover; z-index:-2; pointer-events:none;">
-</noscript>
+		Promise.all(preloadedFrames).then((frames) => {
+			cityFrame.src = frames[0].src;
 
-    <div class="site-content">
-        <!-- Social Media Links -->
-        <div class="social-icons">
-            <a href="https://www.instagram.com/frontline.ug/" target="_blank" title="Instagram" aria-label="Instagram">
-                <img src="FTL_ASSETS/FTL_INSTAGRAM_DOGTAG.png" alt="Instagram">
-            </a>
-            <a href="https://www.youtube.com/@FrontlineUnderground" target="_blank" title="YouTube" aria-label="YouTube">
-                <img src="FTL_ASSETS/FTL_YOUTUBE_DOGTAG.png" alt="YouTube">
-            </a>
-            <a href="https://soundcloud.com/frontlineunderground" target="_blank" title="SoundCloud" aria-label="SoundCloud">
-                <img src="FTL_ASSETS/FTL_SOUNDCLOUD_DOGTAG.png" alt="SoundCloud">
-            </a>
-            <a href="https://discord.com/invite/Exs5Kc3Mf6" target="_blank" title="Discord" aria-label="Discord">
-                <img src="FTL_ASSETS/FTL_DISCORD_DOGTAG.png" alt="Discord">
-            </a>
-            <!-- NEW: Twitch icon -->
-            <a href="https://www.twitch.tv/frontlineunderground" target="_blank" title="Twitch" aria-label="Twitch">
-                <img src="FTL_ASSETS/FTL_TIWTCH_DOGTAG.png" alt="Twitch">
-            </a>
-        </div>
+			function animateCity(timestamp) {
+				if (timestamp - lastFrameTime >= 100) {
+					currentFrame = (currentFrame + 1) % frames.length;
+					cityFrame.src = frames[currentFrame].src;
+					lastFrameTime = timestamp;
+				}
+				requestAnimationFrame(animateCity);
+			}
 
-        <!-- Main Navigation Buttons Container -->
-        <div class="navigation-buttons-container">
-            <div class="navigation-buttons">
-                <a href="https://frontlineug.com/artist" class="nav-button" title="Assets">
-                    <img src="FTL_ASSETS/FTL_ARTIST_BADGE.png" alt="Artist">
-                </a>
-                <a href="https://frontlineug.com/producer" class="nav-button" title="Producer">
-                    <img src="FTL_ASSETS/FTL_PRODUCER_BADGE.png" alt="Producer">
-                </a>
-                <a href="https://frontlineug.com/work" class="nav-button" title="Work">
-                    <img src="FTL_ASSETS/FTL_VISUAL_BADGE.png" alt="Work">
-                </a>
-                <a href="https://frontlineug.com/contact" class="nav-button" title="Contact">
-                    <img src="FTL_ASSETS/FTL_CONTACT_BADGE.png" alt="Contact">
-                </a>
-                <a href="https://frontlineug.com/events" class="nav-button" title="Events">
-                    <img src="FTL_ASSETS/FTL_EVENTS_BADGE.png" alt="Events">
-                </a>
-            </div>
-        </div>
+			requestAnimationFrame(animateCity);
+		});
 
-        <!-- Logo Banner -->
-        <div class="logo-banner">
-            <img src="FTL_ASSETS/FTL_LOGO_BANNER.png" alt="FTL Logo Banner">
-            <!-- Contact button attached to the banner. It scales with the banner width and is tilted 3deg. -->
-            <a href="https://frontlineug.com/contact" class="contact-button" title="Contact Frontline">
-                <img src="FTL_ASSETS/FTL_CONTACT_STICKER.png" alt="Contact Button">
-            </a>
-        </div>
+		const mediaItems = [
+            { type: 'youtube', src: 'https://www.youtube.com/watch?v=BEg25IJDyaw' },
+            { type: 'youtube', src: 'https://www.youtube.com/watch?v=EsBedxfoiNA' }
+			// { type: 'youtube', src: 'https://www.youtube.com/watch?v=BEg25IJDyaw' },
+			// Add more entries here using type 'youtube', 'video', or 'image'.
+			// { type: 'video', src: 'FTL_ASSETS/example.mp4' },
+			// { type: 'image', src: 'FTL_ASSETS/example.jpg', alt: 'Frontline artwork' }
+		];
+		const mediaStage = document.querySelector('[data-carousel-media]');
+		const previousMediaButton = document.querySelector('[data-carousel-prev]');
+		const nextMediaButton = document.querySelector('[data-carousel-next]');
+		let currentMedia = 0;
 
-        <!-- Featured Content Area (for images/videos) -->
-        <div class="featured-content">
-            <!-- Event posters sit directly below the logo banner. Each poster has its own decorative frame and occupies most of the horizontal space. -->
-            <div class="event-area" aria-label="Featured events">
-                <div class="poster-frame">
+		function youtubeEmbedUrl(source) {
+			const url = new URL(source);
+			const videoId = url.searchParams.get('v') || url.pathname.split('/').pop();
+			return `https://www.youtube.com/embed/${videoId}?rel=0`;
+		}
 
-                    <div class="poster-item" aria-hidden="false">
-                        <!-- decorative frame behind this poster - now intentionally behind the poster -->
-                        <img class="poster-border" src="FTL_ASSETS/FTL_EVENT_BORDER.png" alt="Event frame" aria-hidden="true">
-                        <a class="poster-link" href="https://frontlineug.com/events" title="Event 1" aria-label="Open Event 1">
-                            <img src="FTL_ASSETS/PFP/POSTER_COMING_SOON.jpg" alt="Event 1" loading="lazy">
-                        </a>
-                    </div>
+		function renderMedia() {
+			const item = mediaItems[currentMedia];
+			mediaStage.replaceChildren();
 
-                    <div class="poster-item" aria-hidden="false">
-                        <img class="poster-border" src="FTL_ASSETS/FTL_EVENT_BORDER.png" alt="Event frame" aria-hidden="true">
-                        <a class="poster-link" href="https://frontlineug.com/events" title="Event 2" aria-label="Open Event 2">
-                            <img src="FTL_ASSETS/PFP/POSTER_COMING_SOON.jpg" alt="Event 2" loading="lazy">
-                        </a>
-                    </div>
+			if (item.type === 'youtube') {
+				const iframe = document.createElement('iframe');
+				iframe.src = youtubeEmbedUrl(item.src);
+				iframe.title = 'Frontline media';
+				iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+				iframe.allowFullscreen = true;
+				mediaStage.append(iframe);
+			} else if (item.type === 'video') {
+				const video = document.createElement('video');
+				video.src = item.src;
+				video.controls = true;
+				video.playsInline = true;
+				mediaStage.append(video);
+			} else if (item.type === 'image') {
+				const image = document.createElement('img');
+				image.src = item.src;
+				image.alt = item.alt || 'Frontline media';
+				mediaStage.append(image);
+			}
+		}
 
-                    <div class="poster-item" aria-hidden="false">
-                        <img class="poster-border" src="FTL_ASSETS/FTL_EVENT_BORDER.png" alt="Event frame" aria-hidden="true">
-                        <a class="poster-link" href="https://frontlineug.com/events" title="Event 3" aria-label="Open Event 3">
-                            <img src="FTL_ASSETS/POSTER.jpg" alt="Event Poster 3" loading="lazy">
-                        </a>
-                    </div>
+		function changeMedia(direction) {
+			currentMedia = (currentMedia + direction + mediaItems.length) % mediaItems.length;
+			renderMedia();
+		}
 
-                </div>
-            </div>
-        </div>
-    </div>
+		function flashButton(button) {
+			button.classList.remove('is-flashing');
+			void button.offsetWidth;
+			button.classList.add('is-flashing');
+		}
 
-    <!-- Footer -->
-<div class="footer-section page-footer">
-  <img src="FTL_ASSETS/FTL_FOOTER_LARGE.png" alt="Footer">
-  <div class="footer-partners" aria-label="Our partners">
-    <a href="https://symphonic.com/" target="_blank" rel="noopener noreferrer" title="Symphonic">
-      <img src="FTL_ASSETS/SYMPHONIC_LOGO.png" alt="Symphonic logo">
-    </a>
-    <a href="https://www.veryrarecinema.com/" target="_blank" rel="noopener noreferrer" title="Very Rare Cinema">
-      <img src="FTL_ASSETS/VRC_LOGO.png" alt="Very Rare Cinema logo">
-    </a>
-    <a href="https://audiomack.com/" target="_blank" rel="noopener noreferrer" title="Audiomack">
-      <img src="FTL_ASSETS/AUDIOMACK_LOGO.png" alt="Audiomack logo">
-    </a>
-    <a href="https://mobworld.cc/" target="_blank" rel="noopener noreferrer" title="Mobworld">
-      <img src="FTL_ASSETS/MOBWORLD_LOGO.png" alt="Mobworld logo">
-    </a>
-  </div>
-</div>
-
+		previousMediaButton.addEventListener('click', () => {
+			changeMedia(-1);
+			flashButton(previousMediaButton);
+		});
+		nextMediaButton.addEventListener('click', () => {
+			changeMedia(1);
+			flashButton(nextMediaButton);
+		});
+		renderMedia();
+	</script>
 </body>
 </html>
