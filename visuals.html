@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="The Visuals of Frontline Underground">
+    <meta name="description" content="The artists of Frontline Underground">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visual</title>
-    
-    <link rel="icon" href="/FTL_ASSETS/FTL_FAVICON_96.png">
-    <link rel="stylesheet" href="/custom.css">
+    <title>Visuals</title>
+
+    <link rel="icon" href="FTL_ASSETS/FTL_FAVICON_96.png">
+    <link rel="stylesheet" href="custom.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -16,42 +19,127 @@
         }
 
 body {
-     background-image: url('/FTL_ASSETS/FTL_WORK_CAMO.jpg');
+  background-image: url('FTL_ASSETS/FTL_WORK_CAMO.jpg');
     background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    font-family: 'Arial', Arial, sans-serif;
+    font-family: 'Instrument Serif', Georgia, serif;
 }
 
 /* LOGO */
 .logo-container {
-  display: flex;
-  justify-content: center;
-  padding: 30px 16px; /* reduced side padding for small screens */
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 10;
 }
 
 .logo-img {
-  width: 100%;        /* make responsive */
-  max-width: 600px;   /* keep original max on desktop */
-  height: auto;       /* preserve aspect ratio */
+  width: min(460px, 38vw);
+  height: auto;
   cursor: pointer;
-  transition: 0.25s;
+  transition: filter 0.15s ease;
   display: block;
 }
 .logo-img:hover {
-  transform: scale(1.05);
+  filter: brightness(1.35);
+}
+
+.partner-button {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 10;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.partner-button:hover,
+.partner-button:focus-visible {
+  filter: brightness(1.35);
+}
+
+.partner-button img {
+  display: block;
+  width: min(340px, 38vw);
+  height: auto;
+}
+
+.partner-dialog {
+  position: fixed;
+  inset: 48px;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 66px 58px 28px;
+  border: 0;
+  background: #000 url('FTL_ASSETS/FTL_PARTNER_FRAME.jpg') center / 100% 100% no-repeat;
+  color: #fff;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.partner-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.partner-dialog[open] {
+  display: flex;
+  flex-direction: column;
+  animation: spotlightIn 0.25s ease-out;
+}
+
+.partner-dialog h2 {
+  margin-bottom: 18px;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 400;
+  color: #fff;
+}
+
+.dialog-close {
+  position: absolute;
+  top: 34px;
+  right: 44px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.form-embed {
+  flex: 1;
+  min-height: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-embed iframe {
+  display: block;
+  width: min(100%, 720px);
+  height: 100%;
+  border: 0;
 }
   
 /* GRID */
-/* Increased the min tile size so there are fewer items per row. */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); /* larger thumbs => fewer per row */
-  gap: 32px; /* slightly larger gap for bigger tiles */
-  padding: 0 28px 48px; /* more side padding to balance larger tiles */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* slightly larger thumbs */
+  gap: 28px;
+  padding: 260px 20px 40px;
 }
 
 /* ITEM */
@@ -65,46 +153,51 @@ body {
 }
 
 .item:hover {
-  transform: translateY(-6px);
+  transform: translateY(-4px);
 }
 
 /* IMAGE + FRAME */
 .thumb {
   position: relative; /* positioning context for overlay/meta */
   width: 100%;
-  /* Keep frame rectangular, same aspect ratio */
+  /* Use the new frame aspect ratio (846 x 1440) so frames are rectangular */
   aspect-ratio: 846 / 1440;
   overflow: visible; /* allow the frame graphic to show if it extends slightly */
   cursor: pointer; /* use pointer since thumbs open links */
   display: flex;
   align-items: flex-start; /* ensure the inner image sits near the top of the frame */
   justify-content: center;
+  /* frame background behind the profile image
+     NOTE: the actual frame image is set per-thumb in JavaScript so each thumb can have a random frame.
+     If JS is unavailable, there is no frame fallback here. */
   background-position: top center;
   background-repeat: no-repeat;
+  /* make the full rectangular frame visible but preserve the frame's own ratio */
   background-size: 92% auto;
+  /* enable smooth scaling on hover */
   transition: transform 0.18s ease;
   transform-origin: center;
 }
 
-/* scale the profile picture up along with the frame (slightly reduced now for better fit) */
+/* the actual profile picture is placed inside the top portion of the rectangular frame */
 .thumb img {
   position: absolute;
-  top: 18%; /* keep image slightly higher in the frame */
+  top: 18%; /* moved slightly higher so image sits higher in the frame */
   left: 50%;
   transform: translateX(-50%);
-  width: 76%; /* reduced slightly from 82% so the picture fits better inside the frame */
+  width: 72%; /* set width and let height auto to avoid stretching */
   height: auto;
-  max-width: 90%;
+  max-width: 86%;
   object-fit: cover;
   display: block;
-  border-radius: 6px; /* slight rounding */
+  border-radius: 5px; /* subtle rounding if desired */
   z-index: 0; /* behind meta */
-  box-shadow: 0 8px 24px rgba(0,0,0,0.35); /* slightly larger shadow for scale */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.3); /* subtle drop shadow */
 }
 
 /* Remove darkening on hover and instead scale the thumb slightly */
 .thumb:hover {
-  transform: scale(1.035);
+  transform: scale(1.03);
 }
 
 /* CLICK FEEDBACK */
@@ -121,7 +214,7 @@ body {
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 1.1em;
+  font-size: 1em;
   opacity: 0;
   transition: opacity 0.25s ease;
   z-index: 1;
@@ -136,6 +229,7 @@ body {
 /* stacked, centered layout: artist name above the type */
 .meta {
   position: absolute;
+  /* move the dog tag higher (closer to top) by increasing bottom slightly */
   bottom: 22%;
   left: 50%;
   transform: translateX(-50%);
@@ -144,28 +238,28 @@ body {
   flex-direction: column; /* stack title and type vertically */
   justify-content: center;
   align-items: center; /* center text horizontally */
-  gap: 8px; /* slightly larger gap for bigger text */
-  font-size: 1.25em; /* increased base font size for meta */
-  background: transparent; /* fully transparent */
-  color: #000; /* black font */
-  padding: 8px 14px; /* increased padding to match larger layout */
+  gap: 6px; /* small vertical gap between title and type */
+  font-size: 1.12em; /* slightly larger font */
+  background: transparent; /* made fully transparent per request */
+  color: #000; /* make font black */
+  padding: 6px 12px; /* comfortable padding */
   border-radius: 12px;
   z-index: 2; /* appear above image and overlay */
   box-shadow: none; /* remove drop shadow */
   text-shadow: none; /* remove any text shadow */
-  min-height: 0;
-  line-height: 1.12;
+  min-height: 0; /* not forcing a large tappable area so it sits closer to image */
+  line-height: 1.1;
   box-sizing: border-box;
 }
 
 /* make text centered and stacked */
 .title {
-  font-family: 'Arial';
-  font-size: 1.3em; /* larger title for readability */
-  font-weight: 700;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 1.3em; /* larger title */
+  font-weight: 600;
   color: #000; /* black font */
-  text-align: center;
-  text-shadow: none;
+  text-align: center; /* centered below picture */
+  text-shadow: none; /* ensure no shadow */
   overflow: visible;
   white-space: normal; /* allow wrapping if needed */
   padding-right: 0;
@@ -174,14 +268,14 @@ body {
 
 /* TYPE stacked under title and centered */
 .type {
-  font-weight: 900; /* bold type label */
+  font-weight: 900; /* make the 'type' font bold as requested */
   color: #000; /* black font */
   text-align: center;
   text-shadow: none;
   flex: 0 0 auto;
   margin-left: 0;
   white-space: nowrap;
-  font-size: 1.05em; /* larger type label */
+  font-size: 1.02em; /* match overall meta font sizing */
 }
 
 /* DATE (not used but keep) */
@@ -202,16 +296,56 @@ body {
 
        /* Footer */
         .footer-section {
-            padding: 24px 0 0 0;
-            text-align: center;
-            margin-top: auto; /* push footer to the bottom when body is a flex column */
+          min-height: 190px;
+          flex-shrink: 0;
+          margin-top: auto; /* push footer to the bottom when body is a flex column */
+          background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.55) 32%, #000 82%);
         }
 
-        .footer-section img {
-            width: 100%;
-            max-width: 100%;
-            height: auto;
-            display: block;
+        .page-footer {
+          display: grid;
+          grid-template-columns: 1fr auto 1fr;
+          align-items: end;
+          gap: 1rem;
+          padding: 110px 24px 24px;
+          color: #f4f1e9;
+          font-size: clamp(.9rem, 1.3vw, 1.1rem);
+        }
+
+        .page-footer .copyright {
+          white-space: nowrap;
+        }
+
+        .footer-links {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: clamp(.8rem, 2vw, 2rem);
+        }
+
+        .page-footer a {
+          color: inherit;
+          text-decoration: none;
+          transition: opacity .2s ease;
+        }
+
+        .page-footer a:hover,
+        .page-footer a:focus-visible {
+          opacity: .58;
+        }
+
+        .link-star {
+          display: inline-flex;
+          align-items: center;
+          color: inherit;
+          font-size: .55em;
+          line-height: 1;
+          opacity: .85;
+        }
+
+        .page-footer .credit {
+          justify-self: end;
+          text-align: right;
         }
 
 /* ANIMATION */
@@ -222,27 +356,35 @@ body {
   }
 }
 
-/* Add a mid breakpoint for medium screens (tablets/laptops) */
-@media (max-width: 1024px) {
-  .gallery {
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); /* moderate tile size on tablets/laptops */
-    gap: 26px;
-    padding: 0 22px 44px;
-  }
-  .thumb img { width: 72%; } /* slightly smaller on medium screens */
-  .meta { font-size: 1.18em; bottom: 20%; padding: 7px 12px; gap: 7px; }
-  .title { font-size: 1.38em; }
-  .type { font-size: 1.08em; }
+@keyframes spotlightIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 /* Small tweaks for very small screens */
 @media (max-width: 420px) {
-  .logo-container { padding: 20px 12px; }
-  .gallery { gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding: 0 14px 28px; }
+  .logo-container { top: 14px; left: 14px; }
+  .partner-button { top: 14px; right: 14px; }
+  .logo-img,
+  .partner-button img { width: min(190px, 42vw); }
+  .gallery { gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding-top: 150px; }
   .title { font-size: 1.02em; }
   /* reduce profile pic size on very small screens so frame still shows */
-  .thumb img { top: 16%; width: 64%; max-width: 88%; }
+  .thumb img { top: 16%; width: 66%; max-width: 88%; } /* moved slightly higher on tiny screens too */
   .meta { width: 92%; font-size: 1.02em; bottom: 18%; padding: 8px 12px; min-height: 0; gap: 6px; }
+  .partner-dialog {
+    inset: 14px;
+    padding: 52px 28px 20px;
+  }
+  .page-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .75rem;
+    padding: 110px 14px 24px;
+    text-align: center;
+  }
+  .page-footer .credit { text-align: center; }
 }
 
     </style>
@@ -252,18 +394,30 @@ body {
 
 <div class="logo-container">
   <a href="https://frontlineug.com/">
-    <img src="/FTL_ASSETS/FTL_LOGO.png" class="logo-img" alt="Frontline UG Logo">
+    <img src="FTL_ASSETS/FTL_LOGO.png" class="logo-img" alt="Frontline UG Logo">
   </a>
 </div>
+
+<a class="partner-button" href="https://docs.google.com/forms/d/e/1FAIpQLScA54J6IWk3UtsBhTY8FJhCq4UagszacU-_lhvyXgdBs6Xnbw/viewform?usp=header" target="_blank" rel="noreferrer" aria-label="Open partner contact form">
+  <img src="FTL_ASSETS/FTL_PARTNER_2.png" alt="Partner with Frontline Underground">
+</a>
 
 <div class="gallery">
   <!-- Items are generated by JavaScript from the 'artists' array below -->
 </div>
 
-<!-- FOOTER IMAGE -->
-<div class="footer-section page-footer">
-  <img src="/FTL_ASSETS/FTL_FOOTER.png" alt="Footer">
-</div>
+<!-- FOOTER -->
+<footer class="footer-section page-footer">
+  <span class="copyright">© FRONTLINE 2026</span>
+  <nav class="footer-links" aria-label="Footer links">
+    <a href="https://frontlineug.com/contact">CONTACT</a>
+    <span class="link-star" aria-hidden="true">★</span>
+    <a href="https://frontlineug.com/about">WHY FRONTLINE ?</a>
+    <span class="link-star" aria-hidden="true">★</span>
+    <a href="https://frontlineug.com/music">PARTNER</a>
+  </nav>
+  <a class="credit" href="https://obssd.online/">DESIGNED BY OBSSD + HEARTLESS</a>
+</footer>
 
 <script>
 /*
@@ -289,16 +443,16 @@ function openLink(url) {
   window.open(url, '_blank');
 }
 
-/* Generate gallery items from the artists array */
-(function renderGallery() {
+/* Generate gallery items from the visuals array */
+function renderGallery() {
   const gallery = document.querySelector('.gallery');
   gallery.innerHTML = ''; // clear any existing content
 
   // list of available frame images
   const frames = [
-    '/FTL_ASSETS/FTL_PICTURE_FRAME1.png',
-    '/FTL_ASSETS/FTL_PICTURE_FRAME2.png',
-    '/FTL_ASSETS/FTL_PICTURE_FRAME3.png'
+    'FTL_ASSETS/FTL_PICTURE_FRAME1.png',
+    'FTL_ASSETS/FTL_PICTURE_FRAME2.png',
+    'FTL_ASSETS/FTL_PICTURE_FRAME3.png'
   ];
 
   artists.forEach((a) => {
@@ -363,7 +517,9 @@ function openLink(url) {
   document.querySelectorAll('.item').forEach((el, i) => {
     el.style.animationDelay = (i * 0.05) + 's';
   });
-})();
+}
+
+renderGallery();
 </script>
 
 </body>
