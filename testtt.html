@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Frontline Underground">
+	<title>Frontline Underground</title>
+	<link rel="icon" href="FTL_ASSETS/FTL_FAVICON_96.png">
+	<link rel="stylesheet" href="custom.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--ink: #f4f1e9;
+			--page-padding: clamp(1.25rem, 4vw, 4.5rem);
+		}
+
+		*, *::before, *::after {
+			box-sizing: border-box;
+		}
+
+		html {
+			background: #090909;
+			scroll-behavior: smooth;
+		}
+
+		body {
+			margin: 0;
+			background: #090909;
+			color: var(--ink);
+			font-family: "Instrument Serif", serif;
+			font-size: clamp(1rem, 1.3vw, 1.4rem);
+			-webkit-font-smoothing: antialiased;
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		.home-section {
+			position: relative;
+			width: 100%;
+			min-height: 100svh;
+			aspect-ratio: 16 / 9;
+			overflow: hidden;
+			isolation: isolate;
+		}
+
+		.home-section::after {
+			position: absolute;
+			inset: 0;
+			z-index: -1;
+			background: linear-gradient(180deg, rgba(0, 0, 0, .18), transparent 45%, rgba(0, 0, 0, .38));
+			content: "";
+			pointer-events: none;
+		}
+
+		.city-section {
+			background: #121212 center / cover no-repeat;
+		}
+
+		.city-frame {
+			position: absolute;
+			inset: 0;
+			z-index: -1;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			pointer-events: none;
+		}
+
+		.screen-section {
+			min-height: 0;
+			aspect-ratio: 16 / 9;
+			background: #000 url("FTL_ASSETS/FTL_SCREEN.jpg") center / 100% 100% no-repeat;
+		}
+
+		/* Adjust these percentages to fine-tune the media composite on the screen artwork. */
+		.screen-carousel {
+			--controls-left: 3.2%;
+			--controls-top: 37%;
+			--controls-width: 9.5%;
+			--controls-gap: 2.7vw;
+			--media-left: 22%;
+			--media-top: 15%;
+			--media-width: 69%;
+			position: absolute;
+			inset: 0;
+			z-index: 1;
+			pointer-events: none;
+		}
+
+		.screen-controls {
+			position: absolute;
+			top: var(--controls-top);
+			left: var(--controls-left);
+			display: flex;
+			flex-direction: column;
+			width: var(--controls-width);
+			gap: var(--controls-gap);
+			pointer-events: auto;
+		}
+
+		.screen-control {
+			display: block;
+			width: 100%;
+			padding: 0;
+			border: 0;
+			background: transparent;
+			cursor: pointer;
+		}
+
+		.screen-control img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+
+		.screen-media {
+			position: absolute;
+			top: var(--media-top);
+			left: var(--media-left);
+			width: var(--media-width);
+			aspect-ratio: 16 / 9;
+			overflow: hidden;
+			pointer-events: auto;
+		}
+
+		.screen-media iframe,
+		.screen-media video,
+		.screen-media img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			border: 0;
+			object-fit: contain;
+		}
+
+		.room-section {
+			background: url("FTL_ASSETS/FTL_ROOM_BG.jpg") center / cover no-repeat;
+		}
+
+		.topbar {
+			position: absolute;
+			top: var(--page-padding);
+			left: var(--page-padding);
+			right: var(--page-padding);
+			z-index: 2;
+			display: flex;
+			align-items: flex-start;
+			justify-content: space-between;
+		}
+
+		.logo {
+			display: block;
+			width: clamp(11rem, 22vw, 22rem);
+		}
+
+		.logo img,
+		.contact img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+
+		.contact {
+			display: block;
+			width: clamp(7rem, 13vw, 12rem);
+			transition: transform .25s ease;
+		}
+
+		.contact:hover,
+		.partner:hover {
+			transform: scale(1.06);
+		}
+
+		.city-navigation {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			z-index: 2;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: min(92vw, 86rem);
+			transform: translate(-50%, -50%);
+		}
+
+		.city-navigation a {
+			display: block;
+			width: 33.333%;
+			transition: transform .25s ease, filter .25s ease;
+		}
+
+		.city-navigation a:nth-child(1) {
+			transform: translate(clamp(-5rem, -5vw, -1rem), 2.6rem) rotate(-5deg);
+		}
+
+		.city-navigation a:nth-child(2) {
+			transform: translateY(-1.1rem) rotate(1deg);
+		}
+
+		.city-navigation a:nth-child(3) {
+			transform: translate(clamp(1rem, 5vw, 5rem), 2rem) rotate(5deg);
+		}
+
+		.city-navigation a:hover {
+			filter: brightness(1.12);
+		}
+
+		.city-navigation a:nth-child(1):hover {
+			transform: translate(clamp(-5rem, -5vw, -1rem), 2.6rem) rotate(-5deg) scale(1.05);
+		}
+
+		.city-navigation a:nth-child(2):hover {
+			transform: translateY(-1.1rem) rotate(1deg) scale(1.05);
+		}
+
+		.city-navigation a:nth-child(3):hover {
+			transform: translate(clamp(1rem, 5vw, 5rem), 2rem) rotate(5deg) scale(1.05);
+		}
+
+		.city-navigation img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+
+		.section-meta {
+			position: absolute;
+			right: var(--page-padding);
+			bottom: var(--page-padding);
+			left: var(--page-padding);
+			z-index: 2;
+			display: flex;
+			align-items: flex-end;
+			justify-content: space-between;
+			gap: 2rem;
+		}
+
+		.copyright {
+			white-space: nowrap;
+		}
+
+		.social-links,
+		.footer-links {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-end;
+			gap: clamp(.8rem, 2vw, 2rem);
+		}
+
+		.link-star {
+			display: inline-flex;
+			align-items: center;
+			color: var(--ink);
+			font-size: .55em;
+			line-height: 1;
+			opacity: .85;
+		}
+
+		.social-links a,
+		.footer-links a,
+		.credit {
+			transition: opacity .2s ease;
+		}
+
+		.social-links a:hover,
+		.footer-links a:hover,
+		.credit:hover {
+			opacity: .58;
+		}
+
+		.partners {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			z-index: 2;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: min(82vw, 75rem);
+			transform: translate(-50%, -50%);
+		}
+
+		.partner {
+			display: block;
+			width: 25%;
+			padding: clamp(.3rem, 1.5vw, 1.5rem);
+			transition: transform .25s ease;
+		}
+
+		.partner img {
+			display: block;
+			width: 100%;
+			height: auto;
+			object-fit: contain;
+		}
+
+		.room-footer {
+			position: absolute;
+			right: var(--page-padding);
+			bottom: var(--page-padding);
+			left: var(--page-padding);
+			z-index: 2;
+			display: grid;
+			grid-template-columns: 1fr auto 1fr;
+			align-items: end;
+			gap: 1rem;
+		}
+
+		.room-footer .footer-links {
+			justify-content: center;
+		}
+
+		.room-footer .credit {
+			justify-self: end;
+		}
+
+		@media (max-width: 640px) {
+			.home-section {
+				aspect-ratio: auto;
+			}
+
+			.screen-section {
+				min-height: 0;
+				aspect-ratio: 16 / 9;
+			}
+
+			.section-meta,
+			.room-footer {
+				align-items: flex-start;
+				flex-direction: column;
+				gap: .75rem;
+			}
+
+			.social-links,
+			.footer-links {
+				justify-content: flex-start;
+				gap: .5rem 1rem;
+			}
+
+			.room-footer {
+				display: flex;
+			}
+
+			.room-footer .footer-links {
+				justify-content: flex-start;
+			}
+
+			.room-footer .credit {
+				align-self: flex-start;
+			}
+
+			.partners {
+				width: 100%;
+			}
+
+			.partner {
+				padding: .2rem;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main>
+		<section class="home-section city-section" aria-label="Frontline Underground">
+			<img class="city-frame" src="FTL_ASSETS/FTL_CITY_BACKGROUND/FTL CITY_00000.jpg" alt="">
+			<div class="topbar">
+				<a class="logo" href="https://frontlineug.com/" aria-label="Frontline Underground home">
+					<img src="FTL_ASSETS/FTL_LOGO.png" alt="Frontline Underground">
+				</a>
+				<a class="contact" href="https://frontlineug.com/contact" aria-label="Contact Frontline Underground">
+					<img src="FTL_ASSETS/FTL_CONTACT.png" alt="Contact">
+				</a>
+			</div>
+			<nav class="city-navigation" aria-label="Frontline sections">
+				<a href="https://frontlineug.com/music" aria-label="Music">
+					<img src="FTL_ASSETS/FTL_MUSIC_BUTTON.png" alt="Music">
+				</a>
+				<a href="https://frontlineug.com/visuals" aria-label="Visuals">
+					<img src="FTL_ASSETS/FTL_VISUAL_BUTTON.png" alt="Visuals">
+				</a>
+				<a href="https://frontlineug.com/events" aria-label="Events">
+					<img src="FTL_ASSETS/FTL_EVENTS_BUTTON.png" alt="Events">
+				</a>
+			</nav>
+			<div class="section-meta">
+				<span class="copyright">© FRONTLINE 2026</span>
+				<nav class="social-links" aria-label="Social links">
+					<a href="https://discord.com/invite/Exs5Kc3Mf6" target="_blank" rel="noreferrer">DISCORD</a>
+					<span class="link-star" aria-hidden="true">★</span>
+					<a href="https://www.twitch.tv/frontlineunderground" target="_blank" rel="noreferrer">TWITCH</a>
+					<span class="link-star" aria-hidden="true">★</span>
+					<a href="https://soundcloud.com/frontlineunderground" target="_blank" rel="noreferrer">SOUNDCLOUD</a>
+					<span class="link-star" aria-hidden="true">★</span>
+					<a href="https://www.youtube.com/@FrontlineUnderground" target="_blank" rel="noreferrer">YOUTUBE</a>
+					<span class="link-star" aria-hidden="true">★</span>
+					<a href="https://www.instagram.com/frontline.ug/" target="_blank" rel="noreferrer">INSTAGRAM</a>
+				</nav>
+			</div>
+		</section>
+
+		<section class="home-section screen-section" aria-label="Frontline screen">
+			<div class="screen-carousel">
+				<div class="screen-controls" aria-label="Media carousel controls">
+					<button class="screen-control" type="button" data-carousel-next aria-label="Next media">
+						<img src="FTL_ASSETS/FTL_BUTTON_NEXT.png" alt="Next">
+					</button>
+					<button class="screen-control" type="button" data-carousel-prev aria-label="Previous media">
+						<img src="FTL_ASSETS/FTL_BUTTON_PREV.png" alt="Previous">
+					</button>
+				</div>
+				<div class="screen-media" data-carousel-media aria-live="polite"></div>
+			</div>
+		</section>
+
+		<section class="home-section room-section" aria-label="Frontline partners">
+			<div class="partners">
+				<a class="partner" href="https://vrchat.com/" target="_blank" rel="noreferrer" aria-label="VRChat">
+					<img src="FTL_ASSETS/VRC_LOGO.png" alt="VRChat">
+				</a>
+				<a class="partner" href="https://symphonic.com/" target="_blank" rel="noreferrer" aria-label="Symphonic">
+					<img src="FTL_ASSETS/SYMPHONIC_LOGO.png" alt="Symphonic">
+				</a>
+				<a class="partner" href="https://mobworld.co/" target="_blank" rel="noreferrer" aria-label="Mob World">
+					<img src="FTL_ASSETS/MOBWORLD_LOGO.png" alt="Mob World">
+				</a>
+				<a class="partner" href="https://audiomack.com/" target="_blank" rel="noreferrer" aria-label="Audiomack">
+					<img src="FTL_ASSETS/AUDIOMACK_LOGO.png" alt="Audiomack">
+				</a>
+			</div>
+			<footer class="room-footer">
+				<span class="copyright">© FRONTLINE 2026</span>
+				<nav class="footer-links" aria-label="Footer links">
+					<a href="https://frontlineug.com/contact">CONTACT</a>
+					<span class="link-star" aria-hidden="true">★</span>
+					<a href="https://frontlineug.com/why-frontline">WHY FRONTLINE ?</a>
+					<span class="link-star" aria-hidden="true">★</span>
+					<a href="https://frontlineug.com/partner">PARTNER</a>
+				</nav>
+				<a class="credit" href="https://www.instagram.com/obssd/">DESIGNED BY OBSSD + HEARTLESS</a>
+			</footer>
+		</section>
+	</main>
+	<script>
+		const citySection = document.querySelector('.city-section');
+		const cityFrame = document.querySelector('.city-frame');
+		const cityFrames = Array.from({ length: 49 }, (_, index) =>
+			`FTL_ASSETS/FTL_CITY_BACKGROUND/FTL CITY_${String(index).padStart(5, '0')}.jpg`
+		);
+		const preloadedFrames = cityFrames.map((source) => {
+			const image = new Image();
+			image.src = source;
+			return image.decode().then(() => image).catch(() => image);
+		});
+		let currentFrame = 0;
+		let lastFrameTime = 0;
+
+		Promise.all(preloadedFrames).then((frames) => {
+			cityFrame.src = frames[0].src;
+
+			function animateCity(timestamp) {
+				if (timestamp - lastFrameTime >= 100) {
+					currentFrame = (currentFrame + 1) % frames.length;
+					cityFrame.src = frames[currentFrame].src;
+					lastFrameTime = timestamp;
+				}
+				requestAnimationFrame(animateCity);
+			}
+
+			requestAnimationFrame(animateCity);
+		});
+
+		const mediaItems = [
+			{ type: 'image', src: 'FTL_ASSETS/PLACEHOLDER IMAGE.jpg', alt: 'Frontline media placeholder' },
+            { type: 'youtube', src: 'https://www.youtube.com/watch?v=BEg25IJDyaw' }
+			// { type: 'youtube', src: 'https://www.youtube.com/watch?v=BEg25IJDyaw' },
+			// Add more entries here using type 'youtube', 'video', or 'image'.
+			// { type: 'video', src: 'FTL_ASSETS/example.mp4' },
+			// { type: 'image', src: 'FTL_ASSETS/example.jpg', alt: 'Frontline artwork' }
+		];
+		const mediaStage = document.querySelector('[data-carousel-media]');
+		const previousMediaButton = document.querySelector('[data-carousel-prev]');
+		const nextMediaButton = document.querySelector('[data-carousel-next]');
+		let currentMedia = 0;
+
+		function youtubeEmbedUrl(source) {
+			const url = new URL(source);
+			const videoId = url.searchParams.get('v') || url.pathname.split('/').pop();
+			return `https://www.youtube.com/embed/${videoId}?rel=0`;
+		}
+
+		function renderMedia() {
+			const item = mediaItems[currentMedia];
+			mediaStage.replaceChildren();
+
+			if (item.type === 'youtube') {
+				const iframe = document.createElement('iframe');
+				iframe.src = youtubeEmbedUrl(item.src);
+				iframe.title = 'Frontline media';
+				iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+				iframe.allowFullscreen = true;
+				mediaStage.append(iframe);
+			} else if (item.type === 'video') {
+				const video = document.createElement('video');
+				video.src = item.src;
+				video.controls = true;
+				video.playsInline = true;
+				mediaStage.append(video);
+			} else if (item.type === 'image') {
+				const image = document.createElement('img');
+				image.src = item.src;
+				image.alt = item.alt || 'Frontline media';
+				mediaStage.append(image);
+			}
+		}
+
+		function changeMedia(direction) {
+			currentMedia = (currentMedia + direction + mediaItems.length) % mediaItems.length;
+			renderMedia();
+		}
+
+		previousMediaButton.addEventListener('click', () => changeMedia(-1));
+		nextMediaButton.addEventListener('click', () => changeMedia(1));
+		renderMedia();
+	</script>
+</body>
+</html>
