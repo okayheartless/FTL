@@ -6,8 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music</title>
     
-    <link rel="icon" href="/FTL_ASSETS/FTL_FAVICON_96.png">
-    <link rel="stylesheet" href="/custom.css">
+    <link rel="icon" href="FTL_ASSETS/FTL_FAVICON_96.png">
+    <link rel="stylesheet" href="custom.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -16,27 +19,27 @@
         }
 
 body {
-     background-image: url('/FTL_ASSETS/FTL_ARTIST_CAMO.jpg');
+  background-image: url('FTL_ASSETS/FTL_MUSIC_CAMO.jpg');
     background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    font-family: 'Arial', Arial, sans-serif;
+    font-family: 'Instrument Serif', Georgia, serif;
 }
 
 /* LOGO */
 .logo-container {
-  display: flex;
-  justify-content: center;
-  padding: 30px 16px; /* reduced side padding for small screens */
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 10;
 }
 
 .logo-img {
-  width: 100%;        /* make responsive */
-  max-width: 600px;   /* keep original max on desktop */
-  height: auto;       /* preserve aspect ratio */
+  width: min(340px, 38vw);
+  height: auto;
   cursor: pointer;
   transition: 0.25s;
   display: block;
@@ -44,13 +47,122 @@ body {
 .logo-img:hover {
   transform: scale(1.05);
 }
+
+.partner-button {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 10;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+.partner-button:hover,
+.partner-button:focus-visible {
+  transform: scale(1.05);
+}
+
+.partner-button img {
+  display: block;
+  width: min(340px, 38vw);
+  height: auto;
+}
+
+.partner-dialog {
+  position: fixed;
+  inset: 48px;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 66px 58px 28px;
+  border: 0;
+  background: #000 url('FTL_ASSETS/FTL_PARTNER_FRAME.jpg') center / 100% 100% no-repeat;
+  color: #fff;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.partner-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.partner-dialog[open] {
+  display: flex;
+  flex-direction: column;
+  animation: spotlightIn 0.25s ease-out;
+}
+
+.partner-dialog h2 {
+  margin-bottom: 18px;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 400;
+  color: #fff;
+}
+
+.dialog-close {
+  position: absolute;
+  top: 34px;
+  right: 44px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.form-embed {
+  flex: 1;
+  min-height: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.form-embed iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
   
 /* GRID */
+.filter-controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 190px 20px 24px;
+}
+
+.filter-button {
+  border: 1px solid #000;
+  padding: 8px 18px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #000;
+  font: inherit;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.filter-button:hover,
+.filter-button:focus-visible,
+.filter-button[aria-pressed="true"] {
+  background: #000;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* slightly larger thumbs */
   gap: 28px;
-  padding: 0 20px 40px; /* smaller side padding to avoid horizontal cutoff on mobile */
+  padding: 0 20px 40px;
 }
 
 /* ITEM */
@@ -165,7 +277,7 @@ body {
 
 /* make text centered and stacked */
 .title {
-  font-family: 'Arial';
+  font-family: 'Instrument Serif', Georgia, serif;
   font-size: 1.3em; /* larger title */
   font-weight: 600;
   color: #000; /* black font */
@@ -189,6 +301,12 @@ body {
   font-size: 1.02em; /* match overall meta font sizing */
 }
 
+.role {
+  font-size: 0.85em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
 /* DATE (not used but keep) */
 .date { text-align: center; }
 
@@ -207,16 +325,56 @@ body {
 
        /* Footer */
         .footer-section {
-            padding: 20px 0 0 0;
-            text-align: center;
-            margin-top: auto; /* push footer to the bottom when body is a flex column */
+          min-height: 190px;
+          flex-shrink: 0;
+          margin-top: auto; /* push footer to the bottom when body is a flex column */
+          background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.55) 32%, #000 82%);
         }
 
-        .footer-section img {
-            width: 100%;
-            max-width: 100%;
-            height: auto;
-            display: block;
+        .page-footer {
+          display: grid;
+          grid-template-columns: 1fr auto 1fr;
+          align-items: end;
+          gap: 1rem;
+          padding: 110px 24px 24px;
+          color: #f4f1e9;
+          font-size: clamp(.9rem, 1.3vw, 1.1rem);
+        }
+
+        .page-footer .copyright {
+          white-space: nowrap;
+        }
+
+        .footer-links {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: clamp(.8rem, 2vw, 2rem);
+        }
+
+        .page-footer a {
+          color: inherit;
+          text-decoration: none;
+          transition: opacity .2s ease;
+        }
+
+        .page-footer a:hover,
+        .page-footer a:focus-visible {
+          opacity: .58;
+        }
+
+        .link-star {
+          display: inline-flex;
+          align-items: center;
+          color: inherit;
+          font-size: .55em;
+          line-height: 1;
+          opacity: .85;
+        }
+
+        .page-footer .credit {
+          justify-self: end;
+          text-align: right;
         }
 
 /* ANIMATION */
@@ -227,14 +385,37 @@ body {
   }
 }
 
+@keyframes spotlightIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
 /* Small tweaks for very small screens */
 @media (max-width: 420px) {
-  .logo-container { padding: 20px 12px; }
+  .logo-container { top: 14px; left: 14px; }
+  .partner-button { top: 14px; right: 14px; }
+  .logo-img,
+  .partner-button img { width: min(190px, 42vw); }
+  .filter-controls { padding: 130px 12px 18px; gap: 8px; }
+  .filter-button { padding: 7px 12px; font-size: 1rem; }
   .gallery { gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
   .title { font-size: 1.02em; }
   /* reduce profile pic size on very small screens so frame still shows */
   .thumb img { top: 16%; width: 66%; max-width: 88%; } /* moved slightly higher on tiny screens too */
   .meta { width: 92%; font-size: 1.02em; bottom: 18%; padding: 8px 12px; min-height: 0; gap: 6px; }
+  .partner-dialog {
+    inset: 14px;
+    padding: 52px 28px 20px;
+  }
+  .page-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .75rem;
+    padding: 110px 14px 24px;
+    text-align: center;
+  }
+  .page-footer .credit { text-align: center; }
 }
 
     </style>
@@ -244,18 +425,45 @@ body {
 
 <div class="logo-container">
   <a href="https://frontlineug.com/">
-    <img src="/FTL_ASSETS/FTL_LOGO.png" class="logo-img" alt="Frontline UG Logo">
+    <img src="FTL_ASSETS/FTL_LOGO.png" class="logo-img" alt="Frontline UG Logo">
   </a>
 </div>
 
-<div class="gallery">
-  <!-- Items are generated by JavaScript from the 'artists' array below -->
+<button class="partner-button" type="button" aria-label="Open partner contact form" aria-controls="partner-dialog">
+  <img src="FTL_ASSETS/FTL_PARTNER_2.png" alt="Partner with Frontline Underground">
+</button>
+
+<dialog class="partner-dialog" id="partner-dialog" aria-labelledby="partner-dialog-title">
+  <button class="dialog-close" type="button" aria-label="Close contact form">&times;</button>
+  <h2 id="partner-dialog-title">Partner with Frontline</h2>
+  <div class="form-embed">
+    <!-- Replace the iframe src with the published Google Form embed URL. -->
+    <iframe title="Frontline partner contact form" loading="lazy"></iframe>
+  </div>
+</dialog>
+
+<div class="filter-controls" role="group" aria-label="Filter profiles by role">
+  <button class="filter-button" type="button" data-filter="all" aria-pressed="true">ALL</button>
+  <button class="filter-button" type="button" data-filter="artist" aria-pressed="false">ARTIST</button>
+  <button class="filter-button" type="button" data-filter="prod" aria-pressed="false">PROD</button>
 </div>
 
-<!-- FOOTER IMAGE -->
-<div class="footer-section page-footer">
-  <img src="/FTL_ASSETS/FTL_FOOTER.png" alt="Footer">
+<div class="gallery">
+  <!-- Items are generated by JavaScript from the 'artists' array below. -->
 </div>
+
+<!-- FOOTER -->
+<footer class="footer-section page-footer">
+  <span class="copyright">© FRONTLINE 2026</span>
+  <nav class="footer-links" aria-label="Footer links">
+    <a href="https://frontlineug.com/contact">CONTACT</a>
+    <span class="link-star" aria-hidden="true">★</span>
+    <a href="https://frontlineug.com/about">WHY FRONTLINE ?</a>
+    <span class="link-star" aria-hidden="true">★</span>
+    <a href="https://frontlineug.com/music">PARTNER</a>
+  </nav>
+  <a class="credit" href="https://obssd.online/">DESIGNED BY OBSSD + HEARTLESS</a>
+</footer>
 
 <script>
 /*
@@ -295,23 +503,53 @@ const artists = [
   // Add more entries here...
 ];
 
+/* Set roles to ['artist'], ['prod'], or ['artist', 'prod'] for each profile. */
+artists.forEach((person) => {
+  if (!person.roles) person.roles = ['artist'];
+});
+
 function openLink(url) {
   window.open(url, '_blank');
 }
 
-/* Generate gallery items from the artists array */
-(function renderGallery() {
+const partnerDialog = document.querySelector('#partner-dialog');
+const partnerButton = document.querySelector('.partner-button');
+const closeDialogButton = partnerDialog.querySelector('.dialog-close');
+
+partnerButton.addEventListener('click', () => partnerDialog.showModal());
+closeDialogButton.addEventListener('click', () => partnerDialog.close());
+partnerDialog.addEventListener('click', (event) => {
+  if (event.target === partnerDialog) partnerDialog.close();
+});
+
+const filterButtons = document.querySelectorAll('.filter-button');
+let activeFilter = 'all';
+
+filterButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    activeFilter = button.dataset.filter;
+    filterButtons.forEach((filterButton) => {
+      filterButton.setAttribute('aria-pressed', String(filterButton === button));
+    });
+    renderGallery();
+  });
+});
+
+/* Generate gallery items from profiles matching the selected role. */
+function renderGallery() {
   const gallery = document.querySelector('.gallery');
   gallery.innerHTML = ''; // clear any existing content
 
   // list of available frame images
   const frames = [
-    '/FTL_ASSETS/FTL_PICTURE_FRAME1.png',
-    '/FTL_ASSETS/FTL_PICTURE_FRAME2.png',
-    '/FTL_ASSETS/FTL_PICTURE_FRAME3.png'
+    'FTL_ASSETS/FTL_PICTURE_FRAME1.png',
+    'FTL_ASSETS/FTL_PICTURE_FRAME2.png',
+    'FTL_ASSETS/FTL_PICTURE_FRAME3.png'
   ];
 
-  artists.forEach((a) => {
+  artists
+    .filter((person) => activeFilter === 'all' || person.roles.includes(activeFilter))
+    .forEach((a) => {
     const item = document.createElement('div');
     item.className = 'item';
 
@@ -347,8 +585,13 @@ function openLink(url) {
     typeSpan.textContent = a.type || '';
     type.appendChild(typeSpan);
 
+    const role = document.createElement('div');
+    role.className = 'role';
+    role.textContent = a.roles.join(' / ');
+
     meta.appendChild(title);
     meta.appendChild(type);
+    meta.appendChild(role);
 
     thumb.appendChild(img);
     thumb.appendChild(overlay);
@@ -367,13 +610,15 @@ function openLink(url) {
     item.appendChild(thumb);
 
     gallery.appendChild(item);
-  });
+    });
 
   // stagger animations
   document.querySelectorAll('.item').forEach((el, i) => {
     el.style.animationDelay = (i * 0.05) + 's';
   });
-})();
+}
+
+renderGallery();
 </script>
 
 </body>
