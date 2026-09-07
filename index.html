@@ -3,11 +3,40 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="Frontline Underground">
-	<title>Frontline Underground</title>
+	<meta name="description" content="Frontline is a multimedia production company and record label specializing in music, media, and events.">
+	<link rel="canonical" href="https://frontlineug.com/">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Frontline | Multimedia Production Company and Record Label">
+	<meta property="og:description" content="Frontline is a multimedia production company and record label specializing in music, media, and events.">
+	<meta property="og:url" content="https://frontlineug.com/">
+	<meta property="og:image" content="https://frontlineug.com/FTL_ASSETS/FTL_LOGO.webp">
+	<meta property="og:image:alt" content="Frontline logo">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Frontline | Multimedia Production Company and Record Label">
+	<meta name="twitter:description" content="Frontline is a multimedia production company and record label specializing in music, media, and events.">
+	<meta name="twitter:image" content="https://frontlineug.com/FTL_ASSETS/FTL_LOGO.webp">
+	<title>Frontline | Multimedia Production Company and Record Label</title>
 	<link rel="icon" href="FTL_ASSETS/FTL_FAVICON_96.png">
 	<link rel="stylesheet" href="custom.css">
 	<script defer src="analytics.js"></script>
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "Organization",
+		"name": "Frontline",
+		"url": "https://frontlineug.com/",
+		"logo": "https://frontlineug.com/FTL_ASSETS/FTL_LOGO.webp",
+		"email": "frontlineunderground@gmail.com",
+		"description": "Frontline is a multimedia production company and record label specializing in music, media, and events.",
+		"sameAs": [
+			"https://discord.com/invite/Exs5Kc3Mf6",
+			"https://www.twitch.tv/frontlineunderground",
+			"https://soundcloud.com/frontlineunderground",
+			"https://www.youtube.com/@FrontlineUnderground",
+			"https://www.instagram.com/frontline.ug/"
+		]
+	}
+	</script>
 	<style>
 		:root {
 			--ink: #f4f1e9;
@@ -250,37 +279,44 @@
 			transform: translate(-50%, -50%);
 		}
 
-		.city-navigation a {
-			display: block;
+		.city-navigation h2 {
+			margin: 0;
 			width: 33.333%;
+			font-size: inherit;
+			font-weight: 400;
+		}
+
+		.city-navigation h2 a {
+			display: block;
+			width: 100%;
 			transition: transform .15s ease, filter .15s ease;
 		}
 
-		.city-navigation a:nth-child(1) {
+		.city-navigation h2:nth-child(1) a {
 			transform: translate(clamp(-5rem, -5vw, -1rem), 2.6rem) rotate(-5deg);
 		}
 
-		.city-navigation a:nth-child(2) {
+		.city-navigation h2:nth-child(2) a {
 			transform: translateY(-1.1rem) rotate(1deg);
 		}
 
-		.city-navigation a:nth-child(3) {
+		.city-navigation h2:nth-child(3) a {
 			transform: translate(clamp(1rem, 5vw, 5rem), 2rem) rotate(5deg);
 		}
 
-		.city-navigation a:hover {
+		.city-navigation h2 a:hover {
 			filter: brightness(1.12);
 		}
 
-		.city-navigation a:nth-child(1):hover {
+		.city-navigation h2:nth-child(1) a:hover {
 			transform: translate(clamp(-5rem, -5vw, -1rem), 2.6rem) rotate(-8deg) scale(1.02);
 		}
 
-		.city-navigation a:nth-child(2):hover {
+		.city-navigation h2:nth-child(2) a:hover {
 			transform: translateY(-1.1rem) rotate(4deg) scale(1.02);
 		}
 
-		.city-navigation a:nth-child(3):hover {
+		.city-navigation h2:nth-child(3) a:hover {
 			transform: translate(clamp(1rem, 5vw, 5rem), 2rem) rotate(1deg) scale(1.02);
 		}
 
@@ -381,6 +417,36 @@
 			justify-self: end;
 		}
 
+		.brand-intro {
+			position: absolute;
+			top: 22%;
+			left: var(--page-padding);
+			z-index: 2;
+			width: min(25rem, 34vw);
+		}
+
+		.brand-intro h1,
+		.section-heading {
+			margin: 0;
+			font-size: clamp(1.6rem, 3vw, 3rem);
+			font-weight: 400;
+			line-height: 1;
+		}
+
+		.brand-intro p {
+			max-width: 22rem;
+			margin: .6rem 0 0;
+			font-size: clamp(1rem, 1.4vw, 1.35rem);
+			line-height: 1.1;
+		}
+
+		.section-heading {
+			position: absolute;
+			top: var(--page-padding);
+			left: var(--page-padding);
+			z-index: 2;
+		}
+
 		@media (max-width: 640px) {
 			.home-section {
 				aspect-ratio: auto;
@@ -438,16 +504,20 @@
 					<img src="FTL_ASSETS/FTL_CONTACT.webp" alt="Contact">
 				</a>
 			</div>
+			<!-- <div class="brand-intro">
+				<h1>Frontline</h1>
+				<p>Frontline is a multimedia production company and record label specializing in music, media, and events. We work with artists and producers on creative production and collaboration.</p>
+			</div> -->
 			<nav class="city-navigation" aria-label="Frontline sections">
-				<a href="https://frontlineug.com/music" aria-label="Music">
+				<h2><a href="https://frontlineug.com/music" aria-label="Music">
 					<img src="FTL_ASSETS/FTL_MUSIC_BUTTON.webp" alt="Music">
-				</a>
-				<a href="https://frontlineug.com/visuals" aria-label="Visuals">
+				</a></h2>
+				<h2><a href="https://frontlineug.com/visuals" aria-label="Visuals">
 					<img src="FTL_ASSETS/FTL_VISUAL_BUTTON.webp" alt="Visuals">
-				</a>
-				<a href="https://frontlineug.com/events" aria-label="Events">
+				</a></h2>
+				<h2><a href="https://frontlineug.com/events" aria-label="Events">
 					<img src="FTL_ASSETS/FTL_EVENTS_BUTTON.webp" alt="Events">
-				</a>
+				</a></h2>
 			</nav>
 			<div class="section-meta">
 				<span class="copyright">© FRONTLINE 2026</span>
@@ -466,6 +536,7 @@
 		</section>
 
 		<section class="home-section screen-section" aria-label="Frontline screen">
+			<!-- <h2 class="section-heading">Media</h2> -->
 			<div class="screen-carousel">
 				<div class="screen-controls" aria-label="Media carousel controls">
 					<button class="screen-control" type="button" data-carousel-next aria-label="Next media">
@@ -480,6 +551,7 @@
 		</section>
 
 		<section class="home-section room-section" aria-label="Frontline partners">
+			<!--<h2 class="section-heading">Creative partners</h2> -->
 			<div class="partners">
 				<a class="partner" href="https://www.veryrarecinema.com/" target="_blank" rel="noreferrer" aria-label="VRChat">
 					<img src="FTL_ASSETS/VRC_LOGO.webp" alt="VRChat">
