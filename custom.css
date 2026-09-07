@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('FTL_ASSETS/InstrumentSerif-Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 /* Custom Cursor Configuration */
 
 /* Default cursor - applied to the entire document */
