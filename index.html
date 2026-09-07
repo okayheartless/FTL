@@ -80,7 +80,7 @@
 		.screen-section {
 			min-height: 0;
 			aspect-ratio: 16 / 9;
-			background: #000 url("FTL_ASSETS/FTL_SCREEN.jpg") center / 100% 100% no-repeat;
+			background: #000 url("FTL_ASSETS/FTL_SCREEN.webp") center / 100% 100% no-repeat;
 		}
 
 		/* Adjust these percentages to fine-tune the media composite on the screen artwork. */
@@ -198,7 +198,7 @@
 		}
 
 		.room-section {
-			background: url("FTL_ASSETS/FTL_ROOM_BG.jpg") center / cover no-repeat;
+			background: url("FTL_ASSETS/FTL_ROOM_BG.webp") center / cover no-repeat;
 		}
 
 		.topbar {
@@ -429,24 +429,24 @@
 <body>
 	<main>
 		<section class="home-section city-section" aria-label="Frontline Underground">
-			<img class="city-frame" src="FTL_ASSETS/FTL_CITY_BACKGROUND/FTL CITY_00000.jpg" alt="">
+			<img class="city-frame" src="FTL_ASSETS/FTL_CITY_BACKGROUND/FTL_CITY_00000.webp" alt="">
 			<div class="topbar">
 				<a class="logo" href="https://frontlineug.com/" aria-label="Frontline Underground home">
-					<img src="FTL_ASSETS/FTL_LOGO.png" alt="Frontline Underground">
+					<img src="FTL_ASSETS/FTL_LOGO.webp" alt="Frontline Underground">
 				</a>
 				<a class="contact" href="https://docs.google.com/forms/d/e/1FAIpQLScA54J6IWk3UtsBhTY8FJhCq4UagszacU-_lhvyXgdBs6Xnbw/viewform?usp=header" aria-label="Contact Frontline Underground">
-					<img src="FTL_ASSETS/FTL_CONTACT.png" alt="Contact">
+					<img src="FTL_ASSETS/FTL_CONTACT.webp" alt="Contact">
 				</a>
 			</div>
 			<nav class="city-navigation" aria-label="Frontline sections">
 				<a href="https://frontlineug.com/music" aria-label="Music">
-					<img src="FTL_ASSETS/FTL_MUSIC_BUTTON.png" alt="Music">
+					<img src="FTL_ASSETS/FTL_MUSIC_BUTTON.webp" alt="Music">
 				</a>
 				<a href="https://frontlineug.com/visuals" aria-label="Visuals">
-					<img src="FTL_ASSETS/FTL_VISUAL_BUTTON.png" alt="Visuals">
+					<img src="FTL_ASSETS/FTL_VISUAL_BUTTON.webp" alt="Visuals">
 				</a>
 				<a href="https://frontlineug.com/events" aria-label="Events">
-					<img src="FTL_ASSETS/FTL_EVENTS_BUTTON.png" alt="Events">
+					<img src="FTL_ASSETS/FTL_EVENTS_BUTTON.webp" alt="Events">
 				</a>
 			</nav>
 			<div class="section-meta">
@@ -469,10 +469,10 @@
 			<div class="screen-carousel">
 				<div class="screen-controls" aria-label="Media carousel controls">
 					<button class="screen-control" type="button" data-carousel-next aria-label="Next media">
-						<img src="FTL_ASSETS/FTL_BUTTON_NEXT.png" alt="Next">
+						<img src="FTL_ASSETS/FTL_BUTTON_NEXT.webp" alt="Next">
 					</button>
 					<button class="screen-control" type="button" data-carousel-prev aria-label="Previous media">
-						<img src="FTL_ASSETS/FTL_BUTTON_PREV.png" alt="Previous">
+						<img src="FTL_ASSETS/FTL_BUTTON_PREV.webp" alt="Previous">
 					</button>
 				</div>
 				<div class="screen-media" data-carousel-media aria-live="polite"></div>
@@ -482,16 +482,16 @@
 		<section class="home-section room-section" aria-label="Frontline partners">
 			<div class="partners">
 				<a class="partner" href="https://www.veryrarecinema.com/" target="_blank" rel="noreferrer" aria-label="VRChat">
-					<img src="FTL_ASSETS/VRC_LOGO.png" alt="VRChat">
+					<img src="FTL_ASSETS/VRC_LOGO.webp" alt="VRChat">
 				</a>
 				<a class="partner" href="https://symphonic.com/" target="_blank" rel="noreferrer" aria-label="Symphonic">
-					<img src="FTL_ASSETS/SYMPHONIC_LOGO.png" alt="Symphonic">
+					<img src="FTL_ASSETS/SYMPHONIC_LOGO.webp" alt="Symphonic">
 				</a>
 				<a class="partner" href="https://mobworld.cc/" target="_blank" rel="noreferrer" aria-label="Mob World">
-					<img src="FTL_ASSETS/MOBWORLD_LOGO.png" alt="Mob World">
+					<img src="FTL_ASSETS/MOBWORLD_LOGO.webp" alt="Mob World">
 				</a>
 				<a class="partner" href="https://audiomack.com/" target="_blank" rel="noreferrer" aria-label="Audiomack">
-					<img src="FTL_ASSETS/AUDIOMACK_LOGO.png" alt="Audiomack">
+					<img src="FTL_ASSETS/AUDIOMACK_LOGO.webp" alt="Audiomack">
 				</a>
 			</div>
 			<footer class="room-footer">
@@ -511,7 +511,7 @@
 		const citySection = document.querySelector('.city-section');
 		const cityFrame = document.querySelector('.city-frame');
 		const cityFrames = Array.from({ length: 49 }, (_, index) =>
-			`FTL_ASSETS/FTL_CITY_BACKGROUND/FTL CITY_${String(index).padStart(5, '0')}.jpg`
+			`FTL_ASSETS/FTL_CITY_BACKGROUND/FTL_CITY_${String(index).padStart(5, '0')}.webp`
 		);
 		const cityFrameCache = new Map();
 		let currentFrame = 0;
