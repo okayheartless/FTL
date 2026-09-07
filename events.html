@@ -1,15 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0BL8WX8225"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-0BL8WX8225');
-</script>
-
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Upcoming events from Frontline Underground">
@@ -18,6 +8,7 @@
 
     <link rel="icon" href="FTL_ASSETS/FTL_FAVICON_96.png">
     <link rel="stylesheet" href="custom.css">
+    <script defer src="analytics.js"></script>
     <style>
         * {
             margin: 0;
@@ -416,6 +407,8 @@ function renderEvents() {
     const img = document.createElement('img');
     img.src = event.image;
     img.alt = `${event.name} artwork`;
+    img.loading = 'lazy';
+    img.decoding = 'async';
 
     const meta = document.createElement('div');
     meta.className = 'meta';
